@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import (QApplication, QMainWindow, QWidget, QLabel,
-                               QPushButton, QVBoxLayout, QHBoxLayout)
+                               QPushButton, QVBoxLayout, QHBoxLayout, QComboBox)
 from PySide6.QtGui import QPixmap, QPainter
-from PySide6.QtCore import Qt, Signal
+from PySide6.QtCore import Qt, Signal, QCoreApplication, QTranslator
 
 
 class WelcomeWindow(QMainWindow):
@@ -11,49 +11,90 @@ class WelcomeWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        # Настройка главного окна
         self.setWindowTitle("Exam Record")
-        self.setFixedSize(600, 400)
-        self.setStyleSheet("background-color: White;")
+        self.setFixedSize(700, 500)
+        self.setStyleSheet("background-color: white;")
 
-        # Создаем центральный виджет и основной макет
+        # === Центральный виджет и основной макет ===
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
         main_layout = QVBoxLayout(central_widget)
         main_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        # Приветственная фраза
-        welcome_label = QLabel("Добро пожаловать!")
-        welcome_label.setStyleSheet("font-size: 20px; font-weight: bold;")
-        welcome_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        # === Выпадающий список выбора языка ===
+        self.language_box = QComboBox()
+        self.language_box.addItem("Русский", "ru")
+        self.language_box.addItem("English", "en")
+        self.language_box.setCurrentIndex(0)
+        self.language_box.currentIndexChanged.connect(self.change_language)
 
-        # Загрузка и отображение картинки
-        image_label = QLabel()
-        pixmap = QPixmap("WelcomeIcon.png")  # Укажите путь к вашему изображению
+        # 🔹 Стиль, как у кнопок
+        combo_style = """
+            QComboBox {
+                min-width: 150px;
+                min-height: 36px;
+                font-size: 16px;
+                border-radius: 5px;
+                background-color: #4CAF50;
+                color: white;
+                border: 2px solid #45a049;
+                padding-left: 10px;
+            }
+            QComboBox:hover {
+                background-color: #388038;
+            }
+            QComboBox::drop-down {
+                width: 25px;
+                border: none;
+                background-color: transparent;
+            }
+            QComboBox QAbstractItemView {
+                background-color: white;
+                color: black;
+                border-radius: 5px;
+                selection-background-color: #4CAF50;
+                selection-color: white;
+            }
+        """
+        self.language_box.setStyleSheet(combo_style)
 
-        # Если изображение не загружено, используем заглушку
+        # Правый верхний угол
+        lang_layout = QHBoxLayout()
+        lang_layout.addStretch()
+        lang_layout.addWidget(self.language_box)
+
+        main_layout.addLayout(lang_layout)
+
+        # === Приветствие ===
+        self.welcome_label = QLabel(self.tr("Добро пожаловать!"))
+        self.welcome_label.setStyleSheet("font-size: 20px; font-weight: bold;")
+        self.welcome_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        # === Картинка ===
+        self.image_label = QLabel()
+        pixmap = QPixmap("WelcomeIcon.png")
+
         if pixmap.isNull():
             pixmap = QPixmap(400, 200)
             pixmap.fill(Qt.GlobalColor.lightGray)
-            text_painter = QPainter(pixmap)
-            text_painter.drawText(pixmap.rect(), Qt.AlignmentFlag.AlignCenter, "Welcome Image")
-            text_painter.end()
+            painter = QPainter(pixmap)
+            painter.drawText(pixmap.rect(), Qt.AlignmentFlag.AlignCenter, "Welcome Image")
+            painter.end()
 
-        image_label.setPixmap(pixmap.scaled(500, 280, Qt.AspectRatioMode.KeepAspectRatio))
-        image_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.image_label.setPixmap(pixmap.scaled(500, 280, Qt.AspectRatioMode.KeepAspectRatio))
+        self.image_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        # Создаем кнопки
-        user_button = QPushButton("Войти как пользователь")
-        admin_button = QPushButton("Войти как администратор")
+        # === Кнопки ===
+        self.user_button = QPushButton(self.tr("Войти как пользователь"))
+        self.admin_button = QPushButton(self.tr("Войти как администратор"))
 
-        # Настройка стилей кнопок
         button_style = """
             QPushButton {
                 min-width: 200px;
                 min-height: 40px;
                 font-size: 16px;
                 border-radius: 5px;
-                background-color: #4CAF50;  /* Зеленый */
+                background-color: #4CAF50;
                 color: white;
                 border: 2px solid #45a049;
             }
@@ -61,27 +102,31 @@ class WelcomeWindow(QMainWindow):
                 background-color: #388038;
             }
         """
-        user_button.setStyleSheet(button_style)
-        admin_button.setStyleSheet(button_style + "background-color: #ffcccc;")
+        self.user_button.setStyleSheet(button_style)
+        self.admin_button.setStyleSheet(button_style + "background-color: #ff6666; border: 2px solid #e65c5c;")
 
-        # Подключаем обработчики нажатий
-        user_button.clicked.connect(self._handle_user_login)
-        admin_button.clicked.connect(self._handle_admin_login)
+        self.user_button.clicked.connect(self._handle_user_login)
+        self.admin_button.clicked.connect(self._handle_admin_login)
 
-        # Горизонтальный макет для кнопок
+        # === Макет кнопок ===
         buttons_layout = QHBoxLayout()
-        buttons_layout.addWidget(user_button)
-        buttons_layout.addWidget(admin_button)
+        buttons_layout.addWidget(self.user_button)
+        buttons_layout.addWidget(self.admin_button)
         buttons_layout.setSpacing(30)
         buttons_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        # Добавляем все элементы в основной макет
-        main_layout.addWidget(welcome_label)
+        # === Добавляем всё ===
+        main_layout.addWidget(self.welcome_label)
         main_layout.addSpacing(20)
-        main_layout.addWidget(image_label)
+        main_layout.addWidget(self.image_label)
         main_layout.addSpacing(30)
         main_layout.addLayout(buttons_layout)
 
+        # === Переводчик ===
+        self.translator = QTranslator()
+        self.current_lang = "ru"
+
+    # === Остальные методы ===
     def _handle_user_login(self):
         self.user_login_requested.emit()
         self.close()
@@ -89,3 +134,27 @@ class WelcomeWindow(QMainWindow):
     def _handle_admin_login(self):
         self.admin_login_requested.emit()
         self.close()
+
+    def change_language(self):
+        lang_code = self.language_box.currentData()
+
+        if lang_code == self.current_lang:
+            return
+
+        self.current_lang = lang_code
+
+        # Загружаем новый перевод
+        if not self.translator.load(f"translations/{lang_code}.qm"):
+            print(f"⚠ Не удалось загрузить файл перевода: translations/{lang_code}.qm")
+            return
+
+        # Устанавливаем переводчик в приложение
+        QCoreApplication.installTranslator(self.translator)
+
+        # Обновляем тексты интерфейса
+        self.retranslateUi()
+
+    def retranslateUi(self):
+        self.welcome_label.setText(self.tr("Добро пожаловать!"))
+        self.user_button.setText(self.tr("Войти как пользователь"))
+        self.admin_button.setText(self.tr("Войти как администратор"))
