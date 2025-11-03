@@ -10,8 +10,10 @@ from PySide6.QtCore import Qt
 
 class AdminWindow(QMainWindow):
     def __init__(self, db_authenticator, user_creator, admin_creator,
-                 user_remover, admin_remover, welcome_window,parent=None):
+                 user_remover, admin_remover, welcome_window,parent=None, signals=None):
         super().__init__(parent)
+        self.back_button = None
+        self.signals = signals
         self.db_auth = db_authenticator
         self.user_creator = user_creator
         self.admin_creator = admin_creator
@@ -27,7 +29,7 @@ class AdminWindow(QMainWindow):
         self.smtp_password = "quqv ypik iktl illl"
 
         self._init_ui_elements()
-        self.setWindowTitle("Панель администратора")
+        self.setWindowTitle(self.tr("Панель администратора"))
         self.setFixedSize(1400, 650)
         self.setStyleSheet("background-color: White;")
 
@@ -54,6 +56,9 @@ class AdminWindow(QMainWindow):
         self.del_student_button = QPushButton()
 
         self.setup_login_ui()
+
+        if self.signals:
+            self.signals.language_changed.connect(self.retranslateUi)
 
     def _init_ui_elements(self):
         # Для авторизации
@@ -139,16 +144,16 @@ class AdminWindow(QMainWindow):
         form_layout.setContentsMargins(30, 30, 30, 30)  # Добавляем отступы вокруг формы
 
         # Настройка элементов
-        self.login_label.setText("Логин администратора:")
-        self.password_label.setText("Пароль:")
+        self.login_label.setText(self.tr("Логин администратора:"))
+        self.password_label.setText(self.tr("Пароль:"))
 
-        self.login_input.setPlaceholderText("Введите логин")
+        self.login_input.setPlaceholderText(self.tr("Введите логин"))
         self.login_input.setFixedHeight(35)  # Фиксированная высота
-        self.password_input.setPlaceholderText("Введите пароль")
+        self.password_input.setPlaceholderText(self.tr("Введите пароль"))
         self.password_input.setFixedHeight(35)
         self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
 
-        self.login_button.setText("Войти")
+        self.login_button.setText(self.tr("Войти"))
         self.login_button.clicked.connect(self.check_credentials)
         self.login_button.setStyleSheet(button_style)
         self.login_button.setFixedWidth(200)  # Фиксированная ширина кнопки
@@ -255,23 +260,23 @@ class AdminWindow(QMainWindow):
             return container
 
         # Настройка виджетов для добавления администратора
-        self.admin_login_label.setText("Логин администратора:")
-        self.admin_login_input.setPlaceholderText("Введите логин")
+        self.admin_login_label.setText(self.tr("Логин администратора:"))
+        self.admin_login_input.setPlaceholderText(self.tr("Введите логин"))
         self.admin_login_input.setFixedHeight(35)
-        self.admin_password_label.setText("Пароль администратора:")
-        self.admin_password_input.setPlaceholderText("Введите пароль")
+        self.admin_password_label.setText(self.tr("Пароль администратора:"))
+        self.admin_password_input.setPlaceholderText(self.tr("Введите пароль"))
         self.admin_password_input.setEchoMode(QLineEdit.EchoMode.Password)
         self.admin_password_input.setFixedHeight(35)
-        self.admin_email_label.setText("Электронная почта:")
-        self.admin_email_input.setPlaceholderText("Введите электронную почту")
+        self.admin_email_label.setText(self.tr("Электронная почта:"))
+        self.admin_email_input.setPlaceholderText(self.tr("Введите электронную почту"))
         self.admin_email_input.setFixedHeight(35)
 
         # Кнопки добавления администратора
-        self.add_admin_button.setText("Добавить администратора")
+        self.add_admin_button.setText(self.tr("Добавить администратора"))
         self.add_admin_button.setStyleSheet(button_style)
         self.add_admin_button.clicked.connect(self.add_new_admin)
 
-        self.send_admin_button.setText("Отправить данные на почту")
+        self.send_admin_button.setText(self.tr("Отправить данные на почту"))
         self.send_admin_button.setStyleSheet(button_style)
         self.send_admin_button.clicked.connect(self.send_admin_data)
 
@@ -283,23 +288,23 @@ class AdminWindow(QMainWindow):
         ])
 
         # Настройка виджетов для добавления пользователя
-        self.user_login_label.setText("Логин пользователя:")
-        self.user_login_input.setPlaceholderText("Введите логин")
+        self.user_login_label.setText(self.tr("Логин пользователя:"))
+        self.user_login_input.setPlaceholderText(self.tr("Введите логин"))
         self.user_login_input.setFixedHeight(35)
-        self.user_password_label.setText("Пароль пользователя:")
-        self.user_password_input.setPlaceholderText("Введите пароль")
+        self.user_password_label.setText(self.tr("Пароль пользователя:"))
+        self.user_password_input.setPlaceholderText(self.tr("Введите пароль"))
         self.user_password_input.setEchoMode(QLineEdit.EchoMode.Password)
         self.user_password_input.setFixedHeight(35)
-        self.user_email_label.setText("Электронная почта:")
-        self.user_email_input.setPlaceholderText("Введите электронную почту")
+        self.user_email_label.setText(self.tr("Электронная почта:"))
+        self.user_email_input.setPlaceholderText(self.tr("Введите электронную почту"))
         self.user_email_input.setFixedHeight(35)
 
         # Кнопки добавления пользователя
-        self.add_user_button.setText("Добавить пользователя")
+        self.add_user_button.setText(self.tr("Добавить пользователя"))
         self.add_user_button.setStyleSheet(button_style)
         self.add_user_button.clicked.connect(self.add_new_user)
 
-        self.send_button.setText("Отправить данные на почту")
+        self.send_button.setText(self.tr("Отправить данные на почту"))
         self.send_button.setStyleSheet(button_style)
         self.send_button.clicked.connect(self.send_user_data)
 
@@ -311,19 +316,19 @@ class AdminWindow(QMainWindow):
         ])
 
         # Настройка виджетов для удаления
-        self.del_user_login_label.setText("Логин пользователя:")
-        self.del_user_login_input.setPlaceholderText("Введите логин")
+        self.del_user_login_label.setText(self.tr("Логин пользователя:"))
+        self.del_user_login_input.setPlaceholderText(self.tr("Введите логин"))
         self.del_user_login_input.setFixedHeight(35)
 
-        self.del_user_button.setText("Удалить пользователя")
+        self.del_user_button.setText(self.tr("Удалить пользователя"))
         self.del_user_button.setStyleSheet(button_style)
         self.del_user_button.clicked.connect(self.delete_user)
 
-        self.del_admin_login_label.setText("Логин администратора:")
-        self.del_admin_login_input.setPlaceholderText("Введите логин")
+        self.del_admin_login_label.setText(self.tr("Логин администратора:"))
+        self.del_admin_login_input.setPlaceholderText(self.tr("Введите логин"))
         self.del_admin_login_input.setFixedHeight(35)
 
-        self.del_admin_button.setText("Удалить администратора")
+        self.del_admin_button.setText(self.tr("Удалить администратора"))
         self.del_admin_button.setStyleSheet(button_style)
         self.del_admin_button.clicked.connect(self.delete_admin)
 
@@ -335,35 +340,35 @@ class AdminWindow(QMainWindow):
         ])
 
         # Настройка виджетов для управления БД
-        self.del_subject_label.setText("Название предмета:")
-        self.del_subject_input.setPlaceholderText("Введите название предмета")
+        self.del_subject_label.setText(self.tr("Название предмета:"))
+        self.del_subject_input.setPlaceholderText(self.tr("Введите название предмета"))
         self.del_subject_input.setFixedHeight(35)
 
-        self.del_subject_button.setText("Удалить предмет")
+        self.del_subject_button.setText(self.tr("Удалить предмет"))
         self.del_subject_button.setStyleSheet(button_style)
         self.del_subject_button.clicked.connect(self.delete_subject)
 
-        self.del_group_label.setText("Номер группы:")
-        self.del_group_input.setPlaceholderText("Введите номер группы")
+        self.del_group_label.setText(self.tr("Номер группы:"))
+        self.del_group_input.setPlaceholderText(self.tr("Введите номер группы"))
         self.del_group_input.setFixedHeight(35)
 
-        self.del_group_button.setText("Удалить группу")
+        self.del_group_button.setText(self.tr("Удалить группу"))
         self.del_group_button.setStyleSheet(button_style)
         self.del_group_button.clicked.connect(self.delete_group)
 
-        self.del_exam_label.setText("ID экзамена:")
-        self.del_exam_input.setPlaceholderText("Введите ID экзамена")
+        self.del_exam_label.setText(self.tr("ID экзамена:"))
+        self.del_exam_input.setPlaceholderText(self.tr("Введите ID экзамена"))
         self.del_exam_input.setFixedHeight(35)
 
-        self.del_exam_button.setText("Удалить экзамен")
+        self.del_exam_button.setText(self.tr("Удалить экзамен"))
         self.del_exam_button.setStyleSheet(button_style)
         self.del_exam_button.clicked.connect(self.delete_exam)
 
-        self.del_student_label.setText("ID студента:")
-        self.del_student_input.setPlaceholderText("Введите ID студента")
+        self.del_student_label.setText(self.tr("ID студента:"))
+        self.del_student_input.setPlaceholderText(self.tr("Введите ID студента"))
         self.del_student_input.setFixedHeight(35)
 
-        self.del_student_button.setText("Удалить студента")
+        self.del_student_button.setText(self.tr("Удалить студента"))
         self.del_student_button.setStyleSheet(button_style)
         self.del_student_button.clicked.connect(self.delete_student)
 
@@ -381,15 +386,15 @@ class AdminWindow(QMainWindow):
         self.main_layout.addWidget(right_panel, 1)
 
         # Кнопка Назад
-        back_button = QPushButton("Назад")
-        back_button.setFixedSize(100, 30)
-        back_button.setStyleSheet(button_style)
-        back_button.clicked.connect(self.return_to_welcome)
+        self.back_button = QPushButton(self.tr("Назад"))
+        self.back_button.setFixedSize(100, 30)
+        self.back_button.setStyleSheet(button_style)
+        self.back_button.clicked.connect(self.return_to_welcome)
 
         button_container = QWidget()
         button_layout = QHBoxLayout(button_container)
         button_layout.addStretch()
-        button_layout.addWidget(back_button)
+        button_layout.addWidget(self.back_button)
 
         self.main_layout.addWidget(button_container)
 
@@ -947,6 +952,49 @@ class AdminWindow(QMainWindow):
                 "Ошибка базы данных",
                 f"Произошла ошибка при удалении администратора:\n{str(e)}"
             )
+
+    def retranslateUi(self):
+        self.setWindowTitle(self.tr("Панель администратора"))
+        self.login_label.setText(self.tr("Логин администратора:"))
+        self.password_label.setText(self.tr("Пароль:"))
+        self.login_input.setPlaceholderText(self.tr("Введите логин"))
+        self.password_input.setPlaceholderText(self.tr("Введите пароль"))
+        self.login_button.setText(self.tr("Войти"))
+        self.admin_login_label.setText(self.tr("Логин администратора:"))
+        self.admin_login_input.setPlaceholderText(self.tr("Введите логин"))
+        self.admin_password_label.setText(self.tr("Пароль администратора:"))
+        self.admin_password_input.setPlaceholderText(self.tr("Введите пароль"))
+        self.admin_email_label.setText(self.tr("Электронная почта:"))
+        self.admin_email_input.setPlaceholderText(self.tr("Введите электронную почту"))
+        self.add_admin_button.setText(self.tr("Добавить администратора"))
+        self.send_admin_button.setText(self.tr("Отправить данные на почту"))
+        self.user_login_label.setText(self.tr("Логин пользователя:"))
+        self.user_login_input.setPlaceholderText(self.tr("Введите логин"))
+        self.user_password_label.setText(self.tr("Пароль пользователя:"))
+        self.user_password_input.setPlaceholderText(self.tr("Введите пароль"))
+        self.user_email_label.setText(self.tr("Электронная почта:"))
+        self.user_email_input.setPlaceholderText(self.tr("Введите электронную почту"))
+        self.add_user_button.setText(self.tr("Добавить пользователя"))
+        self.send_button.setText(self.tr("Отправить данные на почту"))
+        self.del_user_login_label.setText(self.tr("Логин пользователя:"))
+        self.del_user_login_input.setPlaceholderText(self.tr("Введите логин"))
+        self.del_user_button.setText(self.tr("Удалить пользователя"))
+        self.del_admin_login_label.setText(self.tr("Логин администратора:"))
+        self.del_admin_login_input.setPlaceholderText(self.tr("Введите логин"))
+        self.del_admin_button.setText(self.tr("Удалить администратора"))
+        self.del_subject_label.setText(self.tr("Название предмета:"))
+        self.del_subject_input.setPlaceholderText(self.tr("Введите название предмета"))
+        self.del_subject_button.setText(self.tr("Удалить предмет"))
+        self.del_group_label.setText(self.tr("Номер группы:"))
+        self.del_group_input.setPlaceholderText(self.tr("Введите номер группы"))
+        self.del_group_button.setText(self.tr("Удалить группу"))
+        self.del_exam_label.setText(self.tr("ID экзамена:"))
+        self.del_exam_input.setPlaceholderText(self.tr("Введите ID экзамена"))
+        self.del_exam_button.setText(self.tr("Удалить экзамен"))
+        self.del_student_label.setText(self.tr("ID студента:"))
+        self.del_student_input.setPlaceholderText(self.tr("Введите ID студента"))
+        self.del_student_button.setText(self.tr("Удалить студента"))
+        self.back_button = QPushButton(self.tr("Назад"))
 
     def _clear_layout(self):
         while self.main_layout.count():

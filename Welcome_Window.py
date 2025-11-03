@@ -7,11 +7,14 @@ from PySide6.QtCore import Qt, Signal, QCoreApplication, QTranslator
 class WelcomeWindow(QMainWindow):
     user_login_requested = Signal()
     admin_login_requested = Signal()
+    language_changed = Signal(str)  # добавили сигнал
 
-    def __init__(self):
+    def __init__(self, current_lang="ru", signals=None):
         super().__init__()
 
-        self.setWindowTitle("Exam Record")
+        self.signals = signals
+
+        self.setWindowTitle("Exam Report")
         self.setFixedSize(700, 500)
         self.setStyleSheet("background-color: white;")
 
@@ -25,10 +28,13 @@ class WelcomeWindow(QMainWindow):
         self.language_box = QComboBox()
         self.language_box.addItem("Русский", "ru")
         self.language_box.addItem("English", "en")
-        self.language_box.setCurrentIndex(0)
-        self.language_box.currentIndexChanged.connect(self.change_language)
+        self.language_box.setCurrentIndex(0 if current_lang == "ru" else 1)
+        self.language_box.currentIndexChanged.connect(self._emit_language_change)
 
-        # 🔹 Стиль, как у кнопок
+        if self.signals:
+            self.signals.language_changed.connect(self.retranslateUi)
+
+        # Стиль, как у кнопок
         combo_style = """
             QComboBox {
                 min-width: 150px;
@@ -135,24 +141,10 @@ class WelcomeWindow(QMainWindow):
         self.admin_login_requested.emit()
         self.close()
 
-    def change_language(self):
+    def _emit_language_change(self):
         lang_code = self.language_box.currentData()
+        self.language_changed.emit(lang_code)
 
-        if lang_code == self.current_lang:
-            return
-
-        self.current_lang = lang_code
-
-        # Загружаем новый перевод
-        if not self.translator.load(f"translations/{lang_code}.qm"):
-            print(f"⚠ Не удалось загрузить файл перевода: translations/{lang_code}.qm")
-            return
-
-        # Устанавливаем переводчик в приложение
-        QCoreApplication.installTranslator(self.translator)
-
-        # Обновляем тексты интерфейса
-        self.retranslateUi()
 
     def retranslateUi(self):
         self.welcome_label.setText(self.tr("Добро пожаловать!"))
