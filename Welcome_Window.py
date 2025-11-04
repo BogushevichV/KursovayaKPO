@@ -28,6 +28,7 @@ class WelcomeWindow(QMainWindow):
         self.language_box = QComboBox()
         self.language_box.addItem("Русский", "ru")
         self.language_box.addItem("English", "en")
+        self.language_box.addItem("中文 (Chinese)", "zh")
         self.language_box.setCurrentIndex(0 if current_lang == "ru" else 1)
         self.language_box.currentIndexChanged.connect(self._emit_language_change)
 
@@ -150,3 +151,4 @@ class WelcomeWindow(QMainWindow):
         self.welcome_label.setText(self.tr("Добро пожаловать!"))
         self.user_button.setText(self.tr("Войти как пользователь"))
         self.admin_button.setText(self.tr("Войти как администратор"))
+
