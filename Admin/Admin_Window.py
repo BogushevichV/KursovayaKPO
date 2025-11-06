@@ -404,11 +404,11 @@ class AdminWindow(QMainWindow):
         email = self.admin_email_input.text()
 
         if not all([login, password, email]):
-            QMessageBox.warning(self, "Ошибка", "Все поля должны быть заполнены!")
+            QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Все поля должны быть заполнены!"))
             return
 
         if "@" not in email or "." not in email:
-            QMessageBox.warning(self, "Ошибка", "Введите корректный email!")
+            QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Введите корректный email!"))
             return
 
         try:
@@ -423,33 +423,35 @@ class AdminWindow(QMainWindow):
             if self.send_email(email, "Ваши данные администратора", email_body):
                 QMessageBox.information(
                     self,
-                    "Успех",
-                    f"Данные администратора отправлены на {email}"
+                    self.tr("Успех"),
+                    self.tr(f"Данные администратора отправлены на {email}")
                 )
+
             else:
                 QMessageBox.warning(
                     self,
-                    "Ошибка",
-                    "Не удалось отправить данные на указанный email"
+                    self.tr("Ошибка"),
+                    self.tr("Не удалось отправить данные на указанный email")
                 )
         except Exception as e:
             QMessageBox.critical(
                 self,
-                "Ошибка",
-                f"Произошла ошибка при отправке данных:\n{str(e)}"
+                self.tr("Ошибка"),
+                self.tr(f"Произошла ошибка при отправке данных:\n{str(e)}")
             )
 
     def delete_subject(self):
         subject_name = self.del_subject_input.text()
         if not subject_name:
-            QMessageBox.warning(self, "Ошибка", "Введите название предмета")
+            QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Введите название предмета"))
             return
 
         # Подтверждение удаления
         reply = QMessageBox.question(
             self,
-            'Подтверждение удаления',
-            f'Вы уверены, что хотите удалить предмет "{subject_name}" и все связанные данные (экзамены, оценки)?',
+            self.tr("Подтверждение удаления"),
+            self.tr(
+                f'Вы уверены, что хотите удалить предмет "{subject_name}" и все связанные данные (экзамены, оценки)?'),
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
             QMessageBox.StandardButton.No
         )
@@ -472,7 +474,8 @@ class AdminWindow(QMainWindow):
             subject_id = cursor.fetchone()
 
             if not subject_id:
-                QMessageBox.warning(self, "Ошибка", f"Предмет '{subject_name}' не найден")
+                QMessageBox.warning(self, self.tr("Ошибка"), self.tr(f"Предмет '{subject_name}' не найден"))
+
                 return
 
             subject_id = subject_id[0]
@@ -495,18 +498,20 @@ class AdminWindow(QMainWindow):
 
             QMessageBox.information(
                 self,
-                "Успех",
-                f"Предмет '{subject_name}' и все связанные данные успешно удалены!"
+                self.tr("Успех"),
+                self.tr(f"Предмет '{subject_name}' и все связанные данные успешно удалены!")
             )
+
             self.del_subject_input.clear()
 
         except psycopg2.Error as e:
             conn.rollback()
             QMessageBox.critical(
                 self,
-                "Ошибка базы данных",
-                f"Произошла ошибка при удалении предмета:\n{str(e)}"
+                self.tr("Ошибка базы данных"),
+                self.tr(f"Произошла ошибка при удалении предмета:\n{str(e)}")
             )
+
         finally:
             if 'conn' in locals():
                 conn.close()
@@ -514,13 +519,13 @@ class AdminWindow(QMainWindow):
     def delete_group(self):
         group_name = self.del_group_input.text()
         if not group_name:
-            QMessageBox.warning(self, "Ошибка", "Введите номер группы")
+            QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Введите номер группы"))
             return
 
         reply = QMessageBox.question(
             self,
-            'Подтверждение удаления',
-            f'Вы уверены, что хотите удалить группу "{group_name}" и всех её студентов?',
+            self.tr('Подтверждение удаления'),
+            self.tr(f'Вы уверены, что хотите удалить группу "{group_name}" и всех её студентов?'),
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
             QMessageBox.StandardButton.No
         )
@@ -543,7 +548,7 @@ class AdminWindow(QMainWindow):
             group_id = cursor.fetchone()
 
             if not group_id:
-                QMessageBox.warning(self, "Ошибка", f"Группа '{group_name}' не найдена")
+                QMessageBox.warning(self, self.tr("Ошибка"), self.tr(f"Группа '{group_name}' не найдена"))
                 return
 
             group_id = group_id[0]
@@ -569,8 +574,8 @@ class AdminWindow(QMainWindow):
 
             QMessageBox.information(
                 self,
-                "Успех",
-                f"Группа '{group_name}' и все связанные данные успешно удалены!"
+                self.tr("Успех"),
+                self.tr(f"Группа '{group_name}' и все связанные данные успешно удалены!")
             )
             self.del_group_input.clear()
 
@@ -578,8 +583,8 @@ class AdminWindow(QMainWindow):
             conn.rollback()
             QMessageBox.critical(
                 self,
-                "Ошибка базы данных",
-                f"Произошла ошибка при удалении группы:\n{str(e)}"
+                self.tr("Ошибка базы данных"),
+                self.tr(f"Произошла ошибка при удалении группы:\n{str(e)}")
             )
         finally:
             if 'conn' in locals():
@@ -588,13 +593,13 @@ class AdminWindow(QMainWindow):
     def delete_exam(self):
         exam_id = self.del_exam_input.text()
         if not exam_id:
-            QMessageBox.warning(self, "Ошибка", "Введите ID экзамена")
+            QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Введите ID экзамена"))
             return
 
         reply = QMessageBox.question(
             self,
-            'Подтверждение удаления',
-            f'Вы уверены, что хотите удалить экзамен с ID {exam_id} и все оценки по нему?',
+            self.tr('Подтверждение удаления'),
+            self.tr(f'Вы уверены, что хотите удалить экзамен с ID {exam_id} и все оценки по нему?'),
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
             QMessageBox.StandardButton.No
         )
@@ -615,7 +620,7 @@ class AdminWindow(QMainWindow):
             # 1. Проверяем существование экзамена
             cursor.execute("SELECT id FROM exams WHERE id = %s", (exam_id,))
             if not cursor.fetchone():
-                QMessageBox.warning(self, "Ошибка", f"Экзамен с ID {exam_id} не найден")
+                QMessageBox.warning(self, self.tr("Ошибка"), self.tr(f"Экзамен с ID {exam_id} не найден"))
                 return
 
             # 2. Удаляем оценки по этому экзамену
@@ -628,8 +633,8 @@ class AdminWindow(QMainWindow):
 
             QMessageBox.information(
                 self,
-                "Успех",
-                f"Экзамен с ID {exam_id} и все оценки по нему успешно удалены!"
+                self.tr("Успех"),
+                self.tr(f"Экзамен с ID {exam_id} и все оценки по нему успешно удалены!")
             )
             self.del_exam_input.clear()
 
@@ -637,8 +642,8 @@ class AdminWindow(QMainWindow):
             conn.rollback()
             QMessageBox.critical(
                 self,
-                "Ошибка базы данных",
-                f"Произошла ошибка при удалении экзамена:\n{str(e)}"
+                self.tr("Ошибка базы данных"),
+                self.tr(f"Произошла ошибка при удалении экзамена:\n{str(e)}")
             )
         finally:
             if 'conn' in locals():
@@ -647,13 +652,13 @@ class AdminWindow(QMainWindow):
     def delete_student(self):
         student_id = self.del_student_input.text()
         if not student_id:
-            QMessageBox.warning(self, "Ошибка", "Введите ID студента")
+            QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Введите ID студента"))
             return
 
         reply = QMessageBox.question(
             self,
-            'Подтверждение удаления',
-            f'Вы уверены, что хотите удалить студента с ID {student_id} и все его оценки?',
+            self.tr("Подтверждение удаления"),
+            self.tr(f"Вы уверены, что хотите удалить студента с ID {student_id} и все его оценки?"),
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
             QMessageBox.StandardButton.No
         )
@@ -674,7 +679,8 @@ class AdminWindow(QMainWindow):
             # 1. Проверяем существование студента
             cursor.execute("SELECT id FROM students WHERE id = %s", (student_id,))
             if not cursor.fetchone():
-                QMessageBox.warning(self, "Ошибка", f"Студент с ID {student_id} не найден")
+                QMessageBox.warning(self, self.tr("Ошибка"), self.tr(f"Студент с ID {student_id} не найден"))
+
                 return
 
             # 2. Удаляем оценки студента
@@ -687,17 +693,18 @@ class AdminWindow(QMainWindow):
 
             QMessageBox.information(
                 self,
-                "Успех",
-                f"Студент с ID {student_id} и все его оценки успешно удалены!"
+                self.tr("Успех"),
+                self.tr(f"Студент с ID {student_id} и все его оценки успешно удалены!")
             )
+
             self.del_student_input.clear()
 
         except psycopg2.Error as e:
             conn.rollback()
             QMessageBox.critical(
                 self,
-                "Ошибка базы данных",
-                f"Произошла ошибка при удалении студента:\n{str(e)}"
+                self.tr("Ошибка базы данных"),
+                self.tr(f"Произошла ошибка при удалении студента:\n{str(e)}")
             )
         finally:
             if 'conn' in locals():
@@ -732,11 +739,11 @@ class AdminWindow(QMainWindow):
         email = self.admin_email_input.text()
 
         if not all([login, password, email]):
-            QMessageBox.warning(self, "Ошибка", "Все поля должны быть заполнены!")
+            QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Все поля должны быть заполнены!"))
             return
 
         if "@" not in email or "." not in email:
-            QMessageBox.warning(self, "Ошибка", "Введите корректный email!")
+            QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Введите корректный email!"))
             return
 
         try:
@@ -753,15 +760,15 @@ class AdminWindow(QMainWindow):
                 if self.send_email(email, "Ваши административные данные", email_body):
                     QMessageBox.information(
                         self,
-                        "Успех",
-                        f"Администратор {login} успешно добавлен!\n"
-                        f"Данные для входа отправлены на {email}"
+                        self.tr("Успех"),
+                        self.tr(f"Администратор {login} успешно добавлен!\nДанные для входа отправлены на {email}")
                     )
+
                 else:
                     QMessageBox.warning(
                         self,
-                        "Ошибка отправки",
-                        f"Администратор {login} добавлен, но не удалось отправить данные на email!"
+                        self.tr("Ошибка отправки"),
+                        self.tr(f"Администратор {login} добавлен, но не удалось отправить данные на email!")
                     )
 
                 # Очищаем поля
@@ -771,14 +778,14 @@ class AdminWindow(QMainWindow):
             else:
                 QMessageBox.warning(
                     self,
-                    "Ошибка",
-                    "Не удалось добавить администратора. Возможно, такой логин уже существует."
+                    self.tr("Ошибка"),
+                    self.tr("Не удалось добавить администратора. Возможно, такой логин уже существует.")
                 )
         except Exception as e:
             QMessageBox.critical(
                 self,
-                "Ошибка базы данных",
-                f"Произошла ошибка при добавлении администратора:\n{str(e)}"
+                self.tr("Ошибка базы данных"),
+                self.tr(f"Произошла ошибка при добавлении администратора:\n{str(e)}")
             )
 
     def add_new_user(self):
@@ -787,11 +794,11 @@ class AdminWindow(QMainWindow):
         email = self.user_email_input.text()
 
         if not all([login, password, email]):
-            QMessageBox.warning(self, "Ошибка", "Все поля должны быть заполнены!")
+            QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Все поля должны быть заполнены!"))
             return
 
         if "@" not in email or "." not in email:
-            QMessageBox.warning(self, "Ошибка", "Введите корректный email!")
+            QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Введите корректный email!"))
             return
 
         try:
@@ -799,23 +806,24 @@ class AdminWindow(QMainWindow):
             if success:
                 QMessageBox.information(
                     self,
-                    "Успех",
-                    f"Пользователь {login} успешно добавлен!"
+                    self.tr("Успех"),
+                    self.tr(f"Пользователь {login} успешно добавлен!")
                 )
+
                 self.user_login_input.clear()
                 self.user_password_input.clear()
                 self.user_email_input.clear()
             else:
                 QMessageBox.warning(
                     self,
-                    "Ошибка",
-                    "Не удалось добавить пользователя. Возможно, такой логин уже существует."
+                    self.tr("Ошибка"),
+                    self.tr("Не удалось добавить пользователя. Возможно, такой логин уже существует.")
                 )
         except Exception as e:
             QMessageBox.critical(
                 self,
-                "Ошибка базы данных",
-                f"Произошла ошибка при добавлении пользователя:\n{str(e)}"
+                self.tr("Ошибка базы данных"),
+                self.tr(f"Произошла ошибка при добавлении пользователя:\n{str(e)}")
             )
 
     def send_user_data(self):
@@ -824,11 +832,11 @@ class AdminWindow(QMainWindow):
         email = self.user_email_input.text()
 
         if not all([login, password, email]):
-            QMessageBox.warning(self, "Ошибка", "Все поля должны быть заполнены!")
+            QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Все поля должны быть заполнены!"))
             return
 
         if "@" not in email or "." not in email:
-            QMessageBox.warning(self, "Ошибка", "Введите корректный email!")
+            QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Введите корректный email!"))
             return
 
         try:
@@ -843,20 +851,21 @@ class AdminWindow(QMainWindow):
             if self.send_email(email, "Ваши данные для входа", email_body):
                 QMessageBox.information(
                     self,
-                    "Успех",
-                    f"Данные для входа отправлены на {email}"
+                    self.tr("Успех"),
+                    self.tr(f"Данные для входа отправлены на {email}")
                 )
+
             else:
                 QMessageBox.warning(
                     self,
-                    "Ошибка",
-                    "Не удалось отправить данные на указанный email"
+                    self.tr("Ошибка"),
+                    self.tr("Не удалось отправить данные на указанный email")
                 )
         except Exception as e:
             QMessageBox.critical(
                 self,
-                "Ошибка",
-                f"Произошла ошибка при отправке данных:\n{str(e)}"
+                self.tr("Ошибка"),
+                self.tr(f"Произошла ошибка при отправке данных:\n{str(e)}")
             )
 
     def check_credentials(self):
@@ -864,7 +873,7 @@ class AdminWindow(QMainWindow):
         password = self.password_input.text()
 
         if not login or not password:
-            QMessageBox.warning(self, "Ошибка", "Введите логин и пароль")
+            QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Введите логин и пароль"))
             return
 
         try:
@@ -877,8 +886,8 @@ class AdminWindow(QMainWindow):
         except Exception as e:
             QMessageBox.critical(
                 self,
-                "Ошибка аутентификации",
-                f"Произошла ошибка при проверке учетных данных:\n{str(e)}"
+                self.tr("Ошибка аутентификации"),
+                self.tr(f"Произошла ошибка при проверке учетных данных:\n{str(e)}")
             )
 
     def handle_failed_login(self):
@@ -886,21 +895,22 @@ class AdminWindow(QMainWindow):
         if self.login_attempts > 0:
             QMessageBox.warning(
                 self,
-                "Ошибка входа",
-                f"Неверные данные! Осталось попыток: {self.login_attempts}"
+                self.tr("Ошибка входа"),
+                self.tr(f"Неверные данные! Осталось попыток: {self.login_attempts}")
             )
+
         else:
             QMessageBox.critical(
                 self,
-                "Доступ запрещен",
-                "Превышено количество попыток входа!"
+                self.tr("Доступ запрещен"),
+                self.tr("Превышено количество попыток входа!")
             )
             self.close()
 
     def delete_user(self):
         login = self.del_user_login_input.text()
         if not login:
-            QMessageBox.warning(self, "Ошибка", "Введите логин пользователя")
+            QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Введите логин пользователя"))
             return
 
         try:
@@ -908,27 +918,29 @@ class AdminWindow(QMainWindow):
             if success:
                 QMessageBox.information(
                     self,
-                    "Успех",
-                    f"Пользователь {login} успешно удален!"
+                    self.tr("Успех"),
+                    self.tr(f"Пользователь {login} успешно удален!")
                 )
+
                 self.del_user_login_input.clear()
             else:
                 QMessageBox.warning(
                     self,
-                    "Ошибка",
-                    f"Пользователь {login} не найден или не удален."
+                    self.tr("Ошибка"),
+                    self.tr(f"Пользователь {login} не найден или не удален.")
                 )
+
         except Exception as e:
             QMessageBox.critical(
                 self,
-                "Ошибка базы данных",
-                f"Произошла ошибка при удалении пользователя:\n{str(e)}"
+                self.tr("Ошибка базы данных"),
+                self.tr(f"Произошла ошибка при удалении пользователя:\n{str(e)}")
             )
 
     def delete_admin(self):
         login = self.del_admin_login_input.text()
         if not login:
-            QMessageBox.warning(self, "Ошибка", "Введите логин администратора")
+            QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Введите логин администратора"))
             return
 
         try:
@@ -936,21 +948,23 @@ class AdminWindow(QMainWindow):
             if success:
                 QMessageBox.information(
                     self,
-                    "Успех",
-                    f"Администратор {login} успешно удален!"
+                    self.tr("Успех"),
+                    self.tr(f"Администратор {login} успешно удален!")
                 )
+
                 self.del_admin_login_input.clear()
             else:
                 QMessageBox.warning(
                     self,
-                    "Ошибка",
-                    f"Администратор {login} не найден или не удален."
+                    self.tr("Ошибка"),
+                    self.tr(f"Администратор {login} не найден или не удален.")
                 )
+
         except Exception as e:
             QMessageBox.critical(
                 self,
-                "Ошибка базы данных",
-                f"Произошла ошибка при удалении администратора:\n{str(e)}"
+                self.tr("Ошибка базы данных"),
+                self.tr(f"Произошла ошибка при удалении администратора:\n{str(e)}")
             )
 
     def retranslateUi(self):

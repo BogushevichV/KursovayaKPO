@@ -111,7 +111,7 @@ class UserWindow(QMainWindow):
         password = self.password_input.text()
 
         if not login or not password:
-            QMessageBox.warning(self, "Ошибка", "Введите логин и пароль")
+            QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Введите логин и пароль"))
             return
 
         try:
@@ -124,8 +124,8 @@ class UserWindow(QMainWindow):
         except Exception as e:
             QMessageBox.critical(
                 self,
-                "Ошибка аутентификации",
-                f"Произошла ошибка при проверке учетных данных:\n{str(e)}"
+                self.tr("Ошибка аутентификации"),
+                self.tr(f"Произошла ошибка при проверке учетных данных:\n{str(e)}")
             )
 
     def open_grade_book(self):
@@ -146,14 +146,15 @@ class UserWindow(QMainWindow):
         if self.login_attempts > 0:
             QMessageBox.warning(
                 self,
-                "Ошибка входа",
-                f"Неверные данные! Осталось попыток: {self.login_attempts}"
+                self.tr("Ошибка входа"),
+                self.tr(f"Неверные данные! Осталось попыток: {self.login_attempts}")
             )
+
         else:
             QMessageBox.critical(
                 self,
-                "Доступ запрещен",
-                "Превышено количество попыток входа!"
+                self.tr("Доступ запрещен"),
+                self.tr("Превышено количество попыток входа!")
             )
             self.close()
 
