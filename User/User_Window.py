@@ -1,6 +1,7 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (QMainWindow, QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QMessageBox)
 
+from Examination_Report_App import GradeBookApp
 
 class UserWindow(QMainWindow):
     def __init__(self, db_authenticator, welcome_window, parent=None):
@@ -11,7 +12,8 @@ class UserWindow(QMainWindow):
         self.password_label = None
         self.login_input = None
         self.login_label = None
-        self.setStyleSheet("background-color: White;")
+        self.setObjectName("window")
+        self.setStyleSheet("#window{background-color: White;}")
         self.db_auth = db_authenticator
         self.welcome_window = welcome_window
         self.login_attempts = 5
@@ -90,12 +92,15 @@ class UserWindow(QMainWindow):
                 border: 1px solid #dee2e6;
             }
             QLineEdit {
+                color: black;
+                background-color: white;
                 padding: 5px 10px;
                 border: 1px solid #ced4da;
                 border-radius: 4px;
                 font-size: 14px;
             }
             QLabel {
+                color: black;
                 background: transparent;
                 border: none;
                 font-size: 14px;

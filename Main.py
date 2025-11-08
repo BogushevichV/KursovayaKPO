@@ -1,5 +1,6 @@
 from Welcome_Window import WelcomeWindow
 from Admin.Admin_Window import AdminWindow
+from DataBase.DB_Validation import DBAuthenticator
 from PySide6.QtWidgets import QApplication, QMessageBox
 from User.User_Window import UserWindow
 import sys
@@ -32,7 +33,7 @@ class Application:
         }
 
         try:
-
+            self.db_auth = DBAuthenticator(**db_params)
             return True
         except Exception as e:
             QMessageBox.critical(

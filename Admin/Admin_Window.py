@@ -29,7 +29,8 @@ class AdminWindow(QMainWindow):
         self._init_ui_elements()
         self.setWindowTitle("Панель администратора")
         self.setFixedSize(1400, 650)
-        self.setStyleSheet("background-color: White;")
+        self.setObjectName("window")
+        self.setStyleSheet("#window{background-color: White;}")
 
         self.central_widget = QWidget()
         self.setCentralWidget(self.central_widget)
@@ -176,10 +177,12 @@ class AdminWindow(QMainWindow):
         form_container.setStyleSheet("""
             QLineEdit#login_input, QLineEdit#password_input, QWidget#form_container {
                 background-color: #f8f9fa;
+                color: black;
                 border-radius: 10px;
                 border: 1px solid #dee2e6;
             }
             QLabel#login_label, QLabel#password_label {
+                color: black;
                 background-color: #f8f9fa;
             }
         """)
