@@ -3,6 +3,7 @@ from PySide6.QtWidgets import (QMainWindow, QWidget, QMessageBox, QTableWidgetIt
                                QPushButton, QFormLayout, QScrollArea)
 from PySide6.QtCore import Qt, QRegularExpression, QDate
 from PySide6.QtGui import QRegularExpressionValidator
+from Grade_Item_Delegate import GradeItemDelegate
 
 
 class GradeBookApp(QMainWindow):
@@ -69,10 +70,13 @@ class GradeBookApp(QMainWindow):
                 border: 1px solid #ced4da;
                 border-radius: 4px;
                 font-size: 14px;
+                color: black;
+                background: white;
             }
             QLabel {
                 background: transparent;
                 border: none;
+                color: black;
                 font-size: 14px;
             }
             QTableWidget {

@@ -149,10 +149,18 @@ class AdminWindow(QMainWindow):
         self.password_input.setFixedHeight(35)
         self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
 
+        # >>>>>>>>>>> Потом убрать
+        self.login_input.setText("login")
+        self.password_input.setText("123")
+        # >>>>>>>>>>>>
+
         self.login_button.setText("Войти")
         self.login_button.clicked.connect(self.check_credentials)
         self.login_button.setStyleSheet(button_style)
         self.login_button.setFixedWidth(200)  # Фиксированная ширина кнопки
+
+        self.login_input.returnPressed.connect(self.check_credentials)
+        self.password_input.returnPressed.connect(self.check_credentials)
 
         # Добавляем элементы в форму
         form_layout.addWidget(self.login_label)
@@ -226,6 +234,7 @@ class AdminWindow(QMainWindow):
                         border: 1px solid #dee2e6;
                     }
                     QLineEdit {
+                        color: black;
                         padding: 5px 10px;
                         border: 1px solid #ced4da;
                         border-radius: 4px;
@@ -233,6 +242,7 @@ class AdminWindow(QMainWindow):
                     }
                     QLabel {
                         background: transparent;
+                        color: black;
                         border: none;
                         font-size: 14px;
                     }

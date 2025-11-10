@@ -63,9 +63,18 @@ class UserWindow(QMainWindow):
         self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
         self.password_input.setFixedHeight(35)
 
+        # >>>>>>>>>>> Потом убрать
+        self.login_input.setText("user")
+        self.password_input.setText("123")
+        # >>>>>>>>>>>>
+
         self.login_button = QPushButton("Войти")
         self.login_button.setStyleSheet(button_style)
         self.login_button.clicked.connect(self.check_credentials)
+
+
+        self.login_input.returnPressed.connect(self.check_credentials)
+        self.password_input.returnPressed.connect(self.check_credentials)
 
         # Добавление элементов в форму
         form_layout.addWidget(self.login_label)
