@@ -1,6 +1,13 @@
 from Welcome_Window import WelcomeWindow
 from Admin.Admin_Window import AdminWindow
+
 from DataBase.DB_Validation import DBAuthenticator
+
+from Admin.Admin_Creator import AdminCreator
+from Admin.Admin_Remover import AdminRemover
+from User.User_Creator import UserCreator
+from User.User_Remover import UserRemover
+
 from PySide6.QtWidgets import QApplication, QMessageBox
 from User.User_Window import UserWindow
 import sys
@@ -34,6 +41,10 @@ class Application:
 
         try:
             self.db_auth = DBAuthenticator(**db_params)
+            self.user_creator = UserCreator(**db_params)
+            self.user_remover = UserRemover(**db_params)
+            self.admin_creator = AdminCreator(**db_params)
+            self.admin_remover = AdminRemover(**db_params)
             return True
         except Exception as e:
             QMessageBox.critical(
