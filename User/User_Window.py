@@ -1,7 +1,7 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (QMainWindow, QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QMessageBox)
 
-from Examination_Report_App import GradeBookApp
+from User.Examination_Report_App import GradeBookApp
 
 class UserWindow(QMainWindow):
     def __init__(self, db_authenticator, welcome_window, parent=None):

@@ -3,7 +3,9 @@ from PySide6.QtWidgets import (QMainWindow, QWidget, QMessageBox, QTableWidgetIt
                                QPushButton, QFormLayout, QScrollArea)
 from PySide6.QtCore import Qt, QRegularExpression, QDate
 from PySide6.QtGui import QRegularExpressionValidator
+
 from Grade_Item_Delegate import GradeItemDelegate
+from Excel_Importer import ExcelImporter
 
 
 class GradeBookApp(QMainWindow):
@@ -27,7 +29,7 @@ class GradeBookApp(QMainWindow):
         self.course_input = None
         self.group_input = None
         self.setFixedSize(1920, 1000)
-        self.setStyleSheet("background-color: White;")
+        # self.setStyleSheet("background-color: white;")
         self.grade_mode = "grade"
         #
         #
@@ -76,7 +78,6 @@ class GradeBookApp(QMainWindow):
             QLabel {
                 background: transparent;
                 border: none;
-                color: black;
                 font-size: 14px;
             }
             QTableWidget {
@@ -458,7 +459,26 @@ class GradeBookApp(QMainWindow):
             self.setup_grade_cell(row)
 
     def import_from_excel(self):
-        pass
+        data = ExcelImporter.import_from_excel(self)
+        if data:
+            self.clear_table()
+
+            for row, student in enumerate(data):
+                self.table.insertRow(row)
+
+                item_name = QTableWidgetItem(student['name'])
+                item_name.setFlags(item_name.flags() | Qt.ItemFlag.ItemIsEditable)
+                self.table.setItem(row, 0, item_name)
+
+                item_gradebook = QTableWidgetItem(str(student['gradebook']))
+                item_gradebook.setFlags(item_gradebook.flags() | Qt.ItemFlag.ItemIsEditable)
+                self.table.setItem(row, 1, item_gradebook)
+
+                self.setup_grade_cell(row)
+
+            # Добавляем пустую строку и проверяем количество
+            self.add_empty_row()
+            self._check_empty_rows()
 
     def setup_grade_cell(self, row):
         if self.grade_mode == "grade":
