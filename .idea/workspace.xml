@@ -4,9 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3ffab474-8f08-49cf-b0b9-2cafc7f5b7be" name="Changes" comment="make welcome, admin and user windows">
-      <change afterPath="$PROJECT_DIR$/Examination_Report_App.py" afterDir="false" />
+    <list default="true" id="3ffab474-8f08-49cf-b0b9-2cafc7f5b7be" name="Changes" comment="add Chinese to translator">
+      <change beforePath="$PROJECT_DIR$/.idea/KursovayaKPO.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/KursovayaKPO.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Admin/Admin_Window.py" beforeDir="false" afterPath="$PROJECT_DIR$/Admin/Admin_Window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Examination_Report_App.py" beforeDir="false" afterPath="$PROJECT_DIR$/Examination_Report_App.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/User/User_Window.py" beforeDir="false" afterPath="$PROJECT_DIR$/User/User_Window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/translations/en.ts" beforeDir="false" afterPath="$PROJECT_DIR$/translations/en.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/translations/ru.ts" beforeDir="false" afterPath="$PROJECT_DIR$/translations/ru.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/translations/zh.ts" beforeDir="false" afterPath="$PROJECT_DIR$/translations/zh.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +28,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -49,10 +61,12 @@
     "Python.Admin_Window.executor": "Run",
     "Python.Main.executor": "Run",
     "Python.User_Window.executor": "Run",
+    "Python.Welcome_Window.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "D:/univer/КПО/KursovayaKPO",
+    "git-widget-placeholder": "translator",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "D:/univer/KursovayaKPO",
     "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
 }]]></component>
@@ -84,11 +98,49 @@
       <option name="project" value="LOCAL" />
       <updated>1760992697448</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="add window where user make a report">
+      <option name="closed" value="true" />
+      <created>1761209636361</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1761209636361</updated>
+    </task>
+    <task id="LOCAL-00003" summary="add translator to all windows">
+      <option name="closed" value="true" />
+      <created>1762163112741</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1762163112741</updated>
+    </task>
+    <task id="LOCAL-00004" summary="add Chinese to translator">
+      <option name="closed" value="true" />
+      <created>1762255184935</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1762255184935</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="make welcome, admin and user windows" />
-    <option name="LAST_COMMIT_MESSAGE" value="make welcome, admin and user windows" />
+    <MESSAGE value="add window where user make a report" />
+    <MESSAGE value="add translator to all windows" />
+    <MESSAGE value="add Chinese to translator" />
+    <option name="LAST_COMMIT_MESSAGE" value="add Chinese to translator" />
   </component>
 </project>
