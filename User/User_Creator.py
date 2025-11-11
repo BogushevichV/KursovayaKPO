@@ -4,10 +4,11 @@
 В дальнейшем реализовать методы:
 - для подключения к БД (аналогично методу из DBAuthenticator)
 - закрытия соединения
-- хеширование паролей
 Доделать:
 - добавление пользователя в таблицу (create_user)
 '''
+
+from DataBase.Password_Hasher import PasswordHasher
 
 class UserCreator:
     def __init__(self, dbname: str, user: str, password: str, host: str, port: str = "5432"):
@@ -19,6 +20,8 @@ class UserCreator:
         self.connection = None
 
     def create_user(self, login: str, password: str, email: str) -> bool:
+        salt = PasswordHasher.generate_salt()
+        hashed_password = PasswordHasher.hash_password(password, salt)
 
         try:
             # INSERT INTO users...
