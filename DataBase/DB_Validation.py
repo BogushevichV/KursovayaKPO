@@ -1,46 +1,44 @@
-'''
-Класс аутентификации админов и пользователей
-(пока заглушка)
-В дальнейшем реализовать методы:
-- для подключения к БД
-- закрытия соединения
-- хеширование паролей
-Доделать:
-- аутентификацию админа (authenticate_admin)
-- аутентификацию пользователя (authenticate_user)
-'''
+from psycopg2 import sql
 
-# new
+from DataBase.Database_Manager import DatabaseManager
+from DataBase.Password_Hasher import PasswordHasher
 
-class DBAuthenticator:
+class DBAuthenticator(DatabaseManager):
     def __init__(self, dbname: str, user: str, password: str, host: str, port: str = "5432"):
-        self.dbname = dbname
-        self.user = user
-        self.password = password
-        self.host = host
-        self.port = port
-        self.connection = None
+        super().__init__(dbname, user, password, host, port)
+
+    def __authenticate(self, table: str, login: str, password: str) -> bool:
+        try:
+            self.connect()
+            with self.connection.cursor() as cursor:
+                query = sql.SQL("""
+                    SELECT password_hash, salt
+                    FROM {table}
+                    WHERE login = %s
+                """).format(table=sql.Identifier(table))
+
+                cursor.execute(query, (login,))
+                record = cursor.fetchone()
+
+                if not record:
+                    print(f"Пользователь '{login}' не найден")
+                    return False
+
+                stored_hash, stored_salt = record
+                if PasswordHasher.verify_password(password, stored_hash, stored_salt):
+                    print(f"Аутентификация успешна для '{login}'")
+                    return True
+                else:
+                    print(f"Неверный пароль для '{login}'")
+                    return False
+        except Exception as e:
+            print(f"Ошибка при аутентификации: {e}")
+            return False
+        finally:
+            self.close()
 
     def authenticate_admin(self, login: str, password: str) -> bool:
-        try:
-            result = login == "login"
+        return self.__authenticate('admins', login, password)
 
-            if result:
-                return password == "123"
-
-            return False
-        except Exception as e:
-            print(f"Ошибка при аутентификации администратора: {e}")
-            return False
-
-    def authenticate_user(self, username: str, password: str) -> bool:
-        try:
-            result = username == "user"
-
-            if result:
-                return password == "123"
-
-            return False
-        except Exception as e:
-            print(f"Ошибка при аутентификации пользователя: {e}")
-            return False
+    def authenticate_user(self, login: str, password: str) -> bool:
+        return self.__authenticate('users', login, password)
