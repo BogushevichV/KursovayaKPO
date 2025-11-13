@@ -31,7 +31,8 @@ class AdminWindow(QMainWindow):
         self._init_ui_elements()
         self.setWindowTitle(self.tr("Панель администратора"))
         self.setFixedSize(1400, 650)
-        self.setStyleSheet("background-color: White;")
+        self.setObjectName("window")
+        self.setStyleSheet("#window{background-color: White;}")
 
         self.central_widget = QWidget()
         self.setCentralWidget(self.central_widget)
@@ -154,9 +155,18 @@ class AdminWindow(QMainWindow):
         self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
 
         self.login_button.setText(self.tr("Войти"))
+        # >>>>>>>>>>> Потом убрать
+        self.login_input.setText("login")
+        self.password_input.setText("123")
+        # >>>>>>>>>>>>
+
+        self.login_button.setText("Войти")
         self.login_button.clicked.connect(self.check_credentials)
         self.login_button.setStyleSheet(button_style)
         self.login_button.setFixedWidth(200)  # Фиксированная ширина кнопки
+
+        self.login_input.returnPressed.connect(self.check_credentials)
+        self.password_input.returnPressed.connect(self.check_credentials)
 
         # Добавляем элементы в форму
         form_layout.addWidget(self.login_label)
@@ -181,10 +191,12 @@ class AdminWindow(QMainWindow):
         form_container.setStyleSheet("""
             QLineEdit#login_input, QLineEdit#password_input, QWidget#form_container {
                 background-color: #f8f9fa;
+                color: black;
                 border-radius: 10px;
                 border: 1px solid #dee2e6;
             }
             QLabel#login_label, QLabel#password_label {
+                color: black;
                 background-color: #f8f9fa;
             }
         """)
@@ -228,6 +240,7 @@ class AdminWindow(QMainWindow):
                         border: 1px solid #dee2e6;
                     }
                     QLineEdit {
+                        color: black;
                         padding: 5px 10px;
                         border: 1px solid #ced4da;
                         border-radius: 4px;
@@ -235,6 +248,7 @@ class AdminWindow(QMainWindow):
                     }
                     QLabel {
                         background: transparent;
+                        color: black;
                         border: none;
                         font-size: 14px;
                     }
