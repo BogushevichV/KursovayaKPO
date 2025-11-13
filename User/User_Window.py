@@ -4,8 +4,9 @@ from PySide6.QtWidgets import (QMainWindow, QWidget, QLabel, QLineEdit, QPushBut
 from User.Examination_Report_App import GradeBookApp
 
 class UserWindow(QMainWindow):
-    def __init__(self, db_authenticator, welcome_window, parent=None):
+    def __init__(self, db_authenticator, welcome_window, parent=None, signals=None):
         super().__init__(parent)
+        self.signals = signals
         self.grade_book = None
         self.login_button = None
         self.password_input = None
@@ -18,6 +19,9 @@ class UserWindow(QMainWindow):
         self.welcome_window = welcome_window
         self.login_attempts = 5
         self.initUI()
+
+        if self.signals:
+            self.signals.language_changed.connect(self.retranslateUi)
 
     def initUI(self):
         button_style = """
@@ -35,7 +39,7 @@ class UserWindow(QMainWindow):
             }
         """
 
-        self.setWindowTitle("Вход пользователя")
+        self.setWindowTitle(self.tr("Вход пользователя"))
         self.setFixedSize(400, 300)
 
         # Основной контейнер
@@ -52,17 +56,18 @@ class UserWindow(QMainWindow):
         form_layout.setContentsMargins(30, 30, 30, 30)  # Внутренние отступы
 
         # Настройка элементов
-        self.login_label = QLabel("Логин пользователя:")
+        self.login_label = QLabel(self.tr("Логин пользователя:"))
         self.login_input = QLineEdit()
-        self.login_input.setPlaceholderText("Введите логин")
+        self.login_input.setPlaceholderText(self.tr("Введите логин"))
         self.login_input.setFixedHeight(35)
 
-        self.password_label = QLabel("Пароль:")
+        self.password_label = QLabel(self.tr("Пароль:"))
         self.password_input = QLineEdit()
-        self.password_input.setPlaceholderText("Введите пароль")
+        self.password_input.setPlaceholderText(self.tr("Введите пароль"))
         self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
         self.password_input.setFixedHeight(35)
 
+        self.login_button = QPushButton(self.tr("Войти"))
         # >>>>>>>>>>> Потом убрать
         self.login_input.setText("user")
         self.password_input.setText("123")
@@ -121,7 +126,7 @@ class UserWindow(QMainWindow):
         password = self.password_input.text()
 
         if not login or not password:
-            QMessageBox.warning(self, "Ошибка", "Введите логин и пароль")
+            QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Введите логин и пароль"))
             return
 
         try:
@@ -134,8 +139,8 @@ class UserWindow(QMainWindow):
         except Exception as e:
             QMessageBox.critical(
                 self,
-                "Ошибка аутентификации",
-                f"Произошла ошибка при проверке учетных данных:\n{str(e)}"
+                self.tr("Ошибка аутентификации"),
+                self.tr(f"Произошла ошибка при проверке учетных данных:\n{str(e)}")
             )
 
     def open_grade_book(self):
@@ -156,13 +161,23 @@ class UserWindow(QMainWindow):
         if self.login_attempts > 0:
             QMessageBox.warning(
                 self,
-                "Ошибка входа",
-                f"Неверные данные! Осталось попыток: {self.login_attempts}"
+                self.tr("Ошибка входа"),
+                self.tr(f"Неверные данные! Осталось попыток: {self.login_attempts}")
             )
+
         else:
             QMessageBox.critical(
                 self,
-                "Доступ запрещен",
-                "Превышено количество попыток входа!"
+                self.tr("Доступ запрещен"),
+                self.tr("Превышено количество попыток входа!")
             )
             self.close()
+
+    def retranslateUi(self):
+        self.setWindowTitle(self.tr("Вход пользователя"))
+        self.login_label = QLabel(self.tr("Логин пользователя:"))
+        self.login_input.setPlaceholderText(self.tr("Введите логин"))
+        self.password_label = QLabel(self.tr("Пароль:"))
+        self.password_input.setPlaceholderText(self.tr("Введите пароль"))
+        self.login_button = QPushButton(self.tr("Войти"))
+

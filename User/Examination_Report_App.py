@@ -9,8 +9,9 @@ from Excel_Importer import ExcelImporter
 
 
 class GradeBookApp(QMainWindow):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, signals=None):
         super().__init__(parent)
+        self.signals = signals
         self.dean_input = None
         self.exam_format_input = None
         self.exam_date_edit = None
@@ -43,6 +44,31 @@ class GradeBookApp(QMainWindow):
         self.init_ui()
         self.add_empty_row()
         self.welcome_window = None  # Добавляем ссылку на окно приветствия
+
+        self.faculty_codes = [
+            "АТФ", "ФГДИЭ", "МСФ", "МТФ", "ФММП",
+            "ЭФ", "ФИТР", "ФТУГ", "ИПФ", "ФЭС",
+            "АФ", "СФ", "ПСФ", "ФТК", "ВТФ", "СТФ"
+        ]
+
+        self.faculty_full = [
+            "Автотракторный",
+            "горного дела и инженерной экологии",
+            "Машиностроительный",
+            "Механико-технологический",
+            "маркетинга, менеджмента и предпринимательства",
+            "Энергетический",
+            "информационных технологий и робототехники",
+            "технологий управления и гуманитаризации",
+            "Инженерно-педагогический",
+            "энергетического строительства",
+            "Архитектурный",
+            "Строительный",
+            "Приборостроительный",
+            "транспортных коммуникаций",
+            "Военно-технический",
+            "Спортивно-технический"
+        ]
 
     def set_welcome_window(self, welcome_window):
         """Устанавливает ссылку на окно приветствия"""
@@ -115,52 +141,52 @@ class GradeBookApp(QMainWindow):
 
         # Элементы верхней панели
         self.group_input = QLineEdit()
-        self.group_input.setPlaceholderText("Номер группы")
+        self.group_input.setPlaceholderText(self.tr("Номер группы"))
         self.group_input.setFixedWidth(125)
         self.group_input.setValidator(QRegularExpressionValidator(QRegularExpression("[0-9]*")))
         top_panel_layout.addWidget(self.group_input)
 
         self.course_input = QLineEdit()
-        self.course_input.setPlaceholderText("Курс")
+        self.course_input.setPlaceholderText(self.tr("Курс"))
         self.course_input.setFixedWidth(70)
         self.course_input.setValidator(QRegularExpressionValidator(QRegularExpression("[1-6]")))
         top_panel_layout.addWidget(self.course_input)
 
         self.semester_combo = QComboBox()
-        self.semester_combo.addItems(["1 семестр", "2 семестр"])
+        self.semester_combo.addItems([self.tr("1 семестр"), self.tr("2 семестр")])
         self.semester_combo.setFixedWidth(100)
         top_panel_layout.addWidget(self.semester_combo)
 
         self.subject_input = QLineEdit()
-        self.subject_input.setPlaceholderText("Название предмета")
+        self.subject_input.setPlaceholderText(self.tr("Название предмета"))
         self.subject_input.setFixedWidth(230)
         top_panel_layout.addWidget(self.subject_input)
 
         # Кнопки верхней панели
-        btn_import = QPushButton("Импорт из Excel")
-        btn_import.setStyleSheet(button_style)
-        btn_import.clicked.connect(self.import_from_excel)
-        top_panel_layout.addWidget(btn_import)
+        self.btn_import = QPushButton(self.tr("Импорт из Excel"))
+        self.btn_import.setStyleSheet(button_style)
+        self.btn_import.clicked.connect(self.import_from_excel)
+        top_panel_layout.addWidget(self.btn_import)
 
-        btn_save = QPushButton("Сохранить")
-        btn_save.setStyleSheet(button_style)
-        btn_save.clicked.connect(self.save_data)
-        top_panel_layout.addWidget(btn_save)
+        self.btn_save = QPushButton(self.tr("Сохранить"))
+        self.btn_save.setStyleSheet(button_style)
+        self.btn_save.clicked.connect(self.save_data)
+        top_panel_layout.addWidget(self.btn_save)
 
-        btn_find_group = QPushButton("Найти группу")
-        btn_find_group.setStyleSheet(button_style)
-        btn_find_group.clicked.connect(self.find_group)
-        top_panel_layout.addWidget(btn_find_group)
+        self.btn_find_group = QPushButton(self.tr("Найти группу"))
+        self.btn_find_group.setStyleSheet(button_style)
+        self.btn_find_group.clicked.connect(self.find_group)
+        top_panel_layout.addWidget(self.btn_find_group)
 
-        btn_find_subject = QPushButton("Найти предмет")
-        btn_find_subject.setStyleSheet(button_style)
-        btn_find_subject.clicked.connect(self.find_subject)
-        top_panel_layout.addWidget(btn_find_subject)
+        self.btn_find_subject = QPushButton(self.tr("Найти предмет"))
+        self.btn_find_subject.setStyleSheet(button_style)
+        self.btn_find_subject.clicked.connect(self.find_subject)
+        top_panel_layout.addWidget(self.btn_find_subject)
 
-        btn_clear = QPushButton("Очистить")
-        btn_clear.setStyleSheet(button_style)
-        btn_clear.clicked.connect(self.clear_table)
-        top_panel_layout.addWidget(btn_clear)
+        self.btn_clear = QPushButton(self.tr("Очистить"))
+        self.btn_clear.setStyleSheet(button_style)
+        self.btn_clear.clicked.connect(self.clear_table)
+        top_panel_layout.addWidget(self.btn_clear)
 
         top_panel_layout.addStretch()
         left_layout.addLayout(top_panel_layout)
@@ -168,7 +194,8 @@ class GradeBookApp(QMainWindow):
         # Строим таблицу
         self.table = QTableWidget()
         self.table.setColumnCount(3)
-        self.table.setHorizontalHeaderLabels(["Фамилия, инициалы", "№ зачетной книжки", "Оценка/Зачет"])
+        self.table.setHorizontalHeaderLabels([self.tr("Фамилия, инициалы"), self.tr("№ зачетной книжки"),
+                                              self.tr("Оценка/Зачет")])
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.table.setItemDelegateForColumn(2, GradeItemDelegate())
         left_layout.addWidget(self.table)
@@ -187,81 +214,80 @@ class GradeBookApp(QMainWindow):
         scroll_content = QWidget()
         scroll_area.setWidget(scroll_content)
 
-        form_layout = QFormLayout(scroll_content)
+        self.form_layout = QFormLayout(scroll_content)
 
         # Элементы формы
         self.statement_number_input = QLineEdit()
-        self.statement_number_input.setPlaceholderText("Номер ведомости")
+        self.statement_number_input.setPlaceholderText(self.tr("Номер ведомости"))
         self.statement_number_input.setStyleSheet(form_style)
-        form_layout.addRow("Номер ведомости:", self.statement_number_input)
+        self.form_layout.addRow(self.tr("Номер ведомости:"), self.statement_number_input)
 
         self.education_type_combo = QComboBox()
-        self.education_type_combo.addItems(["Общее высшее образование"])
-        form_layout.addRow("Вид образования:", self.education_type_combo)
+        self.education_type_combo.addItems([self.tr("Общее высшее образование")])
+        self.form_layout.addRow(self.tr("Вид образования:"), self.education_type_combo)
 
         self.study_form_combo = QComboBox()
-        self.study_form_combo.addItems(["дневная", "заочная"])
-        form_layout.addRow("Форма обучения:", self.study_form_combo)
+        self.study_form_combo.addItems([self.tr("дневная"), self.tr("заочная")])
+        self.form_layout.addRow(self.tr("Форма обучения:"), self.study_form_combo)
 
         self.exam_type_combo = QComboBox()
-        self.exam_type_combo.addItems(["экзамен", "зачёт", "дифференцированный зачёт"])
+        self.exam_type_combo.addItems([self.tr("экзамен"), self.tr("зачёт"), self.tr("дифференцированный зачёт")])
         self.exam_type_combo.setCurrentIndex(0)
         self.exam_type_combo.currentTextChanged.connect(self.update_grade_mode)
-        form_layout.addRow("Форма аттестации:", self.exam_type_combo)
+        self.form_layout.addRow(self.tr("Форма аттестации:"), self.exam_type_combo)
 
         self.year_combo = QComboBox()
         for year in range(2000, 2101):
             self.year_combo.addItem(f"{year}/{year + 1}")
         self.year_combo.setCurrentText("2024/2025")
-        form_layout.addRow("Учебный год:", self.year_combo)
+        self.form_layout.addRow(self.tr("Учебный год:"), self.year_combo)
 
         self.faculty_combo = QComboBox()
-        faculties = ["АТФ", "ФГДИЭ", "МСФ", "МТФ", "ФММП", "ЭФ", "ФИТР", "ФТУГ",
-                     "ИПФ", "ФЭС", "АФ", "СФ", "ПСФ", "ФТК", "ВТФ", "СТФ"]
-        self.faculty_combo.addItems(faculties)
-        form_layout.addRow("Факультет:", self.faculty_combo)
+        for code in self.faculty_codes:
+            self.faculty_combo.addItem(self.tr(code), code)
+        self.form_layout.addRow(self.tr("Факультет:"), self.faculty_combo)
 
         self.hours_input = QSpinBox()
         self.hours_input.setRange(0, 1000)
         self.hours_input.setValue(108)
         self.hours_input.setStyleSheet(form_style)
-        form_layout.addRow("Количество часов:", self.hours_input)
+        self.form_layout.addRow(self.tr("Количество часов:"), self.hours_input)
 
         self.credits_input = QSpinBox()
         self.credits_input.setRange(0, 10)
         self.credits_input.setValue(3)
         self.credits_input.setStyleSheet(form_style)
-        form_layout.addRow("Зачетные единицы:", self.credits_input)
+        self.form_layout.addRow(self.tr("Зачетные единицы:"), self.credits_input)
 
         self.teacher_input = QLineEdit()
-        self.teacher_input.setPlaceholderText("Фамилия И.О.")
+        self.teacher_input.setPlaceholderText(self.tr("Фамилия И.О."))
         self.teacher_input.setStyleSheet(form_style)
-        form_layout.addRow("Преподаватель:", self.teacher_input)
+        self.form_layout.addRow(self.tr("Преподаватель:"), self.teacher_input)
 
         self.exam_date_edit = QDateEdit()
         self.exam_date_edit.setCalendarPopup(True)
         self.exam_date_edit.setDate(QDate.currentDate())
         self.exam_date_edit.setStyleSheet(form_style)
-        form_layout.addRow("Дата аттестации:", self.exam_date_edit)
+        self.form_layout.addRow(self.tr("Дата аттестации:"), self.exam_date_edit)
 
         self.exam_format_input = QLineEdit()
-        self.exam_format_input.setPlaceholderText("очный/дистанционный")
+        self.exam_format_input.setPlaceholderText(self.tr("очный/дистанционный"))
         self.exam_format_input.setStyleSheet(form_style)
-        form_layout.addRow("Формат аттестации:", self.exam_format_input)
+        self.form_layout.addRow(self.tr("Формат аттестации:"), self.exam_format_input)
 
         self.dean_input = QLineEdit()
-        self.dean_input.setPlaceholderText("Фамилия И.О.")
+        self.dean_input.setPlaceholderText(self.tr("Фамилия И.О."))
         self.dean_input.setStyleSheet(form_style)
-        form_layout.addRow("Декан:", self.dean_input)
+        self.form_layout.addRow(self.tr("Декан:"), self.dean_input)
 
         # Кнопка "Составить ведомость"
-        btn_create_report = QPushButton("Составить ведомость")
-        btn_create_report.setStyleSheet(button_style)
-        btn_create_report.clicked.connect(self.create_exam_report)
-        right_layout.addWidget(btn_create_report)
+        self.btn_create_report = QPushButton(self.tr("Составить ведомость"))
+        self.btn_create_report.setStyleSheet(button_style)
+        self.btn_create_report.clicked.connect(self.create_exam_report)
+        right_layout.addWidget(self.btn_create_report)
 
         # Кнопка "Назад"
-        back_button = QPushButton("Назад")
+        back_button = QPushButton(self.tr("Назад"))
         back_button.setFixedSize(100, 30)
         back_button.setStyleSheet(button_style)
         back_button.clicked.connect(self.return_to_welcome)
@@ -279,7 +305,7 @@ class GradeBookApp(QMainWindow):
         main_layout.addWidget(right_panel, stretch=1)
 
         # Настройка окна
-        self.setWindowTitle("Панель составления ведомости")
+        self.setWindowTitle(self.tr("Панель составления ведомости"))
         self.setGeometry(0, 0, 1920, 980)
 
         # Подключение сигналов
@@ -292,46 +318,18 @@ class GradeBookApp(QMainWindow):
             self.welcome_window.show()
             self.close()
         else:
-            QMessageBox.warning(self, "Ошибка", "Не удалось вернуться на начальное окно")
+            QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Не удалось вернуться на начальное окно"))
 
-    @staticmethod
-    def get_full_faculty_name(abbrev):
-        """Возвращает полное название факультета по аббревиатуре (использует match-case)"""
-        match abbrev:
-            case "АТФ":
-                return "Автотракторный"
-            case "ФГДИЭ":
-                return "горного дела и инженерной экологии"
-            case "МСФ":
-                return "Машиностроительный"
-            case "МТФ":
-                return "Механико-технологический"
-            case "ФММП":
-                return "маркетинга, менеджмента и предпринимательства"
-            case "ЭФ":
-                return "Энергетический"
-            case "ФИТР":
-                return "информационных технологий и робототехники"
-            case "ФТУГ":
-                return "технологий управления и гуманитаризации"
-            case "ИПФ":
-                return "Инженерно-педагогический"
-            case "ФЭС":
-                return "энергетического строительства"
-            case "АФ":
-                return "Архитектурный"
-            case "СФ":
-                return "Строительный"
-            case "ПСФ":
-                return "Приборостроительный"
-            case "ФТК":
-                return "транспортных коммуникаций"
-            case "ВТФ":
-                return "Военно-технический"
-            case "СТФ":
-                return "Спортивно-технический"
-            case _:
-                return abbrev
+    def get_full_faculty_name(self, abbrev):
+        """Возвращает русское полное имя факультета по аббревиатуре"""
+        if abbrev in self.faculty_codes:
+            index = self.faculty_codes.index(abbrev)
+            return self.faculty_full[index]
+        return abbrev
+
+    # abbr = self.faculty_combo.currentData()
+    # full_name = self.get_full_faculty_name(abbr)
+    # Возможно в вызове понадобится что-то поменять на это
 
     def create_exam_report(self):
         """Создание ведомости с данными из формы и БД"""
@@ -347,8 +345,12 @@ class GradeBookApp(QMainWindow):
 
             for field, value in required_fields.items():
                 if not value:
-                    QMessageBox.warning(self, "Ошибка",
-                                        f"Заполните обязательное поле: {field.replace('_', ' ')}")
+                    QMessageBox.warning(
+                        self,
+                        self.tr("Ошибка"),
+                        self.tr("Заполните обязательное поле: %1").replace("%1", field.replace("_", " "))
+                    )
+
                     return
 
             abbrev = self.faculty_combo.currentText()
@@ -387,7 +389,11 @@ class GradeBookApp(QMainWindow):
 
 
         except Exception as e:
-            QMessageBox.critical(self, "Ошибка", f"Ошибка при создании отчёта: {str(e)}")
+            QMessageBox.critical(
+                self,
+                self.tr("Ошибка"),
+                self.tr("Ошибка при создании отчёта: %1").replace("%1", str(e))
+            )
 
     def handle_item_changed(self, item):
         """Обработчик изменения данных в таблице"""
@@ -446,13 +452,17 @@ class GradeBookApp(QMainWindow):
         self.table.setRowCount(0)
         self.add_empty_row()
 
-    def update_grade_mode(self, exam_type):
-        """Обновляет режим оценки в зависимости от выбранного типа аттестации"""
-        if exam_type == "экзамен":
+    def update_grade_mode(self):
+
+        index = self.exam_type_combo.currentIndex()
+
+        if index == 0:  # экзамен
             self.grade_mode = "grade"
-        elif exam_type == "зачёт":
+
+        elif index == 1:  # зачёт
             self.grade_mode = "pass_fail"
-        elif exam_type == "дифференцированный зачёт":
+
+        elif index == 2:  # дифференц. зачёт
             self.grade_mode = "grade"
 
         for row in range(self.table.rowCount()):
@@ -500,25 +510,25 @@ class GradeBookApp(QMainWindow):
             self.table.takeItem(row, 2)
 
         combo_box = QComboBox()
-        combo_box.addItems(["не зачтено", "зачтено"])
+        combo_box.addItems([self.tr("не зачтено"), self.tr("зачтено")])
         combo_box.setCurrentIndex(-1)
         self.table.setCellWidget(row, 2, combo_box)
 
     def on_header_clicked(self, logicalIndex):
         if logicalIndex == 2:
             msg = QMessageBox()
-            msg.setWindowTitle("Выбор типа оценки")
-            msg.setText("Выберите тип оценки для колонки:")
+            msg.setWindowTitle(self.tr("Выбор типа оценки"))
+            msg.setText(self.tr("Выберите тип оценки для колонки:"))
 
-            btn_grade = msg.addButton("Оценка (0-10)", QMessageBox.ButtonRole.ActionRole)
-            btn_pass = msg.addButton("Зачет (зачтено/не зачтено)", QMessageBox.ButtonRole.ActionRole)
-            msg.addButton("Отмена", QMessageBox.ButtonRole.RejectRole)
+            self.btn_grade = msg.addButton(self.tr("Оценка (0-10)"), QMessageBox.ButtonRole.ActionRole)
+            self.btn_pass = msg.addButton(self.tr("Зачет (зачтено/не зачтено)"), QMessageBox.ButtonRole.ActionRole)
+            msg.addButton(self.tr("Отмена"), QMessageBox.ButtonRole.RejectRole)
 
             msg.exec()
 
-            if msg.clickedButton() == btn_grade:
+            if msg.clickedButton() == self.btn_grade:
                 self.switch_to_grades()
-            elif msg.clickedButton() == btn_pass:
+            elif msg.clickedButton() == self.btn_pass:
                 self.switch_to_pass_fail()
 
     def save_data(self):
@@ -544,3 +554,53 @@ class GradeBookApp(QMainWindow):
         self.table.setItemDelegateForColumn(2, None)
         for row in range(self.table.rowCount()):
             self.show_as_pass_fail(row)
+
+    def retranslateUi(self):
+        # Верхняя панель
+        self.group_input.setPlaceholderText(self.tr("Номер группы"))
+        self.course_input.setPlaceholderText(self.tr("Курс"))
+        self.subject_input.setPlaceholderText(self.tr("Название предмета"))
+
+        # Кнопки верхней панели
+        self.btn_import.setText(self.tr("Импорт из Excel"))
+        self.btn_save.setText(self.tr("Сохранить"))
+        self.btn_find_group.setText(self.tr("Найти группу"))
+        self.btn_find_subject.setText(self.tr("Найти предмет"))
+        self.btn_clear.setText(self.tr("Очистить"))
+
+        # Семестры
+        self.semester_combo.setItemText(0, self.tr("1 семестр"))
+        self.semester_combo.setItemText(1, self.tr("2 семестр"))
+
+        # Заголовки таблицы
+        self.table.setHorizontalHeaderLabels([
+            self.tr("Фамилия, инициалы"),
+            self.tr("№ зачетной книжки"),
+            self.tr("Оценка/Зачет")
+        ])
+
+        # КомбоБоксы правой панели
+        self.statement_number_input.setPlaceholderText(self.tr("Номер ведомости"))
+        self.education_type_combo.setItemText(0, self.tr("Общее высшее образование"))
+        self.study_form_combo.setItemText(0, self.tr("дневная"))
+        self.study_form_combo.setItemText(1, self.tr("заочная"))
+        self.exam_type_combo.setItemText(0, self.tr("экзамен"))
+        self.exam_type_combo.setItemText(1, self.tr("зачёт"))
+        self.exam_type_combo.setItemText(2, self.tr("дифференцированный зачёт"))
+
+        # Факультеты
+        self.form_layout.labelForField(self.faculty_combo).setText(self.tr("Факультет:"))
+        for i, code in enumerate(self.faculty_codes):
+            self.faculty_combo.setItemText(i, self.tr(code))
+
+        # Правое меню
+        self.teacher_input.setPlaceholderText(self.tr("Фамилия И.О."))
+        self.exam_format_input.setPlaceholderText(self.tr("очный/дистанционный"))
+        self.dean_input.setPlaceholderText(self.tr("Фамилия И.О."))
+
+        # Кнопки снизу
+        self.btn_create_report.setText(self.tr("Составить ведомость"))
+        self.back_button.setText(self.tr("Назад"))
+
+        # Заголовок окна
+        self.setWindowTitle(self.tr("Панель составления ведомости"))
