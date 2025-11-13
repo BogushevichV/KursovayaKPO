@@ -41,8 +41,7 @@ class GradeBookApp(QMainWindow):
         #
         #
         #
-        self.init_ui()
-        self.add_empty_row()
+
         self.welcome_window = None  # Добавляем ссылку на окно приветствия
 
         self.faculty_codes = [
@@ -50,6 +49,9 @@ class GradeBookApp(QMainWindow):
             "ЭФ", "ФИТР", "ФТУГ", "ИПФ", "ФЭС",
             "АФ", "СФ", "ПСФ", "ФТК", "ВТФ", "СТФ"
         ]
+
+        self.init_ui()
+        self.add_empty_row()
 
         self.faculty_full = [
             "Автотракторный",
@@ -287,16 +289,16 @@ class GradeBookApp(QMainWindow):
         right_layout.addWidget(self.btn_create_report)
 
         # Кнопка "Назад"
-        back_button = QPushButton(self.tr("Назад"))
-        back_button.setFixedSize(100, 30)
-        back_button.setStyleSheet(button_style)
-        back_button.clicked.connect(self.return_to_welcome)
+        self.back_button = QPushButton(self.tr("Назад"))
+        self.back_button.setFixedSize(100, 30)
+        self.back_button.setStyleSheet(button_style)
+        self.back_button.clicked.connect(self.return_to_welcome)
 
         # Контейнер для кнопки Назад
         button_container = QWidget()
         button_layout = QHBoxLayout(button_container)
         button_layout.addStretch()
-        button_layout.addWidget(back_button)
+        button_layout.addWidget(self.back_button)
 
         right_layout.addWidget(scroll_area)
         right_layout.addWidget(button_container)

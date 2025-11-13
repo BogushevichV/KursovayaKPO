@@ -73,7 +73,6 @@ class UserWindow(QMainWindow):
         self.password_input.setText("123")
         # >>>>>>>>>>>>
 
-        self.login_button = QPushButton("Войти")
         self.login_button.setStyleSheet(button_style)
         self.login_button.clicked.connect(self.check_credentials)
 

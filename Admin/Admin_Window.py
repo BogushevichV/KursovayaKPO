@@ -12,6 +12,10 @@ class AdminWindow(QMainWindow):
     def __init__(self, db_authenticator, user_creator, admin_creator,
                  user_remover, admin_remover, welcome_window,parent=None, signals=None):
         super().__init__(parent)
+        self.center_right_panel = None
+        self.right_panel = None
+        self.center_left_panel = None
+        self.left_panel = None
         self.back_button = None
         self.signals = signals
         self.db_auth = db_authenticator
@@ -160,7 +164,6 @@ class AdminWindow(QMainWindow):
         self.password_input.setText("123")
         # >>>>>>>>>>>>
 
-        self.login_button.setText("Войти")
         self.login_button.clicked.connect(self.check_credentials)
         self.login_button.setStyleSheet(button_style)
         self.login_button.setFixedWidth(200)  # Фиксированная ширина кнопки
@@ -294,7 +297,7 @@ class AdminWindow(QMainWindow):
         self.send_admin_button.setStyleSheet(button_style)
         self.send_admin_button.clicked.connect(self.send_admin_data)
 
-        left_panel = create_section("Добавить Админа", [
+        self.left_panel = create_section(self.tr("Добавить Админа"), [
             self.admin_login_label, self.admin_login_input,
             self.admin_password_label, self.admin_password_input,
             self.admin_email_label, self.admin_email_input,
@@ -322,7 +325,7 @@ class AdminWindow(QMainWindow):
         self.send_button.setStyleSheet(button_style)
         self.send_button.clicked.connect(self.send_user_data)
 
-        center_left_panel = create_section("Добавить Пользователя", [
+        self.center_left_panel = create_section(self.tr("Добавить Пользователя"), [
             self.user_login_label, self.user_login_input,
             self.user_password_label, self.user_password_input,
             self.user_email_label, self.user_email_input,
@@ -346,7 +349,7 @@ class AdminWindow(QMainWindow):
         self.del_admin_button.setStyleSheet(button_style)
         self.del_admin_button.clicked.connect(self.delete_admin)
 
-        center_right_panel = create_section("Управление Учетными Записями", [
+        self.center_right_panel = create_section(self.tr("Управление Учетными Записями"), [
             self.del_user_login_label, self.del_user_login_input,
             self.del_user_button,
             self.del_admin_login_label, self.del_admin_login_input,
@@ -386,7 +389,7 @@ class AdminWindow(QMainWindow):
         self.del_student_button.setStyleSheet(button_style)
         self.del_student_button.clicked.connect(self.delete_student)
 
-        right_panel = create_section("Управление записями БД", [
+        self.right_panel = create_section(self.tr("Управление записями БД"), [
             self.del_subject_label, self.del_subject_input, self.del_subject_button,
             self.del_group_label, self.del_group_input, self.del_group_button,
             self.del_exam_label, self.del_exam_input, self.del_exam_button,
@@ -394,10 +397,10 @@ class AdminWindow(QMainWindow):
         ])
 
         # Добавляем все панели в главный layout
-        self.main_layout.addWidget(left_panel, 1)
-        self.main_layout.addWidget(center_left_panel, 1)
-        self.main_layout.addWidget(center_right_panel, 1)
-        self.main_layout.addWidget(right_panel, 1)
+        self.main_layout.addWidget(self.left_panel, 1)
+        self.main_layout.addWidget(self.center_left_panel, 1)
+        self.main_layout.addWidget(self.center_right_panel, 1)
+        self.main_layout.addWidget(self.right_panel, 1)
 
         # Кнопка Назад
         self.back_button = QPushButton(self.tr("Назад"))
@@ -1023,9 +1026,14 @@ class AdminWindow(QMainWindow):
         self.del_student_input.setPlaceholderText(self.tr("Введите ID студента"))
         self.del_student_button.setText(self.tr("Удалить студента"))
         self.back_button = QPushButton(self.tr("Назад"))
+        self.left_panel.setTitle(self.tr("Добавить Админа"))
+        self.center_left_panel.setTitle(self.tr("Добавить Пользователя"))
+        self.right_panel.setTitle(self.tr("Управление Учетными Записями"))
+        self.center_right_panel.setTitle(self.tr("Управление Учетными Записями"))
 
     def _clear_layout(self):
         while self.main_layout.count():
             item = self.main_layout.takeAt(0)
             if item.widget():
                 item.widget().deleteLater()
+
