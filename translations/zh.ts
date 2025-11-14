@@ -552,196 +552,274 @@
 <context>
     <name>GradeBookApp</name>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="146"/>
+        <location filename="../User/Examination_Report_App.py" line="562"/>
         <source>Номер группы</source>
-        <translation type="vanished">組號</translation>
+        <translation>組號</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="152"/>
+        <location filename="../User/Examination_Report_App.py" line="563"/>
         <source>Курс</source>
-        <translation type="vanished">出色地</translation>
+        <translation>出色地</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="158"/>
+        <location filename="../User/Examination_Report_App.py" line="574"/>
         <source>1 семестр</source>
-        <translation type="vanished">第一學期</translation>
+        <translation>第一學期</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="158"/>
+        <location filename="../User/Examination_Report_App.py" line="575"/>
         <source>2 семестр</source>
-        <translation type="vanished">第二學期</translation>
+        <translation>第二學期</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="163"/>
+        <location filename="../User/Examination_Report_App.py" line="564"/>
         <source>Название предмета</source>
-        <translation type="vanished">物品名稱</translation>
+        <translation>物品名稱</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="168"/>
+        <location filename="../User/Examination_Report_App.py" line="567"/>
         <source>Импорт из Excel</source>
-        <translation type="vanished">從 Excel 匯入</translation>
+        <translation>從 Excel 匯入</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="173"/>
+        <location filename="../User/Examination_Report_App.py" line="568"/>
         <source>Сохранить</source>
-        <translation type="vanished">節省</translation>
+        <translation>節省</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="178"/>
+        <location filename="../User/Examination_Report_App.py" line="569"/>
         <source>Найти группу</source>
-        <translation type="vanished">找個小組</translation>
+        <translation>找個小組</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="183"/>
+        <location filename="../User/Examination_Report_App.py" line="570"/>
         <source>Найти предмет</source>
-        <translation type="vanished">找到一件物品</translation>
+        <translation>找到一件物品</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="188"/>
+        <location filename="../User/Examination_Report_App.py" line="571"/>
         <source>Очистить</source>
-        <translation type="vanished">清除</translation>
+        <translation>清除</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="199"/>
+        <location filename="../User/Examination_Report_App.py" line="579"/>
         <source>Фамилия, инициалы</source>
-        <translation type="vanished">姓氏，首字母</translation>
+        <translation>姓氏，首字母</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="199"/>
+        <location filename="../User/Examination_Report_App.py" line="580"/>
         <source>№ зачетной книжки</source>
-        <translation type="vanished">記錄簿編號</translation>
+        <translation>記錄簿編號</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="200"/>
+        <location filename="../User/Examination_Report_App.py" line="581"/>
         <source>Оценка/Зачет</source>
-        <translation type="vanished">評估/學分</translation>
+        <translation>評估/學分</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="223"/>
+        <location filename="../User/Examination_Report_App.py" line="585"/>
         <source>Номер ведомости</source>
-        <translation type="vanished">聲明編號</translation>
+        <translation>聲明編號</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="225"/>
         <source>Номер ведомости:</source>
-        <translation type="vanished">帳單編號：</translation>
+        <translation>帳單編號：</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="228"/>
+        <location filename="../User/Examination_Report_App.py" line="586"/>
         <source>Общее высшее образование</source>
-        <translation type="vanished">普通高等教育</translation>
+        <translation>普通高等教育</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="229"/>
         <source>Вид образования:</source>
-        <translation type="vanished">教育類型：</translation>
+        <translation>教育類型：</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="232"/>
+        <location filename="../User/Examination_Report_App.py" line="587"/>
         <source>дневная</source>
-        <translation type="vanished">白天</translation>
+        <translation>白天</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="232"/>
+        <location filename="../User/Examination_Report_App.py" line="588"/>
         <source>заочная</source>
-        <translation type="vanished">一致</translation>
+        <translation>一致</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="233"/>
         <source>Форма обучения:</source>
-        <translation type="vanished">學習形式：</translation>
+        <translation>學習形式：</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="236"/>
+        <location filename="../User/Examination_Report_App.py" line="589"/>
         <source>экзамен</source>
-        <translation type="vanished">考試</translation>
+        <translation>考試</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="236"/>
+        <location filename="../User/Examination_Report_App.py" line="590"/>
         <source>зачёт</source>
-        <translation type="vanished">信用</translation>
+        <translation>信用</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="236"/>
+        <location filename="../User/Examination_Report_App.py" line="591"/>
         <source>дифференцированный зачёт</source>
-        <translation type="vanished">差異化信貸</translation>
+        <translation>差異化信貸</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="239"/>
         <source>Форма аттестации:</source>
-        <translation type="vanished">證明表格：</translation>
+        <translation>證明表格：</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="245"/>
         <source>Учебный год:</source>
-        <translation type="vanished">學年：</translation>
+        <translation>學年：</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="250"/>
+        <location filename="../User/Examination_Report_App.py" line="594"/>
         <source>Факультет:</source>
-        <translation type="vanished">學院：</translation>
+        <translation>學院：</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="256"/>
         <source>Количество часов:</source>
-        <translation type="vanished">小時數：</translation>
+        <translation>小時數：</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="262"/>
         <source>Зачетные единицы:</source>
-        <translation type="vanished">鳴謝：</translation>
+        <translation>鳴謝：</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="265"/>
+        <location filename="../User/Examination_Report_App.py" line="281"/>
+        <location filename="../User/Examination_Report_App.py" line="599"/>
+        <location filename="../User/Examination_Report_App.py" line="601"/>
         <source>Фамилия И.О.</source>
-        <translation type="vanished">姓氏，名字，父名。</translation>
+        <translation>姓氏，名字，父名。</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="267"/>
         <source>Преподаватель:</source>
-        <translation type="vanished">老師：</translation>
+        <translation>老師：</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="273"/>
         <source>Дата аттестации:</source>
-        <translation type="vanished">認證日期：</translation>
+        <translation>認證日期：</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="276"/>
+        <location filename="../User/Examination_Report_App.py" line="600"/>
         <source>очный/дистанционный</source>
-        <translation type="vanished">全職/遠端</translation>
+        <translation>全職/遠端</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="278"/>
         <source>Формат аттестации:</source>
-        <translation type="vanished">認證格式：</translation>
+        <translation>認證格式：</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="283"/>
         <source>Декан:</source>
-        <translation type="vanished">院長：</translation>
+        <translation>院長：</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="286"/>
+        <location filename="../User/Examination_Report_App.py" line="604"/>
         <source>Составить ведомость</source>
-        <translation type="vanished">發表聲明</translation>
+        <translation>發表聲明</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="292"/>
+        <location filename="../User/Examination_Report_App.py" line="605"/>
         <source>Назад</source>
-        <translation type="vanished">後退</translation>
+        <translation>後退</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="310"/>
+        <location filename="../User/Examination_Report_App.py" line="608"/>
         <source>Панель составления ведомости</source>
-        <translation type="vanished">報表產生面板</translation>
+        <translation>報表產生面板</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="323"/>
+        <location filename="../User/Examination_Report_App.py" line="352"/>
+        <location filename="../User/Examination_Report_App.py" line="396"/>
         <source>Ошибка</source>
-        <translation type="vanished">錯誤</translation>
+        <translation>錯誤</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="323"/>
         <source>Не удалось вернуться на начальное окно</source>
-        <translation type="vanished">無法返回初始視窗</translation>
+        <translation>無法返回初始視窗</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="353"/>
         <source>Заполните обязательное поле: %1</source>
-        <translation type="vanished">請填寫必填欄位： %1</translation>
+        <translation>請填寫必填欄位： %1</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="397"/>
         <source>Ошибка при создании отчёта: %1</source>
-        <translation type="vanished">建立報表時出錯： %1</translation>
+        <translation>建立報表時出錯： %1</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="515"/>
         <source>не зачтено</source>
-        <translation type="vanished">未計入</translation>
+        <translation>未計入</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="515"/>
         <source>зачтено</source>
-        <translation type="vanished">通過了</translation>
+        <translation>通過了</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="522"/>
         <source>Выбор типа оценки</source>
-        <translation type="vanished">選擇評估類型</translation>
+        <translation>選擇評估類型</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="523"/>
         <source>Выберите тип оценки для колонки:</source>
-        <translation type="vanished">選擇該欄位的評分類型：</translation>
+        <translation>選擇該欄位的評分類型：</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="525"/>
         <source>Оценка (0-10)</source>
-        <translation type="vanished">評分（0-10）</translation>
+        <translation>評分（0-10）</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="526"/>
         <source>Зачет (зачтено/не зачтено)</source>
-        <translation type="vanished">學分（通過/不通過）</translation>
+        <translation>學分（通過/不通過）</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="527"/>
         <source>Отмена</source>
-        <translation type="vanished">取消</translation>
+        <translation>取消</translation>
     </message>
 </context>
 <context>
@@ -828,16 +906,22 @@
 <context>
     <name>WelcomeWindow</name>
     <message>
+        <location filename="../Welcome_Window.py" line="76"/>
+        <location filename="../Welcome_Window.py" line="151"/>
         <source>Добро пожаловать!</source>
-        <translation type="vanished">歡迎！</translation>
+        <translation>歡迎！</translation>
     </message>
     <message>
+        <location filename="../Welcome_Window.py" line="95"/>
+        <location filename="../Welcome_Window.py" line="152"/>
         <source>Войти как пользователь</source>
-        <translation type="vanished">以使用者登入</translation>
+        <translation>以使用者登入</translation>
     </message>
     <message>
+        <location filename="../Welcome_Window.py" line="96"/>
+        <location filename="../Welcome_Window.py" line="153"/>
         <source>Войти как администратор</source>
-        <translation type="vanished">以管理員身分登入</translation>
+        <translation>以管理員身分登入</translation>
     </message>
 </context>
 </TS>

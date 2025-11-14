@@ -4,11 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3ffab474-8f08-49cf-b0b9-2cafc7f5b7be" name="Changes" comment="add Chinese to translator">
+    <list default="true" id="3ffab474-8f08-49cf-b0b9-2cafc7f5b7be" name="Changes" comment="bugfix of translater">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Admin/Admin_Window.py" beforeDir="false" afterPath="$PROJECT_DIR$/Admin/Admin_Window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/User/Examination_Report_App.py" beforeDir="false" afterPath="$PROJECT_DIR$/User/Examination_Report_App.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/User/User_Window.py" beforeDir="false" afterPath="$PROJECT_DIR$/User/User_Window.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/translations/en.ts" beforeDir="false" afterPath="$PROJECT_DIR$/translations/en.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/translations/ru.ts" beforeDir="false" afterPath="$PROJECT_DIR$/translations/ru.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/translations/zh.ts" beforeDir="false" afterPath="$PROJECT_DIR$/translations/zh.ts" afterDir="false" />
@@ -28,25 +25,25 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="translator" />
+        <entry key="$PROJECT_DIR$" value="d26491154b6ccc912ac41edd1c654ee335c205d2" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {}
-}]]></component>
-  <component name="GitHubPullRequestState"><![CDATA[{
-  "prStates": [
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {}
+}</component>
+  <component name="GitHubPullRequestState">{
+  &quot;prStates&quot;: [
     {
-      "id": {
-        "id": "PR_kwDOQGChqM6zR6C1",
-        "number": 2
+      &quot;id&quot;: {
+        &quot;id&quot;: &quot;PR_kwDOQGChqM6zR6C1&quot;,
+        &quot;number&quot;: 2
       },
-      "lastSeen": 1763056848288
+      &quot;lastSeen&quot;: 1763056848288
     }
   ]
-}]]></component>
+}</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/BogushevichV/KursovayaKPO&quot;,
@@ -128,7 +125,15 @@
       <option name="project" value="LOCAL" />
       <updated>1762255184935</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="bugfix of translater">
+      <option name="closed" value="true" />
+      <created>1763061126172</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1763061126172</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -147,6 +152,7 @@
     <MESSAGE value="add window where user make a report" />
     <MESSAGE value="add translator to all windows" />
     <MESSAGE value="add Chinese to translator" />
-    <option name="LAST_COMMIT_MESSAGE" value="add Chinese to translator" />
+    <MESSAGE value="bugfix of translater" />
+    <option name="LAST_COMMIT_MESSAGE" value="bugfix of translater" />
   </component>
 </project>

@@ -540,6 +540,279 @@
     </message>
 </context>
 <context>
+    <name>GradeBookApp</name>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="146"/>
+        <location filename="../User/Examination_Report_App.py" line="562"/>
+        <source>Номер группы</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="152"/>
+        <location filename="../User/Examination_Report_App.py" line="563"/>
+        <source>Курс</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="158"/>
+        <location filename="../User/Examination_Report_App.py" line="574"/>
+        <source>1 семестр</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="158"/>
+        <location filename="../User/Examination_Report_App.py" line="575"/>
+        <source>2 семестр</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="163"/>
+        <location filename="../User/Examination_Report_App.py" line="564"/>
+        <source>Название предмета</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="168"/>
+        <location filename="../User/Examination_Report_App.py" line="567"/>
+        <source>Импорт из Excel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="173"/>
+        <location filename="../User/Examination_Report_App.py" line="568"/>
+        <source>Сохранить</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="178"/>
+        <location filename="../User/Examination_Report_App.py" line="569"/>
+        <source>Найти группу</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="183"/>
+        <location filename="../User/Examination_Report_App.py" line="570"/>
+        <source>Найти предмет</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="188"/>
+        <location filename="../User/Examination_Report_App.py" line="571"/>
+        <source>Очистить</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="199"/>
+        <location filename="../User/Examination_Report_App.py" line="579"/>
+        <source>Фамилия, инициалы</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="199"/>
+        <location filename="../User/Examination_Report_App.py" line="580"/>
+        <source>№ зачетной книжки</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="200"/>
+        <location filename="../User/Examination_Report_App.py" line="581"/>
+        <source>Оценка/Зачет</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="223"/>
+        <location filename="../User/Examination_Report_App.py" line="585"/>
+        <source>Номер ведомости</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="225"/>
+        <source>Номер ведомости:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="228"/>
+        <location filename="../User/Examination_Report_App.py" line="586"/>
+        <source>Общее высшее образование</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="229"/>
+        <source>Вид образования:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="232"/>
+        <location filename="../User/Examination_Report_App.py" line="587"/>
+        <source>дневная</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="232"/>
+        <location filename="../User/Examination_Report_App.py" line="588"/>
+        <source>заочная</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="233"/>
+        <source>Форма обучения:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="236"/>
+        <location filename="../User/Examination_Report_App.py" line="589"/>
+        <source>экзамен</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="236"/>
+        <location filename="../User/Examination_Report_App.py" line="590"/>
+        <source>зачёт</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="236"/>
+        <location filename="../User/Examination_Report_App.py" line="591"/>
+        <source>дифференцированный зачёт</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="239"/>
+        <source>Форма аттестации:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="245"/>
+        <source>Учебный год:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="250"/>
+        <location filename="../User/Examination_Report_App.py" line="594"/>
+        <source>Факультет:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="256"/>
+        <source>Количество часов:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="262"/>
+        <source>Зачетные единицы:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="265"/>
+        <location filename="../User/Examination_Report_App.py" line="281"/>
+        <location filename="../User/Examination_Report_App.py" line="599"/>
+        <location filename="../User/Examination_Report_App.py" line="601"/>
+        <source>Фамилия И.О.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="267"/>
+        <source>Преподаватель:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="273"/>
+        <source>Дата аттестации:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="276"/>
+        <location filename="../User/Examination_Report_App.py" line="600"/>
+        <source>очный/дистанционный</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="278"/>
+        <source>Формат аттестации:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="283"/>
+        <source>Декан:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="286"/>
+        <location filename="../User/Examination_Report_App.py" line="604"/>
+        <source>Составить ведомость</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="292"/>
+        <location filename="../User/Examination_Report_App.py" line="605"/>
+        <source>Назад</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="310"/>
+        <location filename="../User/Examination_Report_App.py" line="608"/>
+        <source>Панель составления ведомости</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="323"/>
+        <location filename="../User/Examination_Report_App.py" line="352"/>
+        <location filename="../User/Examination_Report_App.py" line="396"/>
+        <source>Ошибка</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="323"/>
+        <source>Не удалось вернуться на начальное окно</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="353"/>
+        <source>Заполните обязательное поле: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="397"/>
+        <source>Ошибка при создании отчёта: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="515"/>
+        <source>не зачтено</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="515"/>
+        <source>зачтено</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="522"/>
+        <source>Выбор типа оценки</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="523"/>
+        <source>Выберите тип оценки для колонки:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="525"/>
+        <source>Оценка (0-10)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="526"/>
+        <source>Зачет (зачтено/не зачтено)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="527"/>
+        <source>Отмена</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UserWindow</name>
     <message>
         <location filename="../User/User_Window.py" line="42"/>
@@ -617,6 +890,27 @@
         <location filename="../User/User_Window.py" line="171"/>
         <source>Превышено количество попыток входа!</source>
         <translation></translation>
+    </message>
+</context>
+<context>
+    <name>WelcomeWindow</name>
+    <message>
+        <location filename="../Welcome_Window.py" line="76"/>
+        <location filename="../Welcome_Window.py" line="151"/>
+        <source>Добро пожаловать!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Welcome_Window.py" line="95"/>
+        <location filename="../Welcome_Window.py" line="152"/>
+        <source>Войти как пользователь</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Welcome_Window.py" line="96"/>
+        <location filename="../Welcome_Window.py" line="153"/>
+        <source>Войти как администратор</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

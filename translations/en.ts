@@ -552,196 +552,274 @@ Login details have been sent to {email}</translation>
 <context>
     <name>GradeBookApp</name>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="146"/>
+        <location filename="../User/Examination_Report_App.py" line="562"/>
         <source>Номер группы</source>
-        <translation type="vanished">Group number</translation>
+        <translation>Group number</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="152"/>
+        <location filename="../User/Examination_Report_App.py" line="563"/>
         <source>Курс</source>
-        <translation type="vanished">Course</translation>
+        <translation>Course</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="158"/>
+        <location filename="../User/Examination_Report_App.py" line="574"/>
         <source>1 семестр</source>
-        <translation type="vanished">1st semester</translation>
+        <translation>1st semester</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="158"/>
+        <location filename="../User/Examination_Report_App.py" line="575"/>
         <source>2 семестр</source>
-        <translation type="vanished">2nd semester</translation>
+        <translation>2nd semester</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="163"/>
+        <location filename="../User/Examination_Report_App.py" line="564"/>
         <source>Название предмета</source>
-        <translation type="vanished">Item name</translation>
+        <translation>Item name</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="168"/>
+        <location filename="../User/Examination_Report_App.py" line="567"/>
         <source>Импорт из Excel</source>
-        <translation type="vanished">Import from Excel</translation>
+        <translation>Import from Excel</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="173"/>
+        <location filename="../User/Examination_Report_App.py" line="568"/>
         <source>Сохранить</source>
-        <translation type="vanished">Save</translation>
+        <translation>Save</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="178"/>
+        <location filename="../User/Examination_Report_App.py" line="569"/>
         <source>Найти группу</source>
-        <translation type="vanished">Find a group</translation>
+        <translation>Find a group</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="183"/>
+        <location filename="../User/Examination_Report_App.py" line="570"/>
         <source>Найти предмет</source>
-        <translation type="vanished">Find an item</translation>
+        <translation>Find an item</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="188"/>
+        <location filename="../User/Examination_Report_App.py" line="571"/>
         <source>Очистить</source>
-        <translation type="vanished">Clear</translation>
+        <translation>Clear</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="199"/>
+        <location filename="../User/Examination_Report_App.py" line="579"/>
         <source>Фамилия, инициалы</source>
-        <translation type="vanished">Last name, initials</translation>
+        <translation>Last name, initials</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="199"/>
+        <location filename="../User/Examination_Report_App.py" line="580"/>
         <source>№ зачетной книжки</source>
-        <translation type="vanished">Record book number</translation>
+        <translation>Record book number</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="200"/>
+        <location filename="../User/Examination_Report_App.py" line="581"/>
         <source>Оценка/Зачет</source>
-        <translation type="vanished">Assessment/Credit</translation>
+        <translation>Assessment/Credit</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="223"/>
+        <location filename="../User/Examination_Report_App.py" line="585"/>
         <source>Номер ведомости</source>
-        <translation type="vanished">Statement number</translation>
+        <translation>Statement number</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="225"/>
         <source>Номер ведомости:</source>
-        <translation type="vanished">Statement number:</translation>
+        <translation>Statement number:</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="228"/>
+        <location filename="../User/Examination_Report_App.py" line="586"/>
         <source>Общее высшее образование</source>
-        <translation type="vanished">General higher education</translation>
+        <translation>General higher education</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="229"/>
         <source>Вид образования:</source>
-        <translation type="vanished">Type of education:</translation>
+        <translation>Type of education:</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="232"/>
+        <location filename="../User/Examination_Report_App.py" line="587"/>
         <source>дневная</source>
-        <translation type="vanished">daytime</translation>
+        <translation>daytime</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="232"/>
+        <location filename="../User/Examination_Report_App.py" line="588"/>
         <source>заочная</source>
-        <translation type="vanished">correspondence</translation>
+        <translation>correspondence</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="233"/>
         <source>Форма обучения:</source>
-        <translation type="vanished">Form of study:</translation>
+        <translation>Form of study:</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="236"/>
+        <location filename="../User/Examination_Report_App.py" line="589"/>
         <source>экзамен</source>
-        <translation type="vanished">exam</translation>
+        <translation>exam</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="236"/>
+        <location filename="../User/Examination_Report_App.py" line="590"/>
         <source>зачёт</source>
-        <translation type="vanished">credit</translation>
+        <translation>credit</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="236"/>
+        <location filename="../User/Examination_Report_App.py" line="591"/>
         <source>дифференцированный зачёт</source>
-        <translation type="vanished">differentiated credit</translation>
+        <translation>differentiated credit</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="239"/>
         <source>Форма аттестации:</source>
-        <translation type="vanished">Certification form:</translation>
+        <translation>Certification form:</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="245"/>
         <source>Учебный год:</source>
-        <translation type="vanished">Academic year:</translation>
+        <translation>Academic year:</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="250"/>
+        <location filename="../User/Examination_Report_App.py" line="594"/>
         <source>Факультет:</source>
-        <translation type="vanished">Faculty:</translation>
+        <translation>Faculty:</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="256"/>
         <source>Количество часов:</source>
-        <translation type="vanished">Number of hours:</translation>
+        <translation>Number of hours:</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="262"/>
         <source>Зачетные единицы:</source>
-        <translation type="vanished">Credits:</translation>
+        <translation>Credits:</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="265"/>
+        <location filename="../User/Examination_Report_App.py" line="281"/>
+        <location filename="../User/Examination_Report_App.py" line="599"/>
+        <location filename="../User/Examination_Report_App.py" line="601"/>
         <source>Фамилия И.О.</source>
-        <translation type="vanished">Surname I.O.</translation>
+        <translation>Surname I.O.</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="267"/>
         <source>Преподаватель:</source>
-        <translation type="vanished">Teacher:</translation>
+        <translation>Teacher:</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="273"/>
         <source>Дата аттестации:</source>
-        <translation type="vanished">Certification date:</translation>
+        <translation>Certification date:</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="276"/>
+        <location filename="../User/Examination_Report_App.py" line="600"/>
         <source>очный/дистанционный</source>
-        <translation type="vanished">full-time/remote</translation>
+        <translation>full-time/remote</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="278"/>
         <source>Формат аттестации:</source>
-        <translation type="vanished">Certification format:</translation>
+        <translation>Certification format:</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="283"/>
         <source>Декан:</source>
-        <translation type="vanished">Dean:</translation>
+        <translation>Dean:</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="286"/>
+        <location filename="../User/Examination_Report_App.py" line="604"/>
         <source>Составить ведомость</source>
-        <translation type="vanished">Make a statement</translation>
+        <translation>Make a statement</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="292"/>
+        <location filename="../User/Examination_Report_App.py" line="605"/>
         <source>Назад</source>
-        <translation type="vanished">Back</translation>
+        <translation>Back</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="310"/>
+        <location filename="../User/Examination_Report_App.py" line="608"/>
         <source>Панель составления ведомости</source>
-        <translation type="vanished">Statement generation panel</translation>
+        <translation>Statement generation panel</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="323"/>
+        <location filename="../User/Examination_Report_App.py" line="352"/>
+        <location filename="../User/Examination_Report_App.py" line="396"/>
         <source>Ошибка</source>
-        <translation type="vanished">Error</translation>
+        <translation>Error</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="323"/>
         <source>Не удалось вернуться на начальное окно</source>
-        <translation type="vanished">Failed to return to the initial window</translation>
+        <translation>Failed to return to the initial window</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="353"/>
         <source>Заполните обязательное поле: %1</source>
-        <translation type="vanished">Please fill in the required field: %1</translation>
+        <translation>Please fill in the required field: %1</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="397"/>
         <source>Ошибка при создании отчёта: %1</source>
-        <translation type="vanished">Error creating report: %1</translation>
+        <translation>Error creating report: %1</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="515"/>
         <source>не зачтено</source>
-        <translation type="vanished">not credited</translation>
+        <translation>not credited</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="515"/>
         <source>зачтено</source>
-        <translation type="vanished">credited</translation>
+        <translation>credited</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="522"/>
         <source>Выбор типа оценки</source>
-        <translation type="vanished">Selecting the assessment type</translation>
+        <translation>Selecting the assessment type</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="523"/>
         <source>Выберите тип оценки для колонки:</source>
-        <translation type="vanished">Select the rating type for the column:</translation>
+        <translation>Select the rating type for the column:</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="525"/>
         <source>Оценка (0-10)</source>
-        <translation type="vanished">Rating (0-10)</translation>
+        <translation>Rating (0-10)</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="526"/>
         <source>Зачет (зачтено/не зачтено)</source>
-        <translation type="vanished">Credit (pass/fail)</translation>
+        <translation>Credit (pass/fail)</translation>
     </message>
     <message>
+        <location filename="../User/Examination_Report_App.py" line="527"/>
         <source>Отмена</source>
-        <translation type="vanished">Cancel</translation>
+        <translation>Cancel</translation>
     </message>
 </context>
 <context>
@@ -828,16 +906,22 @@ Login details have been sent to {email}</translation>
 <context>
     <name>WelcomeWindow</name>
     <message>
+        <location filename="../Welcome_Window.py" line="76"/>
+        <location filename="../Welcome_Window.py" line="151"/>
         <source>Добро пожаловать!</source>
-        <translation type="vanished">Welcome!</translation>
+        <translation>Welcome!</translation>
     </message>
     <message>
+        <location filename="../Welcome_Window.py" line="95"/>
+        <location filename="../Welcome_Window.py" line="152"/>
         <source>Войти как пользователь</source>
-        <translation type="vanished">Login as a user</translation>
+        <translation>Login as a user</translation>
     </message>
     <message>
+        <location filename="../Welcome_Window.py" line="96"/>
+        <location filename="../Welcome_Window.py" line="153"/>
         <source>Войти как администратор</source>
-        <translation type="vanished">Login as administrator</translation>
+        <translation>Login as administrator</translation>
     </message>
 </context>
 </TS>
