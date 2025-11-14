@@ -121,8 +121,6 @@ class Application:
 
     def cleanup(self):
         self.admin_window = None
-        if hasattr(self, 'user_creator') and self.user_creator:
-            self.user_creator.close()
 
     def run(self):
         try:
