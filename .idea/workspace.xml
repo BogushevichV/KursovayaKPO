@@ -5,10 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3ffab474-8f08-49cf-b0b9-2cafc7f5b7be" name="Changes" comment="bugfix of translater">
+      <change afterPath="$PROJECT_DIR$/tests/test_admin_window.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/test_gradebook_app.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/test_user_window.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/test_welcome_window.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/translations/en.ts" beforeDir="false" afterPath="$PROJECT_DIR$/translations/en.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/translations/ru.ts" beforeDir="false" afterPath="$PROJECT_DIR$/translations/ru.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/translations/zh.ts" beforeDir="false" afterPath="$PROJECT_DIR$/translations/zh.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,7 +26,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="d26491154b6ccc912ac41edd1c654ee335c205d2" />
+        <entry key="$PROJECT_DIR$" value="translater_bugfix" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -61,13 +62,17 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python tests.Python tests in test_admin_window.py.executor": "Run",
+    "Python tests.Python tests in test_gradebook_app.py.executor": "Run",
+    "Python tests.Python tests in test_user_window.py.executor": "Run",
+    "Python tests.Python tests in test_welcome_window.py.executor": "Run",
     "Python.Admin_Window.executor": "Run",
     "Python.Main.executor": "Run",
     "Python.User_Window.executor": "Run",
     "Python.Welcome_Window.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "tests",
     "ignore.virus.scanning.warn.message": "true",
     "last_opened_file_path": "D:/univer/KursovayaKPO",
     "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
