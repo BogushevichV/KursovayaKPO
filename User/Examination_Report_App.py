@@ -3,7 +3,7 @@ from PySide6.QtWidgets import (QMainWindow, QWidget, QMessageBox, QTableWidgetIt
                                QPushButton, QFormLayout, QScrollArea)
 from PySide6.QtCore import Qt, QRegularExpression, QDate
 from PySide6.QtGui import QRegularExpressionValidator
-
+from PySide6.QtCore import QT_TR_NOOP
 from Grade_Item_Delegate import GradeItemDelegate
 from Excel_Importer import ExcelImporter
 
@@ -44,33 +44,48 @@ class GradeBookApp(QMainWindow):
 
         self.welcome_window = None  # Добавляем ссылку на окно приветствия
 
-        self.faculty_codes = [
-            "АТФ", "ФГДИЭ", "МСФ", "МТФ", "ФММП",
-            "ЭФ", "ФИТР", "ФТУГ", "ИПФ", "ФЭС",
-            "АФ", "СФ", "ПСФ", "ФТК", "ВТФ", "СТФ"
+        # Аббревиатуры — проходят через переводчик
+        self.FACULTY_CODES = [
+            QT_TR_NOOP("АТФ"),
+            QT_TR_NOOP("ФГДИЭ"),
+            QT_TR_NOOP("МСФ"),
+            QT_TR_NOOP("МТФ"),
+            QT_TR_NOOP("ФММП"),
+            QT_TR_NOOP("ЭФ"),
+            QT_TR_NOOP("ФИТР"),
+            QT_TR_NOOP("ФТУГ"),
+            QT_TR_NOOP("ИПФ"),
+            QT_TR_NOOP("ФЭС"),
+            QT_TR_NOOP("АФ"),
+            QT_TR_NOOP("СФ"),
+            QT_TR_NOOP("ПСФ"),
+            QT_TR_NOOP("ФТК"),
+            QT_TR_NOOP("ВТФ"),
+            QT_TR_NOOP("СТФ")
+        ]
+
+        # Полные названия — НЕ переводятся
+        self.FULL_FACULTY_NAMES = [
+            "Автотракторный",
+            "Горного дела и инженерной экологии",
+            "Машиностроительный",
+            "Механико-технологический",
+            "Маркетинга, менеджмента и предпринимательства",
+            "Энергетический",
+            "Информационных технологий и робототехники",
+            "Технологий управления и гуманитаризации",
+            "Инженерно-педагогический",
+            "Энергетического строительства",
+            "Архитектурный",
+            "Строительный",
+            "Приборостроительный",
+            "Транспортных коммуникаций",
+            "Военно-технический",
+            "Спортивно-технический"
         ]
 
         self.init_ui()
         self.add_empty_row()
-
-        self.faculty_full = [
-            "Автотракторный",
-            "горного дела и инженерной экологии",
-            "Машиностроительный",
-            "Механико-технологический",
-            "маркетинга, менеджмента и предпринимательства",
-            "Энергетический",
-            "информационных технологий и робототехники",
-            "технологий управления и гуманитаризации",
-            "Инженерно-педагогический",
-            "энергетического строительства",
-            "Архитектурный",
-            "Строительный",
-            "Приборостроительный",
-            "транспортных коммуникаций",
-            "Военно-технический",
-            "Спортивно-технический"
-        ]
 
     def set_welcome_window(self, welcome_window):
         """Устанавливает ссылку на окно приветствия"""
@@ -245,8 +260,7 @@ class GradeBookApp(QMainWindow):
         self.form_layout.addRow(self.tr("Учебный год:"), self.year_combo)
 
         self.faculty_combo = QComboBox()
-        for code in self.faculty_codes:
-            self.faculty_combo.addItem(self.tr(code), code)
+        self.faculty_combo.addItems([self.tr(code) for code in self.FACULTY_CODES])
         self.form_layout.addRow(self.tr("Факультет:"), self.faculty_combo)
 
         self.hours_input = QSpinBox()
@@ -322,12 +336,14 @@ class GradeBookApp(QMainWindow):
         else:
             QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Не удалось вернуться на начальное окно"))
 
-    def get_full_faculty_name(self, abbrev):
-        """Возвращает русское полное имя факультета по аббревиатуре"""
-        if abbrev in self.faculty_codes:
-            index = self.faculty_codes.index(abbrev)
-            return self.faculty_full[index]
-        return abbrev
+    def get_full_faculty_name(self, abbrev: str) -> str:
+        """Возвращает полное русское название факультета по аббревиатуре (работает независимо от языка интерфейса)."""
+        try:
+            # Находим индекс аббревиатуры в оригинальном списке FACULTY_CODES
+            idx = self.FACULTY_CODES.index(abbrev)
+            return self.FULL_FACULTY_NAMES[idx]
+        except ValueError:
+            return abbrev  # если вдруг пришло что-то неожиданное
 
     # abbr = self.faculty_combo.currentData()
     # full_name = self.get_full_faculty_name(abbr)
@@ -591,8 +607,11 @@ class GradeBookApp(QMainWindow):
         self.exam_type_combo.setItemText(2, self.tr("дифференцированный зачёт"))
 
         # Факультеты
+        # Обновление текста подписи
         self.form_layout.labelForField(self.faculty_combo).setText(self.tr("Факультет:"))
-        for i, code in enumerate(self.faculty_codes):
+
+        # Обновление аббревиатур в ComboBox
+        for i, code in enumerate(self.FACULTY_CODES):
             self.faculty_combo.setItemText(i, self.tr(code))
 
         # Правое меню
@@ -606,3 +625,4 @@ class GradeBookApp(QMainWindow):
 
         # Заголовок окна
         self.setWindowTitle(self.tr("Панель составления ведомости"))
+

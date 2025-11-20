@@ -2,6 +2,89 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en">
 <context>
+    <name></name>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="49"/>
+        <source>АТФ</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="50"/>
+        <source>ФГДИЭ</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="51"/>
+        <source>МСФ</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="52"/>
+        <source>МТФ</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="53"/>
+        <source>ФММП</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="54"/>
+        <source>ЭФ</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="55"/>
+        <source>ФИТР</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="56"/>
+        <source>ФТУГ</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="57"/>
+        <source>ИПФ</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="58"/>
+        <source>ФЭС</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="59"/>
+        <source>АФ</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="60"/>
+        <source>СФ</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="61"/>
+        <source>ПСФ</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="62"/>
+        <source>ФТК</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="63"/>
+        <source>ВТФ</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../User/Examination_Report_App.py" line="64"/>
+        <source>СТФ</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>AdminWindow</name>
     <message>
         <location filename="../Admin/Admin_Window.py" line="36"/>
@@ -552,272 +635,272 @@ Login details have been sent to {email}</translation>
 <context>
     <name>GradeBookApp</name>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="146"/>
-        <location filename="../User/Examination_Report_App.py" line="562"/>
+        <location filename="../User/Examination_Report_App.py" line="161"/>
+        <location filename="../User/Examination_Report_App.py" line="578"/>
         <source>Номер группы</source>
         <translation>Group number</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="152"/>
-        <location filename="../User/Examination_Report_App.py" line="563"/>
+        <location filename="../User/Examination_Report_App.py" line="167"/>
+        <location filename="../User/Examination_Report_App.py" line="579"/>
         <source>Курс</source>
         <translation>Course</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="158"/>
-        <location filename="../User/Examination_Report_App.py" line="574"/>
+        <location filename="../User/Examination_Report_App.py" line="173"/>
+        <location filename="../User/Examination_Report_App.py" line="590"/>
         <source>1 семестр</source>
         <translation>1st semester</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="158"/>
-        <location filename="../User/Examination_Report_App.py" line="575"/>
+        <location filename="../User/Examination_Report_App.py" line="173"/>
+        <location filename="../User/Examination_Report_App.py" line="591"/>
         <source>2 семестр</source>
         <translation>2nd semester</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="163"/>
-        <location filename="../User/Examination_Report_App.py" line="564"/>
+        <location filename="../User/Examination_Report_App.py" line="178"/>
+        <location filename="../User/Examination_Report_App.py" line="580"/>
         <source>Название предмета</source>
         <translation>Item name</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="168"/>
-        <location filename="../User/Examination_Report_App.py" line="567"/>
+        <location filename="../User/Examination_Report_App.py" line="183"/>
+        <location filename="../User/Examination_Report_App.py" line="583"/>
         <source>Импорт из Excel</source>
         <translation>Import from Excel</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="173"/>
-        <location filename="../User/Examination_Report_App.py" line="568"/>
+        <location filename="../User/Examination_Report_App.py" line="188"/>
+        <location filename="../User/Examination_Report_App.py" line="584"/>
         <source>Сохранить</source>
         <translation>Save</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="178"/>
-        <location filename="../User/Examination_Report_App.py" line="569"/>
+        <location filename="../User/Examination_Report_App.py" line="193"/>
+        <location filename="../User/Examination_Report_App.py" line="585"/>
         <source>Найти группу</source>
         <translation>Find a group</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="183"/>
-        <location filename="../User/Examination_Report_App.py" line="570"/>
+        <location filename="../User/Examination_Report_App.py" line="198"/>
+        <location filename="../User/Examination_Report_App.py" line="586"/>
         <source>Найти предмет</source>
         <translation>Find an item</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="188"/>
-        <location filename="../User/Examination_Report_App.py" line="571"/>
+        <location filename="../User/Examination_Report_App.py" line="203"/>
+        <location filename="../User/Examination_Report_App.py" line="587"/>
         <source>Очистить</source>
         <translation>Clear</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="199"/>
-        <location filename="../User/Examination_Report_App.py" line="579"/>
+        <location filename="../User/Examination_Report_App.py" line="214"/>
+        <location filename="../User/Examination_Report_App.py" line="595"/>
         <source>Фамилия, инициалы</source>
         <translation>Last name, initials</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="199"/>
-        <location filename="../User/Examination_Report_App.py" line="580"/>
+        <location filename="../User/Examination_Report_App.py" line="214"/>
+        <location filename="../User/Examination_Report_App.py" line="596"/>
         <source>№ зачетной книжки</source>
         <translation>Record book number</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="200"/>
-        <location filename="../User/Examination_Report_App.py" line="581"/>
+        <location filename="../User/Examination_Report_App.py" line="215"/>
+        <location filename="../User/Examination_Report_App.py" line="597"/>
         <source>Оценка/Зачет</source>
         <translation>Assessment/Credit</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="223"/>
-        <location filename="../User/Examination_Report_App.py" line="585"/>
+        <location filename="../User/Examination_Report_App.py" line="238"/>
+        <location filename="../User/Examination_Report_App.py" line="601"/>
         <source>Номер ведомости</source>
         <translation>Statement number</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="225"/>
+        <location filename="../User/Examination_Report_App.py" line="240"/>
         <source>Номер ведомости:</source>
         <translation>Statement number:</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="228"/>
-        <location filename="../User/Examination_Report_App.py" line="586"/>
+        <location filename="../User/Examination_Report_App.py" line="243"/>
+        <location filename="../User/Examination_Report_App.py" line="602"/>
         <source>Общее высшее образование</source>
         <translation>General higher education</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="229"/>
+        <location filename="../User/Examination_Report_App.py" line="244"/>
         <source>Вид образования:</source>
         <translation>Type of education:</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="232"/>
-        <location filename="../User/Examination_Report_App.py" line="587"/>
+        <location filename="../User/Examination_Report_App.py" line="247"/>
+        <location filename="../User/Examination_Report_App.py" line="603"/>
         <source>дневная</source>
         <translation>daytime</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="232"/>
-        <location filename="../User/Examination_Report_App.py" line="588"/>
+        <location filename="../User/Examination_Report_App.py" line="247"/>
+        <location filename="../User/Examination_Report_App.py" line="604"/>
         <source>заочная</source>
         <translation>correspondence</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="233"/>
+        <location filename="../User/Examination_Report_App.py" line="248"/>
         <source>Форма обучения:</source>
         <translation>Form of study:</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="236"/>
-        <location filename="../User/Examination_Report_App.py" line="589"/>
+        <location filename="../User/Examination_Report_App.py" line="251"/>
+        <location filename="../User/Examination_Report_App.py" line="605"/>
         <source>экзамен</source>
         <translation>exam</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="236"/>
-        <location filename="../User/Examination_Report_App.py" line="590"/>
+        <location filename="../User/Examination_Report_App.py" line="251"/>
+        <location filename="../User/Examination_Report_App.py" line="606"/>
         <source>зачёт</source>
         <translation>credit</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="236"/>
-        <location filename="../User/Examination_Report_App.py" line="591"/>
+        <location filename="../User/Examination_Report_App.py" line="251"/>
+        <location filename="../User/Examination_Report_App.py" line="607"/>
         <source>дифференцированный зачёт</source>
         <translation>differentiated credit</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="239"/>
+        <location filename="../User/Examination_Report_App.py" line="254"/>
         <source>Форма аттестации:</source>
         <translation>Certification form:</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="245"/>
+        <location filename="../User/Examination_Report_App.py" line="260"/>
         <source>Учебный год:</source>
         <translation>Academic year:</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="250"/>
-        <location filename="../User/Examination_Report_App.py" line="594"/>
+        <location filename="../User/Examination_Report_App.py" line="264"/>
+        <location filename="../User/Examination_Report_App.py" line="611"/>
         <source>Факультет:</source>
         <translation>Faculty:</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="256"/>
+        <location filename="../User/Examination_Report_App.py" line="270"/>
         <source>Количество часов:</source>
         <translation>Number of hours:</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="262"/>
+        <location filename="../User/Examination_Report_App.py" line="276"/>
         <source>Зачетные единицы:</source>
         <translation>Credits:</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="265"/>
-        <location filename="../User/Examination_Report_App.py" line="281"/>
-        <location filename="../User/Examination_Report_App.py" line="599"/>
-        <location filename="../User/Examination_Report_App.py" line="601"/>
+        <location filename="../User/Examination_Report_App.py" line="279"/>
+        <location filename="../User/Examination_Report_App.py" line="295"/>
+        <location filename="../User/Examination_Report_App.py" line="618"/>
+        <location filename="../User/Examination_Report_App.py" line="620"/>
         <source>Фамилия И.О.</source>
-        <translation>Surname I.O.</translation>
+        <translation>Surname N.P.</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="267"/>
+        <location filename="../User/Examination_Report_App.py" line="281"/>
         <source>Преподаватель:</source>
         <translation>Teacher:</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="273"/>
+        <location filename="../User/Examination_Report_App.py" line="287"/>
         <source>Дата аттестации:</source>
         <translation>Certification date:</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="276"/>
-        <location filename="../User/Examination_Report_App.py" line="600"/>
+        <location filename="../User/Examination_Report_App.py" line="290"/>
+        <location filename="../User/Examination_Report_App.py" line="619"/>
         <source>очный/дистанционный</source>
         <translation>full-time/remote</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="278"/>
+        <location filename="../User/Examination_Report_App.py" line="292"/>
         <source>Формат аттестации:</source>
         <translation>Certification format:</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="283"/>
+        <location filename="../User/Examination_Report_App.py" line="297"/>
         <source>Декан:</source>
         <translation>Dean:</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="286"/>
-        <location filename="../User/Examination_Report_App.py" line="604"/>
+        <location filename="../User/Examination_Report_App.py" line="300"/>
+        <location filename="../User/Examination_Report_App.py" line="623"/>
         <source>Составить ведомость</source>
         <translation>Make a statement</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="292"/>
-        <location filename="../User/Examination_Report_App.py" line="605"/>
+        <location filename="../User/Examination_Report_App.py" line="306"/>
+        <location filename="../User/Examination_Report_App.py" line="624"/>
         <source>Назад</source>
         <translation>Back</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="310"/>
-        <location filename="../User/Examination_Report_App.py" line="608"/>
+        <location filename="../User/Examination_Report_App.py" line="324"/>
+        <location filename="../User/Examination_Report_App.py" line="627"/>
         <source>Панель составления ведомости</source>
         <translation>Statement generation panel</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="323"/>
-        <location filename="../User/Examination_Report_App.py" line="352"/>
-        <location filename="../User/Examination_Report_App.py" line="396"/>
+        <location filename="../User/Examination_Report_App.py" line="337"/>
+        <location filename="../User/Examination_Report_App.py" line="368"/>
+        <location filename="../User/Examination_Report_App.py" line="412"/>
         <source>Ошибка</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="323"/>
+        <location filename="../User/Examination_Report_App.py" line="337"/>
         <source>Не удалось вернуться на начальное окно</source>
         <translation>Failed to return to the initial window</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="353"/>
+        <location filename="../User/Examination_Report_App.py" line="369"/>
         <source>Заполните обязательное поле: %1</source>
         <translation>Please fill in the required field: %1</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="397"/>
+        <location filename="../User/Examination_Report_App.py" line="413"/>
         <source>Ошибка при создании отчёта: %1</source>
         <translation>Error creating report: %1</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="515"/>
+        <location filename="../User/Examination_Report_App.py" line="531"/>
         <source>не зачтено</source>
         <translation>not credited</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="515"/>
+        <location filename="../User/Examination_Report_App.py" line="531"/>
         <source>зачтено</source>
         <translation>credited</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="522"/>
+        <location filename="../User/Examination_Report_App.py" line="538"/>
         <source>Выбор типа оценки</source>
         <translation>Selecting the assessment type</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="523"/>
+        <location filename="../User/Examination_Report_App.py" line="539"/>
         <source>Выберите тип оценки для колонки:</source>
         <translation>Select the rating type for the column:</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="525"/>
+        <location filename="../User/Examination_Report_App.py" line="541"/>
         <source>Оценка (0-10)</source>
         <translation>Rating (0-10)</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="526"/>
+        <location filename="../User/Examination_Report_App.py" line="542"/>
         <source>Зачет (зачтено/не зачтено)</source>
         <translation>Credit (pass/fail)</translation>
     </message>
     <message>
-        <location filename="../User/Examination_Report_App.py" line="527"/>
+        <location filename="../User/Examination_Report_App.py" line="543"/>
         <source>Отмена</source>
         <translation>Cancel</translation>
     </message>
@@ -906,20 +989,20 @@ Login details have been sent to {email}</translation>
 <context>
     <name>WelcomeWindow</name>
     <message>
-        <location filename="../Welcome_Window.py" line="76"/>
-        <location filename="../Welcome_Window.py" line="151"/>
+        <location filename="../Welcome_Window.py" line="82"/>
+        <location filename="../Welcome_Window.py" line="157"/>
         <source>Добро пожаловать!</source>
         <translation>Welcome!</translation>
     </message>
     <message>
-        <location filename="../Welcome_Window.py" line="95"/>
-        <location filename="../Welcome_Window.py" line="152"/>
+        <location filename="../Welcome_Window.py" line="101"/>
+        <location filename="../Welcome_Window.py" line="158"/>
         <source>Войти как пользователь</source>
         <translation>Login as a user</translation>
     </message>
     <message>
-        <location filename="../Welcome_Window.py" line="96"/>
-        <location filename="../Welcome_Window.py" line="153"/>
+        <location filename="../Welcome_Window.py" line="102"/>
+        <location filename="../Welcome_Window.py" line="159"/>
         <source>Войти как администратор</source>
         <translation>Login as administrator</translation>
     </message>
