@@ -12,11 +12,7 @@ class ReportManager(DatabaseManager):
 
             # FROM students ...
 
-            students = [
-                ("Сеченов Дмитрий Сергеевич", "107011231"),
-                ("Захаров Харитон Радеонович", "107011232"),
-                ("Нечаев Сергей Алексеевич", "107011233"),
-            ]
+            students = []
 
             print(f"Найдено {len(students)} студентов в группе {group_number}")
             return students
@@ -37,11 +33,7 @@ class ReportManager(DatabaseManager):
                 JOIN exams
             """
 
-            grades = [
-                ("Сеченов Дмитрий Сергеевич", "107011231", "10"),
-                ("Захаров Харитон Радеонович", "107011232", "9"),
-                ("Нечаев Сергей Алексеевич", "107011233", "10"),
-            ]
+            grades = []
 
             print(f"Найдено {len(grades)} записей оценок для предмета {subject_name}")
             return grades

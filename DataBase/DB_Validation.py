@@ -38,9 +38,7 @@ class DBAuthenticator(DatabaseManager):
             self.close()
 
     def authenticate_admin(self, login: str, password: str) -> bool:
-        return login == "login" and password == "123"
-        #return self.__authenticate('admins', login, password)
+        return self.__authenticate('admins', login, password)
 
     def authenticate_user(self, login: str, password: str) -> bool:
-        return login == "login" and password == "123"
-        #return self.__authenticate('users', login, password)
+        return self.__authenticate('users', login, password)
