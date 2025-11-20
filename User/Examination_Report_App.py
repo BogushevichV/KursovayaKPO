@@ -4,6 +4,7 @@ from PySide6.QtWidgets import (QMainWindow, QWidget, QMessageBox, QTableWidgetIt
 from PySide6.QtCore import Qt, QRegularExpression, QDate
 from PySide6.QtGui import QRegularExpressionValidator
 
+from DataBase.Report_Manager import ReportManager
 from Grade_Item_Delegate import GradeItemDelegate
 from Excel_Importer import ExcelImporter
 
@@ -32,6 +33,13 @@ class GradeBookApp(QMainWindow):
         self.setFixedSize(1920, 1000)
         # self.setStyleSheet("background-color: white;")
         self.grade_mode = "grade"
+        self.db_manager = ReportManager({
+            'dbname': "ExaminationReport",
+            'user': "postgres",
+            'password': "",
+            'host': "127.0.0.1",
+            'port': "5432"
+        })
         #
         #
         #
@@ -444,7 +452,35 @@ class GradeBookApp(QMainWindow):
         self._check_empty_rows()
 
     def find_group(self):
-        pass
+        """Поиск группы в БД и загрузка данных"""
+        group_number = self.group_input.text()
+        if not group_number:
+            QMessageBox.warning(self, "Ошибка", "Введите номер группы!")
+            return
+
+        students = self.db_manager.find_group_students(group_number)
+        if students is None:
+            QMessageBox.warning(self, "Ошибка", "Ошибка при загрузке данных")
+            return
+
+        self.clear_table()
+
+        # Заполняем таблицу
+        for row, (name, gradebook) in enumerate(students):
+            self.table.insertRow(row)
+
+            item_name = QTableWidgetItem(name)
+            item_name.setFlags(item_name.flags() | Qt.ItemFlag.ItemIsEditable)
+            self.table.setItem(row, 0, item_name)
+
+            item_gradebook = QTableWidgetItem(gradebook)
+            item_gradebook.setFlags(item_gradebook.flags() | Qt.ItemFlag.ItemIsEditable)
+            self.table.setItem(row, 1, item_gradebook)
+
+            self.setup_grade_cell(row)
+
+        self.add_empty_row()
+        QMessageBox.information(self, "Успех", f"Загружено {len(students)} студентов")
 
     def find_subject(self):
         pass
