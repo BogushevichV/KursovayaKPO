@@ -6,82 +6,82 @@
     <message>
         <location filename="../User/Examination_Report_App.py" line="49"/>
         <source>АТФ</source>
-        <translation type="unfinished"></translation>
+        <translation>汽拖学院</translation>
     </message>
     <message>
         <location filename="../User/Examination_Report_App.py" line="50"/>
         <source>ФГДИЭ</source>
-        <translation type="unfinished"></translation>
+        <translation>矿工生态学院</translation>
     </message>
     <message>
         <location filename="../User/Examination_Report_App.py" line="51"/>
         <source>МСФ</source>
-        <translation type="unfinished"></translation>
+        <translation>机械学院</translation>
     </message>
     <message>
         <location filename="../User/Examination_Report_App.py" line="52"/>
         <source>МТФ</source>
-        <translation type="unfinished"></translation>
+        <translation>管经人文学院</translation>
     </message>
     <message>
         <location filename="../User/Examination_Report_App.py" line="53"/>
         <source>ФММП</source>
-        <translation type="unfinished"></translation>
+        <translation>机控管理学院</translation>
     </message>
     <message>
         <location filename="../User/Examination_Report_App.py" line="54"/>
         <source>ЭФ</source>
-        <translation type="unfinished"></translation>
+        <translation>能源学院</translation>
     </message>
     <message>
         <location filename="../User/Examination_Report_App.py" line="55"/>
         <source>ФИТР</source>
-        <translation type="unfinished"></translation>
+        <translation>信工机器人学院</translation>
     </message>
     <message>
         <location filename="../User/Examination_Report_App.py" line="56"/>
         <source>ФТУГ</source>
-        <translation type="unfinished"></translation>
+        <translation>土工地质学院</translation>
     </message>
     <message>
         <location filename="../User/Examination_Report_App.py" line="57"/>
         <source>ИПФ</source>
-        <translation type="unfinished"></translation>
+        <translation>仪工学院</translation>
     </message>
     <message>
         <location filename="../User/Examination_Report_App.py" line="58"/>
         <source>ФЭС</source>
-        <translation type="unfinished"></translation>
+        <translation>能源建设学院</translation>
     </message>
     <message>
         <location filename="../User/Examination_Report_App.py" line="59"/>
         <source>АФ</source>
-        <translation type="unfinished"></translation>
+        <translation>军工学院</translation>
     </message>
     <message>
         <location filename="../User/Examination_Report_App.py" line="60"/>
         <source>СФ</source>
-        <translation type="unfinished"></translation>
+        <translation>体技学院</translation>
     </message>
     <message>
         <location filename="../User/Examination_Report_App.py" line="61"/>
         <source>ПСФ</source>
-        <translation type="unfinished"></translation>
+        <translation>继教学院</translation>
     </message>
     <message>
         <location filename="../User/Examination_Report_App.py" line="62"/>
         <source>ФТК</source>
-        <translation type="unfinished"></translation>
+        <translation>纺化学院</translation>
     </message>
     <message>
         <location filename="../User/Examination_Report_App.py" line="63"/>
         <source>ВТФ</source>
-        <translation type="unfinished"></translation>
+        <translation>军技学院</translation>
     </message>
     <message>
         <location filename="../User/Examination_Report_App.py" line="64"/>
         <source>СТФ</source>
-        <translation type="unfinished"></translation>
+        <translation>强电学院</translation>
     </message>
 </context>
 <context>

@@ -6,82 +6,82 @@
     <message>
         <location filename="../User/Examination_Report_App.py" line="49"/>
         <source>АТФ</source>
-        <translation type="unfinished"></translation>
+        <translation>ATF</translation>
     </message>
     <message>
         <location filename="../User/Examination_Report_App.py" line="50"/>
         <source>ФГДИЭ</source>
-        <translation type="unfinished"></translation>
+        <translation>FMEE</translation>
     </message>
     <message>
         <location filename="../User/Examination_Report_App.py" line="51"/>
         <source>МСФ</source>
-        <translation type="unfinished"></translation>
+        <translation>FME</translation>
     </message>
     <message>
         <location filename="../User/Examination_Report_App.py" line="52"/>
         <source>МТФ</source>
-        <translation type="unfinished"></translation>
+        <translation>MTF</translation>
     </message>
     <message>
         <location filename="../User/Examination_Report_App.py" line="53"/>
         <source>ФММП</source>
-        <translation type="unfinished"></translation>
+        <translation>FMME</translation>
     </message>
     <message>
         <location filename="../User/Examination_Report_App.py" line="54"/>
         <source>ЭФ</source>
-        <translation type="unfinished"></translation>
+        <translation>FE</translation>
     </message>
     <message>
         <location filename="../User/Examination_Report_App.py" line="55"/>
         <source>ФИТР</source>
-        <translation type="unfinished"></translation>
+        <translation>FITR</translation>
     </message>
     <message>
         <location filename="../User/Examination_Report_App.py" line="56"/>
         <source>ФТУГ</source>
-        <translation type="unfinished"></translation>
+        <translation>FMTH</translation>
     </message>
     <message>
         <location filename="../User/Examination_Report_App.py" line="57"/>
         <source>ИПФ</source>
-        <translation type="unfinished"></translation>
+        <translation>FEP</translation>
     </message>
     <message>
         <location filename="../User/Examination_Report_App.py" line="58"/>
         <source>ФЭС</source>
-        <translation type="unfinished"></translation>
+        <translation>FEC</translation>
     </message>
     <message>
         <location filename="../User/Examination_Report_App.py" line="59"/>
         <source>АФ</source>
-        <translation type="unfinished"></translation>
+        <translation>FA</translation>
     </message>
     <message>
         <location filename="../User/Examination_Report_App.py" line="60"/>
         <source>СФ</source>
-        <translation type="unfinished"></translation>
+        <translation>FCE</translation>
     </message>
     <message>
         <location filename="../User/Examination_Report_App.py" line="61"/>
         <source>ПСФ</source>
-        <translation type="unfinished"></translation>
+        <translation>FIE</translation>
     </message>
     <message>
         <location filename="../User/Examination_Report_App.py" line="62"/>
         <source>ФТК</source>
-        <translation type="unfinished"></translation>
+        <translation>FTC</translation>
     </message>
     <message>
         <location filename="../User/Examination_Report_App.py" line="63"/>
         <source>ВТФ</source>
-        <translation type="unfinished"></translation>
+        <translation>MTF</translation>
     </message>
     <message>
         <location filename="../User/Examination_Report_App.py" line="64"/>
         <source>СТФ</source>
-        <translation type="unfinished"></translation>
+        <translation>FSE</translation>
     </message>
 </context>
 <context>
