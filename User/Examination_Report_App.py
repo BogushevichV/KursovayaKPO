@@ -33,7 +33,7 @@ class GradeBookApp(QMainWindow):
         self.setFixedSize(1920, 1000)
         # self.setStyleSheet("background-color: white;")
         self.grade_mode = "grade"
-        self.db_manager = ReportManager({
+        self.db_manager = ReportManager(**{
             'dbname': "ExaminationReport",
             'user': "postgres",
             'password': "",
