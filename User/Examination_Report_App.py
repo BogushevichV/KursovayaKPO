@@ -483,7 +483,49 @@ class GradeBookApp(QMainWindow):
         QMessageBox.information(self, "Успех", f"Загружено {len(students)} студентов")
 
     def find_subject(self):
-        pass
+        """Поиск предмета в БД и загрузка данных"""
+        group_number = self.group_input.text()
+        subject_name = self.subject_input.text()
+        course = self.course_input.text()
+        semester = self.semester_combo.currentText().split()[0]  # Берем только номер семестра
+
+        if not all([group_number, subject_name, course]):
+            QMessageBox.warning(self, "Ошибка", "Заполните все необходимые поля!")
+            return
+
+        grades = self.db_manager.find_subject_grades(subject_name, group_number, course, semester)
+        if grades is None:
+            QMessageBox.warning(self, "Ошибка", "Ошибка при загрузке данных")
+            return
+
+        self.clear_table()
+
+        # Заполняем таблицу
+        for row, (name, gradebook, grade) in enumerate(grades):
+            self.table.insertRow(row)
+
+            item_name = QTableWidgetItem(name)
+            item_name.setFlags(item_name.flags() | Qt.ItemFlag.ItemIsEditable)
+            self.table.setItem(row, 0, item_name)
+
+            item_gradebook = QTableWidgetItem(gradebook)
+            item_gradebook.setFlags(item_gradebook.flags() | Qt.ItemFlag.ItemIsEditable)
+            self.table.setItem(row, 1, item_gradebook)
+
+            # Устанавливаем оценку в зависимости от режима
+            if self.grade_mode == "grade":
+                grade_item = QTableWidgetItem(grade)
+                grade_item.setFlags(grade_item.flags() | Qt.ItemFlag.ItemIsEditable)
+                grade_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+                self.table.setItem(row, 2, grade_item)
+            else:
+                combo = QComboBox()
+                combo.addItems(["не зачтено", "зачтено"])
+                combo.setCurrentText(grade)
+                self.table.setCellWidget(row, 2, combo)
+
+        self.add_empty_row()
+        QMessageBox.information(self, "Успех", f"Загружено {len(grades)} записей")
 
     def clear_table(self):
         """Очищает таблицу, оставляя одну пустую строку"""
