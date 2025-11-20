@@ -8,6 +8,7 @@ from DataBase.Report_Manager import ReportManager
 from DataBase.Database_Saver import SaveData
 from Grade_Item_Delegate import GradeItemDelegate
 from Excel_Importer import ExcelImporter
+from User.Create_Examination_Report import CreateExaminationReport
 
 
 class GradeBookApp(QMainWindow):
@@ -395,16 +396,28 @@ class GradeBookApp(QMainWindow):
             }
 
             # Параметры подключения к БД
-            # ДОПИСАТЬ
-            # ДОПИСАТЬ
-            # ДОПИСАТЬ
-            # ДОПИСАТЬ
-            # ДОПИСАТЬ
-            # ДОПИСАТЬ
-            # ДОПИСАТЬ
-            # ДОПИСАТЬ
-            # ДОПИСАТЬ
+            db_params = {
+                'dbname': "ExaminationReport",
+                'user': "postgres",
+                'password': "",
+                'host': "127.0.0.1",
+                'port': "5432"
+            }
 
+            # Генерируем имя файла
+            filename = f"Ведомость_{form_data['group']}_{form_data['subject']}.docx"
+
+            # Создаем отчет
+            result = CreateExaminationReport.create_report(
+                db_params=db_params,
+                form_data=form_data,
+                filename=filename
+            )
+
+            if result:
+                QMessageBox.information(self, "Успех", f"Ведомость успешно создана:\n{result}")
+            else:
+                QMessageBox.critical(self, "Ошибка", "Не удалось создать ведомость")
 
         except Exception as e:
             QMessageBox.critical(
