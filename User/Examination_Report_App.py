@@ -5,6 +5,7 @@ from PySide6.QtCore import Qt, QRegularExpression, QDate
 from PySide6.QtGui import QRegularExpressionValidator
 
 from DataBase.Report_Manager import ReportManager
+from DataBase.Database_Saver import SaveData
 from Grade_Item_Delegate import GradeItemDelegate
 from Excel_Importer import ExcelImporter
 
@@ -34,6 +35,13 @@ class GradeBookApp(QMainWindow):
         # self.setStyleSheet("background-color: white;")
         self.grade_mode = "grade"
         self.db_manager = ReportManager(**{
+            'dbname': "ExaminationReport",
+            'user': "postgres",
+            'password': "",
+            'host': "127.0.0.1",
+            'port': "5432"
+        })
+        self.db_saver = SaveData(**{
             'dbname': "ExaminationReport",
             'user': "postgres",
             'password': "",
@@ -612,7 +620,21 @@ class GradeBookApp(QMainWindow):
                 self.switch_to_pass_fail()
 
     def save_data(self):
-        pass
+        group_number = self.group_input.text()
+        course = self.course_input.text()
+        semester = self.semester_combo.currentText().split()[0]
+        subject_name = self.subject_input.text()
+
+        if not all([group_number, course, subject_name]):
+            QMessageBox.warning(self, "Ошибка", "Заполните все обязательные поля!")
+            return
+
+        # Сохраняем студентов
+        if not self.db_saver.save_data(group_number, course, semester, subject_name, self.table):
+            QMessageBox.warning(self, "Ошибка", "Не удалось сохранить данные")
+            return
+
+        QMessageBox.information(self, "Успех", "Данные успешно сохранены")
 
     def _get_grade_value(self, row):
         """Получает значение оценки из ячейки"""
