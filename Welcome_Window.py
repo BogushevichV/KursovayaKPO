@@ -29,7 +29,13 @@ class WelcomeWindow(QMainWindow):
         self.language_box.addItem("Русский", "ru")
         self.language_box.addItem("English", "en")
         self.language_box.addItem("中文 (Chinese)", "zh")
-        self.language_box.setCurrentIndex(0 if current_lang == "ru" else 1)
+        index = self.language_box.findData(current_lang)
+
+        if index == -1:
+            index = 0
+
+        self.language_box.setCurrentIndex(index)
+
         self.language_box.currentIndexChanged.connect(self._emit_language_change)
 
         if self.signals:
