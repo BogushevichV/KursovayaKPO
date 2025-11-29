@@ -21,10 +21,10 @@ class ExcelImporter:
 
             data = []
             for row in sheet.iter_rows(min_row=2, values_only=True):
-                if row[0] and row[1]:  # Проверяем, что есть ФИО и номер зачётки
+                if row[1] and row[2]:  # Проверяем, что есть ФИО и номер зачётки
                     data.append({
-                        'name': row[0],
-                        'gradebook': row[1]
+                        'name': row[1],
+                        'gradebook': row[2]
                     })
 
             return data

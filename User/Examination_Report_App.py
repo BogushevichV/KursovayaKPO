@@ -3,9 +3,12 @@ from PySide6.QtWidgets import (QMainWindow, QWidget, QMessageBox, QTableWidgetIt
                                QPushButton, QFormLayout, QScrollArea)
 from PySide6.QtCore import Qt, QRegularExpression, QDate
 from PySide6.QtGui import QRegularExpressionValidator
-from PySide6.QtCore import QT_TR_NOOP
+
+from DataBase.Report_Manager import ReportManager
+from DataBase.Database_Saver import SaveData
 from Grade_Item_Delegate import GradeItemDelegate
 from Excel_Importer import ExcelImporter
+from User.Create_Examination_Report import CreateExaminationReport
 
 
 class GradeBookApp(QMainWindow):
@@ -32,6 +35,20 @@ class GradeBookApp(QMainWindow):
         self.setFixedSize(1920, 1000)
         # self.setStyleSheet("background-color: white;")
         self.grade_mode = "grade"
+        self.db_manager = ReportManager(**{
+            'dbname': "ExaminationReport",
+            'user': "postgres",
+            'password': "",
+            'host': "127.0.0.1",
+            'port': "5432"
+        })
+        self.db_saver = SaveData(**{
+            'dbname': "ExaminationReport",
+            'user': "postgres",
+            'password': "",
+            'host': "127.0.0.1",
+            'port': "5432"
+        })
         #
         #
         #
@@ -395,16 +412,28 @@ class GradeBookApp(QMainWindow):
             }
 
             # Параметры подключения к БД
-            # ДОПИСАТЬ
-            # ДОПИСАТЬ
-            # ДОПИСАТЬ
-            # ДОПИСАТЬ
-            # ДОПИСАТЬ
-            # ДОПИСАТЬ
-            # ДОПИСАТЬ
-            # ДОПИСАТЬ
-            # ДОПИСАТЬ
+            db_params = {
+                'dbname': "ExaminationReport",
+                'user': "postgres",
+                'password': "",
+                'host': "127.0.0.1",
+                'port': "5432"
+            }
 
+            # Генерируем имя файла
+            filename = f"Ведомость_{form_data['group']}_{form_data['subject']}.docx"
+
+            # Создаем отчет
+            result = CreateExaminationReport.create_report(
+                db_params=db_params,
+                form_data=form_data,
+                filename=filename
+            )
+
+            if result:
+                QMessageBox.information(self, "Успех", f"Ведомость успешно создана:\n{result}")
+            else:
+                QMessageBox.critical(self, "Ошибка", "Не удалось создать ведомость")
 
         except Exception as e:
             QMessageBox.critical(
@@ -460,10 +489,80 @@ class GradeBookApp(QMainWindow):
         self._check_empty_rows()
 
     def find_group(self):
-        pass
+        """Поиск группы в БД и загрузка данных"""
+        group_number = self.group_input.text()
+        if not group_number:
+            QMessageBox.warning(self, "Ошибка", "Введите номер группы!")
+            return
+
+        students = self.db_manager.find_group_students(group_number)
+        if students is None:
+            QMessageBox.warning(self, "Ошибка", "Ошибка при загрузке данных")
+            return
+
+        self.clear_table()
+
+        # Заполняем таблицу
+        for row, (name, gradebook) in enumerate(students):
+            self.table.insertRow(row)
+
+            item_name = QTableWidgetItem(name)
+            item_name.setFlags(item_name.flags() | Qt.ItemFlag.ItemIsEditable)
+            self.table.setItem(row, 0, item_name)
+
+            item_gradebook = QTableWidgetItem(gradebook)
+            item_gradebook.setFlags(item_gradebook.flags() | Qt.ItemFlag.ItemIsEditable)
+            self.table.setItem(row, 1, item_gradebook)
+
+            self.setup_grade_cell(row)
+
+        self.add_empty_row()
+        QMessageBox.information(self, "Успех", f"Загружено {len(students)} студентов")
 
     def find_subject(self):
-        pass
+        """Поиск предмета в БД и загрузка данных"""
+        group_number = self.group_input.text()
+        subject_name = self.subject_input.text()
+        course = self.course_input.text()
+        semester = self.semester_combo.currentText().split()[0]  # Берем только номер семестра
+
+        if not all([group_number, subject_name, course]):
+            QMessageBox.warning(self, "Ошибка", "Заполните все необходимые поля!")
+            return
+
+        grades = self.db_manager.find_subject_grades(subject_name, group_number, course, semester)
+        if grades is None:
+            QMessageBox.warning(self, "Ошибка", "Ошибка при загрузке данных")
+            return
+
+        self.clear_table()
+
+        # Заполняем таблицу
+        for row, (name, gradebook, grade) in enumerate(grades):
+            self.table.insertRow(row)
+
+            item_name = QTableWidgetItem(name)
+            item_name.setFlags(item_name.flags() | Qt.ItemFlag.ItemIsEditable)
+            self.table.setItem(row, 0, item_name)
+
+            item_gradebook = QTableWidgetItem(gradebook)
+            item_gradebook.setFlags(item_gradebook.flags() | Qt.ItemFlag.ItemIsEditable)
+            self.table.setItem(row, 1, item_gradebook)
+
+            # Устанавливаем оценку в зависимости от режима
+            if self.grade_mode == "grade":
+                grade_item = QTableWidgetItem(grade)
+                grade_item.setFlags(grade_item.flags() | Qt.ItemFlag.ItemIsEditable)
+                grade_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+                self.table.setItem(row, 2, grade_item)
+            else:
+                combo = QComboBox()
+                combo.addItems(["не зачтено", "зачтено"])
+                combo.setCurrentText(grade)
+                self.table.setCellWidget(row, 2, combo)
+
+        self.add_empty_row()
+        QMessageBox.information(self, "Успех", f"Загружено {len(grades)} записей")
 
     def clear_table(self):
         """Очищает таблицу, оставляя одну пустую строку"""
@@ -550,7 +649,21 @@ class GradeBookApp(QMainWindow):
                 self.switch_to_pass_fail()
 
     def save_data(self):
-        pass
+        group_number = self.group_input.text()
+        course = self.course_input.text()
+        semester = self.semester_combo.currentText().split()[0]
+        subject_name = self.subject_input.text()
+
+        if not all([group_number, course, subject_name]):
+            QMessageBox.warning(self, "Ошибка", "Заполните все обязательные поля!")
+            return
+
+        # Сохраняем студентов
+        if not self.db_saver.save_data(group_number, course, semester, subject_name, self.table):
+            QMessageBox.warning(self, "Ошибка", "Не удалось сохранить данные")
+            return
+
+        QMessageBox.information(self, "Успех", "Данные успешно сохранены")
 
     def _get_grade_value(self, row):
         """Получает значение оценки из ячейки"""

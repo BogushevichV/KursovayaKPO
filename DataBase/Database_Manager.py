@@ -1,5 +1,7 @@
 import psycopg2
 
+# добавить логирование (это я себе)
+
 class DatabaseManager:
     def __init__(self, dbname: str, user: str, password: str, host: str, port: str):
         self.dbname = dbname

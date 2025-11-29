@@ -69,7 +69,7 @@ class UserWindow(QMainWindow):
 
         self.login_button = QPushButton(self.tr("Войти"))
         # >>>>>>>>>>> Потом убрать
-        self.login_input.setText("user")
+        self.login_input.setText("login")
         self.password_input.setText("123")
         # >>>>>>>>>>>>
 
