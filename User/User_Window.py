@@ -174,9 +174,8 @@ class UserWindow(QMainWindow):
 
     def retranslateUi(self):
         self.setWindowTitle(self.tr("Вход пользователя"))
-        self.login_label = QLabel(self.tr("Логин пользователя:"))
+        self.login_label.setText(self.tr("Логин пользователя:"))
         self.login_input.setPlaceholderText(self.tr("Введите логин"))
-        self.password_label = QLabel(self.tr("Пароль:"))
+        self.password_label.setText(self.tr("Пароль:"))
         self.password_input.setPlaceholderText(self.tr("Введите пароль"))
-        self.login_button = QPushButton(self.tr("Войти"))
-
+        self.login_button.setText(self.tr("Войти"))
