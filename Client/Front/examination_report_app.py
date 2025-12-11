@@ -1,14 +1,15 @@
 from PySide6.QtWidgets import (QMainWindow, QWidget, QMessageBox, QTableWidgetItem, QHBoxLayout, QVBoxLayout,
                                QComboBox, QLineEdit, QSpinBox, QDateEdit, QTableWidget, QHeaderView,
                                QPushButton, QFormLayout, QScrollArea)
-from PySide6.QtCore import Qt, QRegularExpression, QDate
+from PySide6.QtCore import Qt, QRegularExpression, QDate, QT_TR_NOOP
 from PySide6.QtGui import QRegularExpressionValidator
-
-from DataBase.Report_Manager import ReportManager
-from DataBase.Database_Saver import SaveData
-from Grade_Item_Delegate import GradeItemDelegate
-from Excel_Importer import ExcelImporter
-from User.Create_Examination_Report import CreateExaminationReport
+from Client.Front.Styles.Examination_Report_App_Styles import BUTTON_STYLE, FORM_STYLE
+from Client.Back.report_manager import ReportManager
+from Client.Back.client_db_saver import SaveData
+from Client.Source.config import SERVER_URL
+from Client.Front.grade_item_delegate import GradeItemDelegate
+from Client.Back.excel_importer import ExcelImporter
+from Client.Back.create_Examination_report import CreateExaminationReport
 
 
 class GradeBookApp(QMainWindow):
@@ -35,20 +36,11 @@ class GradeBookApp(QMainWindow):
         self.setFixedSize(1920, 1000)
         # self.setStyleSheet("background-color: white;")
         self.grade_mode = "grade"
-        self.db_manager = ReportManager(**{
-            'dbname': "ExaminationReport",
-            'user': "postgres",
-            'password': "",
-            'host': "127.0.0.1",
-            'port': "5432"
-        })
-        self.db_saver = SaveData(**{
-            'dbname': "ExaminationReport",
-            'user': "postgres",
-            'password': "",
-            'host': "127.0.0.1",
-            'port': "5432"
-        })
+        # ReportManager теперь работает через сервер (HTTP запросы)
+        self.db_manager = ReportManager(server_url=SERVER_URL)
+        
+        # SaveData работает через сервер (HTTP API запросы)
+        self.db_saver = SaveData(server_url=SERVER_URL)
         #
         #
         #
@@ -109,58 +101,8 @@ class GradeBookApp(QMainWindow):
         self.welcome_window = welcome_window
 
     def init_ui(self):
-        # Стиль кнопок
-        button_style = """
-            QPushButton {
-                min-width: 180px;
-                min-height: 40px;
-                font-size: 16px;
-                border-radius: 5px;
-                background-color: #4CAF50;  /* Зеленый */
-                color: white;
-                border: 2px solid #45a049;
-            }
-            QPushButton:hover {
-                background-color: #388038;
-            }
-        """
-
-        # Стиль формы
-        form_style = """
-            QLineEdit, QSpinBox, QDateEdit, QComboBox {
-                padding: 5px 10px;
-                border: 1px solid #ced4da;
-                border-radius: 4px;
-                font-size: 14px;
-                color: black;
-                background: white;
-            }
-            QLabel {
-                background: transparent;
-                border: none;
-                font-size: 14px;
-            }
-            QTableWidget {
-                background-color: #4CAF50;
-                border: 1px solid #45a049;
-                border-radius: 10px;
-                font-size: 20px;
-                color: white;
-            }
-            QTableWidget::item {
-                border: 1px solid black;  /* Толщина и цвет границы */
-            }
-            QHeaderView::section {
-                background-color: #45a049;
-                color: white;
-                padding: 5px;
-                border: none;
-                font-size: 14px;
-            }
-        """
-
         # Применение стилей
-        self.setStyleSheet(form_style)
+        self.setStyleSheet(FORM_STYLE)
 
         # Главный виджет и layout
         central_widget = QWidget()
@@ -198,27 +140,27 @@ class GradeBookApp(QMainWindow):
 
         # Кнопки верхней панели
         self.btn_import = QPushButton(self.tr("Импорт из Excel"))
-        self.btn_import.setStyleSheet(button_style)
+        self.btn_import.setStyleSheet(BUTTON_STYLE)
         self.btn_import.clicked.connect(self.import_from_excel)
         top_panel_layout.addWidget(self.btn_import)
 
         self.btn_save = QPushButton(self.tr("Сохранить"))
-        self.btn_save.setStyleSheet(button_style)
+        self.btn_save.setStyleSheet(BUTTON_STYLE)
         self.btn_save.clicked.connect(self.save_data)
         top_panel_layout.addWidget(self.btn_save)
 
         self.btn_find_group = QPushButton(self.tr("Найти группу"))
-        self.btn_find_group.setStyleSheet(button_style)
+        self.btn_find_group.setStyleSheet(BUTTON_STYLE)
         self.btn_find_group.clicked.connect(self.find_group)
         top_panel_layout.addWidget(self.btn_find_group)
 
         self.btn_find_subject = QPushButton(self.tr("Найти предмет"))
-        self.btn_find_subject.setStyleSheet(button_style)
+        self.btn_find_subject.setStyleSheet(BUTTON_STYLE)
         self.btn_find_subject.clicked.connect(self.find_subject)
         top_panel_layout.addWidget(self.btn_find_subject)
 
         self.btn_clear = QPushButton(self.tr("Очистить"))
-        self.btn_clear.setStyleSheet(button_style)
+        self.btn_clear.setStyleSheet(BUTTON_STYLE)
         self.btn_clear.clicked.connect(self.clear_table)
         top_panel_layout.addWidget(self.btn_clear)
 
@@ -253,7 +195,7 @@ class GradeBookApp(QMainWindow):
         # Элементы формы
         self.statement_number_input = QLineEdit()
         self.statement_number_input.setPlaceholderText(self.tr("Номер ведомости"))
-        self.statement_number_input.setStyleSheet(form_style)
+        self.statement_number_input.setStyleSheet(FORM_STYLE)
         self.form_layout.addRow(self.tr("Номер ведомости:"), self.statement_number_input)
 
         self.education_type_combo = QComboBox()
@@ -283,46 +225,46 @@ class GradeBookApp(QMainWindow):
         self.hours_input = QSpinBox()
         self.hours_input.setRange(0, 1000)
         self.hours_input.setValue(108)
-        self.hours_input.setStyleSheet(form_style)
+        self.hours_input.setStyleSheet(FORM_STYLE)
         self.form_layout.addRow(self.tr("Количество часов:"), self.hours_input)
 
         self.credits_input = QSpinBox()
         self.credits_input.setRange(0, 10)
         self.credits_input.setValue(3)
-        self.credits_input.setStyleSheet(form_style)
+        self.credits_input.setStyleSheet(FORM_STYLE)
         self.form_layout.addRow(self.tr("Зачетные единицы:"), self.credits_input)
 
         self.teacher_input = QLineEdit()
         self.teacher_input.setPlaceholderText(self.tr("Фамилия И.О."))
-        self.teacher_input.setStyleSheet(form_style)
+        self.teacher_input.setStyleSheet(FORM_STYLE)
         self.form_layout.addRow(self.tr("Преподаватель:"), self.teacher_input)
 
         self.exam_date_edit = QDateEdit()
         self.exam_date_edit.setCalendarPopup(True)
         self.exam_date_edit.setDate(QDate.currentDate())
-        self.exam_date_edit.setStyleSheet(form_style)
+        self.exam_date_edit.setStyleSheet(FORM_STYLE)
         self.form_layout.addRow(self.tr("Дата аттестации:"), self.exam_date_edit)
 
         self.exam_format_input = QLineEdit()
         self.exam_format_input.setPlaceholderText(self.tr("очный/дистанционный"))
-        self.exam_format_input.setStyleSheet(form_style)
+        self.exam_format_input.setStyleSheet(FORM_STYLE)
         self.form_layout.addRow(self.tr("Формат аттестации:"), self.exam_format_input)
 
         self.dean_input = QLineEdit()
         self.dean_input.setPlaceholderText(self.tr("Фамилия И.О."))
-        self.dean_input.setStyleSheet(form_style)
+        self.dean_input.setStyleSheet(FORM_STYLE)
         self.form_layout.addRow(self.tr("Декан:"), self.dean_input)
 
         # Кнопка "Составить ведомость"
         self.btn_create_report = QPushButton(self.tr("Составить ведомость"))
-        self.btn_create_report.setStyleSheet(button_style)
+        self.btn_create_report.setStyleSheet(BUTTON_STYLE)
         self.btn_create_report.clicked.connect(self.create_exam_report)
         right_layout.addWidget(self.btn_create_report)
 
         # Кнопка "Назад"
         self.back_button = QPushButton(self.tr("Назад"))
         self.back_button.setFixedSize(100, 30)
-        self.back_button.setStyleSheet(button_style)
+        self.back_button.setStyleSheet(BUTTON_STYLE)
         self.back_button.clicked.connect(self.return_to_welcome)
 
         # Контейнер для кнопки Назад

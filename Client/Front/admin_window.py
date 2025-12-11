@@ -6,11 +6,11 @@ from PySide6.QtWidgets import (QMainWindow, QWidget, QLabel, QLineEdit,
                                QPushButton, QVBoxLayout, QHBoxLayout,
                                QMessageBox)
 from PySide6.QtCore import Qt
+from Client.Front.Styles.Admin_Window_Styles import BUTTON_STYLE, FORM_STYLE, LOGIN_FORM_STYLE
 
 
 class AdminWindow(QMainWindow):
-    def __init__(self, db_authenticator, user_creator, admin_creator,
-                 user_remover, admin_remover, welcome_window,parent=None, signals=None):
+    def __init__(self, db_authenticator, account_manager, welcome_window, parent=None, signals=None):
         super().__init__(parent)
         self.center_right_panel = None
         self.right_panel = None
@@ -19,10 +19,7 @@ class AdminWindow(QMainWindow):
         self.back_button = None
         self.signals = signals
         self.db_auth = db_authenticator
-        self.user_creator = user_creator
-        self.admin_creator = admin_creator
-        self.user_remover = user_remover
-        self.admin_remover = admin_remover
+        self.account_manager = account_manager
         self.welcome_window = welcome_window
         self.login_attempts = 5
 
@@ -121,20 +118,6 @@ class AdminWindow(QMainWindow):
     def setup_login_ui(self):
         self._clear_layout()
 
-        button_style = """
-                    QPushButton {
-                        min-width: 200px;
-                        min-height: 40px;
-                        font-size: 16px;
-                        border-radius: 5px;
-                        background-color: #4CAF50;  /* Зеленый */
-                        color: white;
-                        border: 2px solid #45a049;
-                    }
-                    QPushButton:hover {
-                        background-color: #388038;
-                    }
-                """
 
         # Создаем основной контейнер с вертикальным выравниванием
         main_container = QWidget()
@@ -165,7 +148,7 @@ class AdminWindow(QMainWindow):
         # >>>>>>>>>>>>
 
         self.login_button.clicked.connect(self.check_credentials)
-        self.login_button.setStyleSheet(button_style)
+        self.login_button.setStyleSheet(BUTTON_STYLE)
         self.login_button.setFixedWidth(200)  # Фиксированная ширина кнопки
 
         self.login_input.returnPressed.connect(self.check_credentials)
@@ -191,18 +174,7 @@ class AdminWindow(QMainWindow):
         form_container.setObjectName("form_container")
 
         # Стилизация для лучшего визуального восприятия
-        form_container.setStyleSheet("""
-            QLineEdit#login_input, QLineEdit#password_input, QWidget#form_container {
-                background-color: #f8f9fa;
-                color: black;
-                border-radius: 10px;
-                border: 1px solid #dee2e6;
-            }
-            QLabel#login_label, QLabel#password_label {
-                color: black;
-                background-color: #f8f9fa;
-            }
-        """)
+        form_container.setStyleSheet(LOGIN_FORM_STYLE)
 
     def return_to_welcome(self):
         """Возврат на начальное окно"""
@@ -219,48 +191,10 @@ class AdminWindow(QMainWindow):
     def setup_admin_panel(self):
         self._clear_layout()
 
-        # Стиль для кнопок
-        button_style = """
-            QPushButton {
-                min-width: 200px;
-                min-height: 40px;
-                font-size: 16px;
-                border-radius: 5px;
-                background-color: #4CAF50;
-                color: white;
-                border: 2px solid #45a049;
-            }
-            QPushButton:hover {
-                background-color: #388038;
-            }
-        """
-
-        # Стиль для форм
-        form_style = """
-                    QWidget {
-                        background-color: #f8f9fa;
-                        border-radius: 10px;
-                        border: 1px solid #dee2e6;
-                    }
-                    QLineEdit {
-                        color: black;
-                        padding: 5px 10px;
-                        border: 1px solid #ced4da;
-                        border-radius: 4px;
-                        font-size: 14px;
-                    }
-                    QLabel {
-                        background: transparent;
-                        color: black;
-                        border: none;
-                        font-size: 14px;
-                    }
-                """
-
         # Универсальный метод создания секции
         def create_section(title_text, widgets):
             container = QWidget()
-            container.setStyleSheet(form_style)
+            container.setStyleSheet(FORM_STYLE)
             layout = QVBoxLayout(container)
             layout.setSpacing(10)
             layout.setContentsMargins(20, 20, 20, 20)
@@ -290,11 +224,11 @@ class AdminWindow(QMainWindow):
 
         # Кнопки добавления администратора
         self.add_admin_button.setText(self.tr("Добавить администратора"))
-        self.add_admin_button.setStyleSheet(button_style)
+        self.add_admin_button.setStyleSheet(BUTTON_STYLE)
         self.add_admin_button.clicked.connect(self.add_new_admin)
 
         self.send_admin_button.setText(self.tr("Отправить данные на почту"))
-        self.send_admin_button.setStyleSheet(button_style)
+        self.send_admin_button.setStyleSheet(BUTTON_STYLE)
         self.send_admin_button.clicked.connect(self.send_admin_data)
 
         self.left_panel = create_section(self.tr("Добавить Админа"), [
@@ -318,11 +252,11 @@ class AdminWindow(QMainWindow):
 
         # Кнопки добавления пользователя
         self.add_user_button.setText(self.tr("Добавить пользователя"))
-        self.add_user_button.setStyleSheet(button_style)
+        self.add_user_button.setStyleSheet(BUTTON_STYLE)
         self.add_user_button.clicked.connect(self.add_new_user)
 
         self.send_button.setText(self.tr("Отправить данные на почту"))
-        self.send_button.setStyleSheet(button_style)
+        self.send_button.setStyleSheet(BUTTON_STYLE)
         self.send_button.clicked.connect(self.send_user_data)
 
         self.center_left_panel = create_section(self.tr("Добавить Пользователя"), [
@@ -338,7 +272,7 @@ class AdminWindow(QMainWindow):
         self.del_user_login_input.setFixedHeight(35)
 
         self.del_user_button.setText(self.tr("Удалить пользователя"))
-        self.del_user_button.setStyleSheet(button_style)
+        self.del_user_button.setStyleSheet(BUTTON_STYLE)
         self.del_user_button.clicked.connect(self.delete_user)
 
         self.del_admin_login_label.setText(self.tr("Логин администратора:"))
@@ -346,7 +280,7 @@ class AdminWindow(QMainWindow):
         self.del_admin_login_input.setFixedHeight(35)
 
         self.del_admin_button.setText(self.tr("Удалить администратора"))
-        self.del_admin_button.setStyleSheet(button_style)
+        self.del_admin_button.setStyleSheet(BUTTON_STYLE)
         self.del_admin_button.clicked.connect(self.delete_admin)
 
         self.center_right_panel = create_section(self.tr("Управление Учетными Записями"), [
@@ -362,7 +296,7 @@ class AdminWindow(QMainWindow):
         self.del_subject_input.setFixedHeight(35)
 
         self.del_subject_button.setText(self.tr("Удалить предмет"))
-        self.del_subject_button.setStyleSheet(button_style)
+        self.del_subject_button.setStyleSheet(BUTTON_STYLE)
         self.del_subject_button.clicked.connect(self.delete_subject)
 
         self.del_group_label.setText(self.tr("Номер группы:"))
@@ -370,7 +304,7 @@ class AdminWindow(QMainWindow):
         self.del_group_input.setFixedHeight(35)
 
         self.del_group_button.setText(self.tr("Удалить группу"))
-        self.del_group_button.setStyleSheet(button_style)
+        self.del_group_button.setStyleSheet(BUTTON_STYLE)
         self.del_group_button.clicked.connect(self.delete_group)
 
         self.del_exam_label.setText(self.tr("ID экзамена:"))
@@ -378,7 +312,7 @@ class AdminWindow(QMainWindow):
         self.del_exam_input.setFixedHeight(35)
 
         self.del_exam_button.setText(self.tr("Удалить экзамен"))
-        self.del_exam_button.setStyleSheet(button_style)
+        self.del_exam_button.setStyleSheet(BUTTON_STYLE)
         self.del_exam_button.clicked.connect(self.delete_exam)
 
         self.del_student_label.setText(self.tr("ID студента:"))
@@ -386,7 +320,7 @@ class AdminWindow(QMainWindow):
         self.del_student_input.setFixedHeight(35)
 
         self.del_student_button.setText(self.tr("Удалить студента"))
-        self.del_student_button.setStyleSheet(button_style)
+        self.del_student_button.setStyleSheet(BUTTON_STYLE)
         self.del_student_button.clicked.connect(self.delete_student)
 
         self.right_panel = create_section(self.tr("Управление записями БД"), [
@@ -405,7 +339,7 @@ class AdminWindow(QMainWindow):
         # Кнопка Назад
         self.back_button = QPushButton(self.tr("Назад"))
         self.back_button.setFixedSize(100, 30)
-        self.back_button.setStyleSheet(button_style)
+        self.back_button.setStyleSheet(BUTTON_STYLE)
         self.back_button.clicked.connect(self.return_to_welcome)
 
         button_container = QWidget()
@@ -764,7 +698,7 @@ class AdminWindow(QMainWindow):
             return
 
         try:
-            success = self.admin_creator.create_admin(login, password, email)
+            success = self.account_manager.create_account("admin", login, password, email)
             if success:
                 # Формируем и отправляем письмо с данными
                 email_body = (
@@ -819,7 +753,7 @@ class AdminWindow(QMainWindow):
             return
 
         try:
-            success = self.user_creator.create_user(login, password, email)
+            success = self.account_manager.create_account("user", login, password, email)
             if success:
                 QMessageBox.information(
                     self,
@@ -931,7 +865,7 @@ class AdminWindow(QMainWindow):
             return
 
         try:
-            success = self.user_remover.remove_user(login)
+            success = self.account_manager.delete_account("user", login)
             if success:
                 QMessageBox.information(
                     self,
@@ -961,7 +895,7 @@ class AdminWindow(QMainWindow):
             return
 
         try:
-            success = self.admin_remover.remove_admin(login)
+            success = self.account_manager.delete_account("admin", login)
             if success:
                 QMessageBox.information(
                     self,

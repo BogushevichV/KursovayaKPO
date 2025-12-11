@@ -1,7 +1,8 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (QMainWindow, QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QMessageBox)
+from Client.Front.Styles.User_Window_Styles import BUTTON_STYLE, FORM_CONTAINER_STYLE
 
-from User.Examination_Report_App import GradeBookApp
+from Client.Front.examination_report_app import GradeBookApp
 
 class UserWindow(QMainWindow):
     def __init__(self, db_authenticator, welcome_window, parent=None, signals=None):
@@ -24,21 +25,6 @@ class UserWindow(QMainWindow):
             self.signals.language_changed.connect(self.retranslateUi)
 
     def initUI(self):
-        button_style = """
-            QPushButton {
-                min-width: 200px;
-                min-height: 40px;
-                font-size: 16px;
-                border-radius: 5px;
-                background-color: #4CAF50;  /* Зеленый */
-                color: white;
-                border: 2px solid #45a049;
-            }
-            QPushButton:hover {
-                background-color: #388038;
-            }
-        """
-
         self.setWindowTitle(self.tr("Вход пользователя"))
         self.setFixedSize(400, 300)
 
@@ -73,7 +59,7 @@ class UserWindow(QMainWindow):
         self.password_input.setText("123")
         # >>>>>>>>>>>>
 
-        self.login_button.setStyleSheet(button_style)
+        self.login_button.setStyleSheet(BUTTON_STYLE)
         self.login_button.clicked.connect(self.check_credentials)
 
 
@@ -98,27 +84,7 @@ class UserWindow(QMainWindow):
         form_container.setObjectName("form_container")
 
         # Стилизация
-        form_container.setStyleSheet("""
-            QWidget#form_container {
-                background-color: #f8f9fa;
-                border-radius: 10px;
-                border: 1px solid #dee2e6;
-            }
-            QLineEdit {
-                color: black;
-                background-color: white;
-                padding: 5px 10px;
-                border: 1px solid #ced4da;
-                border-radius: 4px;
-                font-size: 14px;
-            }
-            QLabel {
-                color: black;
-                background: transparent;
-                border: none;
-                font-size: 14px;
-            }
-        """)
+        form_container.setStyleSheet(FORM_CONTAINER_STYLE)
 
     def check_credentials(self):
         login = self.login_input.text()

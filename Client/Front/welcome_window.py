@@ -1,7 +1,8 @@
-from PySide6.QtWidgets import (QApplication, QMainWindow, QWidget, QLabel,
+from PySide6.QtWidgets import (QMainWindow, QWidget, QLabel,
                                QPushButton, QVBoxLayout, QHBoxLayout, QComboBox)
 from PySide6.QtGui import QPixmap, QPainter
-from PySide6.QtCore import Qt, Signal, QCoreApplication, QTranslator
+from PySide6.QtCore import Qt, Signal, QTranslator
+from Client.Front.Styles.Welcome_Window_Styles import BUTTON_STYLE, ADMIN_BUTTON_STYLE, COMBO_STYLE
 
 
 class WelcomeWindow(QMainWindow):
@@ -41,35 +42,7 @@ class WelcomeWindow(QMainWindow):
         if self.signals:
             self.signals.language_changed.connect(self.retranslateUi)
 
-        # Стиль, как у кнопок
-        combo_style = """
-            QComboBox {
-                min-width: 150px;
-                min-height: 36px;
-                font-size: 16px;
-                border-radius: 5px;
-                background-color: #4CAF50;
-                color: white;
-                border: 2px solid #45a049;
-                padding-left: 10px;
-            }
-            QComboBox:hover {
-                background-color: #388038;
-            }
-            QComboBox::drop-down {
-                width: 25px;
-                border: none;
-                background-color: transparent;
-            }
-            QComboBox QAbstractItemView {
-                background-color: white;
-                color: black;
-                border-radius: 5px;
-                selection-background-color: #4CAF50;
-                selection-color: white;
-            }
-        """
-        self.language_box.setStyleSheet(combo_style)
+        self.language_box.setStyleSheet(COMBO_STYLE)
 
         # Правый верхний угол
         lang_layout = QHBoxLayout()
@@ -85,7 +58,7 @@ class WelcomeWindow(QMainWindow):
 
         # === Картинка ===
         self.image_label = QLabel()
-        pixmap = QPixmap("WelcomeIcon.png")
+        pixmap = QPixmap("../Client/Source/WelcomeIcon.png")
 
         if pixmap.isNull():
             pixmap = QPixmap(400, 200)
@@ -101,22 +74,8 @@ class WelcomeWindow(QMainWindow):
         self.user_button = QPushButton(self.tr("Войти как пользователь"))
         self.admin_button = QPushButton(self.tr("Войти как администратор"))
 
-        button_style = """
-            QPushButton {
-                min-width: 200px;
-                min-height: 40px;
-                font-size: 16px;
-                border-radius: 5px;
-                background-color: #4CAF50;
-                color: white;
-                border: 2px solid #45a049;
-            }
-            QPushButton:hover {
-                background-color: #388038;
-            }
-        """
-        self.user_button.setStyleSheet(button_style)
-        self.admin_button.setStyleSheet(button_style + "background-color: #ff6666; border: 2px solid #e65c5c;")
+        self.user_button.setStyleSheet(BUTTON_STYLE)
+        self.admin_button.setStyleSheet(ADMIN_BUTTON_STYLE)
 
         self.user_button.clicked.connect(self._handle_user_login)
         self.admin_button.clicked.connect(self._handle_admin_login)
