@@ -4,10 +4,37 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3ffab474-8f08-49cf-b0b9-2cafc7f5b7be" name="Changes" comment="bugfix2 of translater">
+    <list default="true" id="3ffab474-8f08-49cf-b0b9-2cafc7f5b7be" name="Changes" comment="fix: fix double logic for admin and user">
+      <change afterPath="$PROJECT_DIR$/Client/Back/account_validation.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Client/Back/client_db_saver.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Client/Back/report_manager.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Client/Source/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/KursovayaKPO.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/KursovayaKPO.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/translations/en.ts" beforeDir="false" afterPath="$PROJECT_DIR$/translations/en.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/translations/zh.ts" beforeDir="false" afterPath="$PROJECT_DIR$/translations/zh.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Admin/Admin_Window.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Front/admin_window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataBase/Base_User_Creator.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataBase/Base_User_Remover.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataBase/DB_Validation.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataBase/Database_Manager.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataBase/Database_Saver.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataBase/Password_Hasher.py" beforeDir="false" afterPath="$PROJECT_DIR$/Server/password_hasher.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataBase/Report_Manager.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Excel_Importer.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Back/excel_importer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Grade_Item_Delegate.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Front/grade_item_delegate.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/User/Create_Examination_Report.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Back/create_Examination_report.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/User/Examination_Report_App.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Front/examination_report_app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/User/User_Window.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Front/user_window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WelcomeIcon.png" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Source/WelcomeIcon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Welcome_Window.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Front/welcome_window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/translations/en.qm" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Source/translations/en.qm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/translations/en.ts" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Source/translations/en.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/translations/ru.qm" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Source/translations/ru.qm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/translations/ru.ts" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Source/translations/ru.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/translations/zh.qm" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Source/translations/zh.qm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/translations/zh.ts" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Source/translations/zh.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,30 +84,47 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;Python.Admin_Window.executor&quot;: &quot;Run&quot;,
-    &quot;Python.Main.executor&quot;: &quot;Run&quot;,
-    &quot;Python.User_Window.executor&quot;: &quot;Run&quot;,
-    &quot;Python.Welcome_Window.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;translater__bugfix&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/univer/KursovayaKPO&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.Admin_Creator.executor": "Run",
+    "Python.Admin_Window.executor": "Run",
+    "Python.Database_Saver.executor": "Run",
+    "Python.Main.executor": "Run",
+    "Python.Server_Client.executor": "Run",
+    "Python.User_Window.executor": "Run",
+    "Python.Welcome_Window.executor": "Run",
+    "Python.db_handlers.executor": "Run",
+    "Python.db_server.executor": "Run",
+    "Python.init_database.executor": "Run",
+    "Python.main.executor": "Run",
+    "Python.test_auth.executor": "Run",
+    "Python.test_client.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "create-server-and-fix-architecture",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "D:/univer/KursovayaKPO",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\univer\КПО\KursovayaKPO" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\medve\PycharmProjects\KursovayaKPO\Client\Source" />
+      <recent name="C:\Users\medve\PycharmProjects\KursovayaKPO\Client" />
+      <recent name="C:\Users\medve\PycharmProjects\KursovayaKPO\Server" />
+      <recent name="C:\Users\medve\PycharmProjects\KursovayaKPO\Client\Back" />
+      <recent name="C:\Users\medve\PycharmProjects\KursovayaKPO\Client\Front\Styles" />
     </key>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-e0ed3721d81e-36ea0e71a18c-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-251.25410.159" />
+        <option value="bundled-python-sdk-0978a7220b69-9867c7d4c0a4-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-253.28294.336" />
       </set>
     </attachedChunks>
   </component>
@@ -132,7 +176,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763061126172</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="fix: fix double logic for admin and user">
+      <option name="closed" value="true" />
+      <created>1765476501497</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1765476501497</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -152,6 +204,7 @@
     <MESSAGE value="add translator to all windows" />
     <MESSAGE value="add Chinese to translator" />
     <MESSAGE value="bugfix of translater" />
-    <option name="LAST_COMMIT_MESSAGE" value="bugfix of translater" />
+    <MESSAGE value="fix: fix double logic for admin and user" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: fix double logic for admin and user" />
   </component>
 </project>
