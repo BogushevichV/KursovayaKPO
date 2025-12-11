@@ -4,37 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3ffab474-8f08-49cf-b0b9-2cafc7f5b7be" name="Changes" comment="fix: fix double logic for admin and user">
-      <change afterPath="$PROJECT_DIR$/Client/Back/account_validation.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Client/Back/client_db_saver.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Client/Back/report_manager.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Client/Source/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/KursovayaKPO.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/KursovayaKPO.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="3ffab474-8f08-49cf-b0b9-2cafc7f5b7be" name="Changes" comment="add: add config and styles for client and change client-server architecture">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Admin/Admin_Window.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Front/admin_window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataBase/Base_User_Creator.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataBase/Base_User_Remover.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataBase/DB_Validation.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataBase/Database_Manager.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataBase/Database_Saver.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataBase/Password_Hasher.py" beforeDir="false" afterPath="$PROJECT_DIR$/Server/password_hasher.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataBase/Report_Manager.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Excel_Importer.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Back/excel_importer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Grade_Item_Delegate.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Front/grade_item_delegate.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/User/Create_Examination_Report.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Back/create_Examination_report.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/User/Examination_Report_App.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Front/examination_report_app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/User/User_Window.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Front/user_window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WelcomeIcon.png" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Source/WelcomeIcon.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Welcome_Window.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Front/welcome_window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/Back/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Back/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/Back/create_Examination_report.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Back/create_examination_report.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/Front/Styles/Admin_Window_Styles.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Front/Styles/Admin_Window_Styles.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/Front/Styles/Examination_Report_App_Styles.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Front/Styles/Examination_Report_App_Styles.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/Front/Styles/User_Window_Styles.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Front/Styles/User_Window_Styles.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/Front/Styles/Welcome_Window_Styles.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Front/Styles/Welcome_Window_Styles.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/Front/Styles/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Front/Styles/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/Front/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Front/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/Front/examination_report_app.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Front/examination_report_app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/Server/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/Server/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/db_handlers.py" beforeDir="false" afterPath="$PROJECT_DIR$/Server/db_handlers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/logger.py" beforeDir="false" afterPath="$PROJECT_DIR$/Server/logger.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Server/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/translations/en.qm" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Source/translations/en.qm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/translations/en.ts" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Source/translations/en.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/translations/ru.qm" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Source/translations/ru.qm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/translations/ru.ts" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Source/translations/ru.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/translations/zh.qm" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Source/translations/zh.qm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/translations/zh.ts" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Source/translations/zh.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_auth.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,7 +39,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="create-server-and-fix-architecture" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -72,8 +60,8 @@
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/BogushevichV/KursovayaKPO&quot;,
-    &quot;accountId&quot;: &quot;520efa59-107e-4ea3-9c7e-2ea66f91a25a&quot;
+    &quot;url&quot;: &quot;https://github.com/BogushevichV/KursovayaKPO.git&quot;,
+    &quot;accountId&quot;: &quot;a658f2d3-543b-4b16-9fd5-8486b2ef4572&quot;
   }
 }</component>
   <component name="ProjectColorInfo">{
@@ -87,6 +75,8 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python tests.Python tests in test_db_handlers.py.executor": "Run",
+    "Python tests.Python tests in test_server_api.py.executor": "Run",
     "Python.Admin_Creator.executor": "Run",
     "Python.Admin_Window.executor": "Run",
     "Python.Database_Saver.executor": "Run",
@@ -103,7 +93,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "create-server-and-fix-architecture",
+    "git-widget-placeholder": "create-server-tests",
     "ignore.virus.scanning.warn.message": "true",
     "last_opened_file_path": "D:/univer/KursovayaKPO",
     "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
@@ -114,9 +104,9 @@
       <recent name="D:\univer\КПО\KursovayaKPO" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\medve\PycharmProjects\KursovayaKPO\Server" />
       <recent name="C:\Users\medve\PycharmProjects\KursovayaKPO\Client\Source" />
       <recent name="C:\Users\medve\PycharmProjects\KursovayaKPO\Client" />
-      <recent name="C:\Users\medve\PycharmProjects\KursovayaKPO\Server" />
       <recent name="C:\Users\medve\PycharmProjects\KursovayaKPO\Client\Back" />
       <recent name="C:\Users\medve\PycharmProjects\KursovayaKPO\Client\Front\Styles" />
     </key>
@@ -184,7 +174,23 @@
       <option name="project" value="LOCAL" />
       <updated>1765476501497</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="add: create server and change client logic for server using">
+      <option name="closed" value="true" />
+      <created>1765476886356</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1765476886356</updated>
+    </task>
+    <task id="LOCAL-00008" summary="add: add config and styles for client and change client-server architecture">
+      <option name="closed" value="true" />
+      <created>1765477038339</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1765477038339</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -205,6 +211,8 @@
     <MESSAGE value="add Chinese to translator" />
     <MESSAGE value="bugfix of translater" />
     <MESSAGE value="fix: fix double logic for admin and user" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix: fix double logic for admin and user" />
+    <MESSAGE value="add: create server and change client logic for server using" />
+    <MESSAGE value="add: add config and styles for client and change client-server architecture" />
+    <option name="LAST_COMMIT_MESSAGE" value="add: add config and styles for client and change client-server architecture" />
   </component>
 </project>

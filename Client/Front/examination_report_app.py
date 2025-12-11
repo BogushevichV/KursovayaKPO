@@ -9,7 +9,7 @@ from Client.Back.client_db_saver import SaveData
 from Client.Source.config import SERVER_URL
 from Client.Front.grade_item_delegate import GradeItemDelegate
 from Client.Back.excel_importer import ExcelImporter
-from Client.Back.create_Examination_report import CreateExaminationReport
+from Client.Back.create_examination_report import CreateExaminationReport
 
 
 class GradeBookApp(QMainWindow):
