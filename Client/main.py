@@ -1,16 +1,13 @@
-from Welcome_Window import WelcomeWindow
-from Admin.Admin_Window import AdminWindow
+from Client.Front.welcome_window import WelcomeWindow
+from Client.Front.admin_window import AdminWindow
+from Client.Front.user_window import UserWindow
 
-from DataBase.DB_Validation import DBAuthenticator
-
-from Admin.Admin_Creator import AdminCreator
-from Admin.Admin_Remover import AdminRemover
-from User.User_Creator import UserCreator
-from User.User_Remover import UserRemover
+from Client.Back.account_validation import Authenticator
+from Client.Back.account_manager import AccountManager
 
 from PySide6.QtWidgets import QApplication, QMessageBox
 from PySide6.QtCore import QSettings, QTranslator, QCoreApplication, QObject, Signal
-from User.User_Window import UserWindow
+from Client.Source.config import SERVER_URL
 import sys
 
 
@@ -25,10 +22,7 @@ class Application:
         self.welcome_window = WelcomeWindow()
         self.admin_window = None
         self.db_auth = None
-        self.user_creator = None
-        self.user_remover = None
-        self.admin_creator = None
-        self.admin_remover = None
+        self.account_manager = None
         self.user_window = None
 
         # === 1. Настройки приложения ===
@@ -68,26 +62,25 @@ class Application:
         self.welcome_window.retranslateUi()
 
     def init_db_connections(self):
-        db_params = {
-            'dbname': "ExaminationReport",
-            'user': "postgres",
-            'password': "",
-            'host': "127.0.0.1",
-            'port': "5432"
-        }
-
+        """Инициализация подключений к серверу БД через HTTP API"""
         try:
-            self.db_auth = DBAuthenticator(**db_params)
-            self.user_creator = UserCreator(**db_params)
-            self.user_remover = UserRemover(**db_params)
-            self.admin_creator = AdminCreator(**db_params)
-            self.admin_remover = AdminRemover(**db_params)
+            # Инициализируем классы для работы через сервер
+            # Все классы используют HTTP запросы к серверу (не прямые подключения к БД)
+            self.db_auth = Authenticator(server_url=SERVER_URL)
+            self.account_manager = AccountManager(server_url=SERVER_URL)
+            
+            # Проверяем доступность сервера
+            if not self.db_auth.client.health_check():
+                raise ConnectionError("Сервер БД недоступен")
+            
             return True
         except Exception as e:
             QMessageBox.critical(
                 None,
                 "Ошибка подключения",
-                f"Не удалось подключиться к базе данных:\n{str(e)}"
+                f"Не удалось подключиться к серверу базы данных:\n{str(e)}\n\n"
+                f"URL сервера: {SERVER_URL}\n\n"
+                f"Убедитесь, что сервер запущен на другом компьютере."
             )
             return False
 
@@ -108,10 +101,7 @@ class Application:
         # Всегда создаем новое окно администратора
         self.admin_window = AdminWindow(
             self.db_auth,
-            self.user_creator,
-            self.admin_creator,
-            self.user_remover,
-            self.admin_remover,
+            self.account_manager,
             welcome_window,
             signals=self.signals
         )
