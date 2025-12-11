@@ -3,53 +3,69 @@ from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.enum.table import WD_ALIGN_VERTICAL
 from docx.shared import Pt
 from PySide6.QtWidgets import QMessageBox
+from Client.Back.report_manager import ReportManager
+from Client.Source.config import SERVER_URL
 
 
 class CreateExaminationReport:
     @staticmethod
-    def create_report(db_params, form_data, filename="exam_report.docx"):
+    def create_report(server_url=None, form_data=None, filename="exam_report.docx"):
+        """Создание ведомости через сервер API"""
         try:
-            # Подключаемся к БД
+            if server_url is None:
+                server_url = SERVER_URL
 
-            # Получаем данные о студентах и оценках
-            """SELECT 
-                    ...
-            FROM students
-            JOIN groups
-            JOIN grades
-            JOIN exams ...
-            """
+            if form_data is None:
+                raise ValueError("form_data обязателен")
 
+            # Инициализируем ReportManager для работы через сервер
+            report_manager = ReportManager(server_url=server_url)
+
+            # Получаем данные о студентах и оценках через сервер
+            group_number = form_data.get('group', '')
+            subject_name = form_data.get('subject', '')
+            course = form_data.get('course', '')
+            semester = form_data.get('semester', '')
+
+            # Получаем студентов и оценки через API сервера
+            students_data = report_manager.find_subject_grades(
+                subject_name=subject_name,
+                group_number=group_number,
+                course=course,
+                semester=semester
+            )
+
+            # Преобразуем данные в нужный формат
             students = []
+            if students_data:
+                for item in students_data:
+                    if isinstance(item, (list, tuple)) and len(item) >= 3:
+                        students.append((item[0], item[1], item[2]))
+                    elif isinstance(item, dict):
+                        students.append((
+                            item.get('name', ''),
+                            item.get('gradebook', ''),
+                            item.get('grade', '')
+                        ))
 
-            # Получаем статистику по оценкам
-            """SELECT 
-                ...
-            FROM grades
-            JOIN students 
-            JOIN groups
-            JOIN exams 
-            JOIN subjects ...
-            """
-
+            # Вычисляем статистику по оценкам из полученных данных
             grade_stats = {}
+            for _, _, grade in students:
+                if grade:
+                    # Обрабатываем оценки в баллах (0-10)
+                    try:
+                        grade_num = int(float(grade))
+                        if 0 <= grade_num <= 10:
+                            grade_stats[str(grade_num)] = grade_stats.get(str(grade_num), 0) + 1
+                    except (ValueError, TypeError):
+                        # Если не число, пропускаем
+                        pass
 
-            # Получаем статистику по оценкам (адаптировано для зачетов/экзаменов)
-            """SELECT 
-                    ...
-            FROM students st
-            JOIN groups
-            JOIN grades
-            JOIN exams
-            """
-
-            attendance_stats = {}
-
-            # Количество студентов с отметками (явившихся)
-            present_count = attendance_stats.get('экзамен', 0) + attendance_stats.get('зачет', 0)
+            # Подсчитываем количество студентов с отметками (явившихся)
+            present_count = len([s for s in students if s[2] and s[2].strip()])
 
             # Количество студентов без отметок (не явившихся)
-            absent_count = attendance_stats.get('не явился', 0)
+            absent_count = len([s for s in students if not s[2] or not s[2].strip()])
 
             # Создаем документ Word
             doc = Document()
@@ -203,7 +219,6 @@ class CreateExaminationReport:
 
             # Подпись декана после таблицы
             doc.add_paragraph()  # Пустая строка
-
 
             # Подпись декана
             dean_title = doc.add_paragraph()
