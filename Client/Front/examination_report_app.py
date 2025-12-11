@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import (QMainWindow, QWidget, QMessageBox, QTableWidgetItem, QHBoxLayout, QVBoxLayout,
                                QComboBox, QLineEdit, QSpinBox, QDateEdit, QTableWidget, QHeaderView,
-                               QPushButton, QFormLayout, QScrollArea)
+                               QPushButton, QFormLayout, QScrollArea, QFileDialog)
 from PySide6.QtCore import Qt, QRegularExpression, QDate, QT_TR_NOOP
 from PySide6.QtGui import QRegularExpressionValidator
 from Client.Front.Styles.Examination_Report_App_Styles import BUTTON_STYLE, FORM_STYLE
@@ -38,18 +38,9 @@ class GradeBookApp(QMainWindow):
         self.grade_mode = "grade"
         # ReportManager теперь работает через сервер (HTTP запросы)
         self.db_manager = ReportManager(server_url=SERVER_URL)
-        
+
         # SaveData работает через сервер (HTTP API запросы)
         self.db_saver = SaveData(server_url=SERVER_URL)
-        #
-        #
-        #
-        # 2 PODKLYUCHENIYA K BD
-        #
-        #
-        #
-        #
-        #
 
         self.welcome_window = None  # Добавляем ссылку на окно приветствия
 
@@ -353,23 +344,24 @@ class GradeBookApp(QMainWindow):
                 'dean': self.dean_input.text()
             }
 
-            # Параметры подключения к БД
-            db_params = {
-                'dbname': "ExaminationReport",
-                'user': "postgres",
-                'password': "",
-                'host': "127.0.0.1",
-                'port': "5432"
-            }
-
             # Генерируем имя файла
             filename = f"Ведомость_{form_data['group']}_{form_data['subject']}.docx"
 
+            # Получаем данные с сервера
+            report_data = self.db_manager.get_report_data(form_data['subject'], form_data['group'])
+
+            file_path, _ = QFileDialog.getSaveFileName(
+                self,
+                "Сохранить ведомость",
+                filename,
+                "DOCX Files (*.docx)"
+            )
+
             # Создаем отчет
             result = CreateExaminationReport.create_report(
-                db_params=db_params,
                 form_data=form_data,
-                filename=filename
+                report_data=report_data,
+                filename=file_path
             )
 
             if result:

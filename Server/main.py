@@ -323,6 +323,26 @@ def find_subject_grades():
         logger.log_error(e, context="find_subject_grades")
         return jsonify({"success": False, "error": str(e)}), 500
 
+@app.route('/api/report/get_report_data', methods=['POST'])
+def get_report_data():
+    """Поиск данных для отчёта"""
+    try:
+        data = request.get_json()
+        required_fields = ['subject_name', 'group_number']
+        if not data or not all(field in data for field in required_fields):
+            return jsonify({"success": False, "error": f"Необходимы поля: {', '.join(required_fields)}"}), 400
+
+        subject_name = data['subject_name']
+        group_number = data['group_number']
+
+        # Ищем данные для отчёта (SQL запрос выполняется внутри метода)
+        result = report_manager.get_report_data(subject_name, group_number)
+
+        return jsonify({"success": True, "data": result})
+
+    except Exception as e:
+        logger.log_error(e, context="get_report_data")
+        return jsonify({"success": False, "error": str(e)}), 500
 
 @app.route('/api/data/save', methods=['POST'])
 def save_data():
@@ -393,6 +413,7 @@ if __name__ == '__main__':
     print("  POST /api/admin/remove - удаление администратора")
     print("  POST /api/report/find_group_students - поиск студентов группы")
     print("  POST /api/report/find_subject_grades - поиск оценок по предмету")
+    print("  POST /api/report/get_report_data - получение данных для отчёта")
     print("  POST /api/data/save - сохранение данных студентов и оценок")
     print("\n" + "=" * 80)
     

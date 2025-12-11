@@ -15,27 +15,27 @@ except ImportError:
 
 class DatabaseServerClient:
     """Клиент для отправки HTTP запросов к серверу БД"""
-    
+
     def __init__(self, server_url: str = "http://localhost:5000", timeout: int = None):
         """Инициализация клиента"""
         self.server_url = server_url.rstrip('/')
         self.timeout = timeout or REQUEST_TIMEOUT
         self.session = requests.Session()
         self.session.headers.update({'Content-Type': 'application/json'})
-    
+
     def _make_request(self, method: str, endpoint: str, data: Optional[Dict] = None) -> Dict[str, Any]:
         """Выполняет HTTP запрос к серверу"""
         url = f"{self.server_url}{endpoint}"
-        
+
         try:
             if method.upper() == 'GET':
                 response = self.session.get(url, params=data, timeout=self.timeout)
             else:
                 response = self.session.request(method, url, json=data, timeout=self.timeout)
-            
+
             response.raise_for_status()
             return response.json()
-        
+
         except requests.exceptions.ConnectionError:
             raise ConnectionError(f"Не удалось подключиться к серверу: {self.server_url}")
         except requests.exceptions.HTTPError as e:
@@ -48,7 +48,7 @@ class DatabaseServerClient:
             raise Exception(f"{error_msg}")
         except Exception as e:
             raise Exception(f"Ошибка при выполнении запроса: {str(e)}")
-    
+
     def health_check(self) -> bool:
         """Проверка работоспособности сервера"""
         try:
@@ -56,7 +56,7 @@ class DatabaseServerClient:
             return response.get('status') == 'ok'
         except:
             return False
-    
+
     def authenticate_admin(self, login: str, password: str) -> bool:
         """Аутентификация администратора"""
         data = {
@@ -65,7 +65,7 @@ class DatabaseServerClient:
         }
         response = self._make_request('POST', '/api/auth/admin', data)
         return response.get('success', False)
-    
+
     def authenticate_user(self, login: str, password: str) -> bool:
         """Аутентификация пользователя"""
         data = {
@@ -74,7 +74,7 @@ class DatabaseServerClient:
         }
         response = self._make_request('POST', '/api/auth/user', data)
         return response.get('success', False)
-    
+
     def create_user(self, login: str, password: str, email: str, **extra_fields) -> bool:
         """Создание пользователя"""
         data = {
@@ -85,13 +85,13 @@ class DatabaseServerClient:
         }
         response = self._make_request('POST', '/api/user/create', data)
         return response.get('success', False)
-    
+
     def remove_user(self, login: str) -> bool:
         """Удаление пользователя"""
         data = {"login": login}
         response = self._make_request('POST', '/api/user/remove', data)
         return response.get('success', False)
-    
+
     def create_admin(self, login: str, password: str, email: str, **extra_fields) -> bool:
         """Создание администратора"""
         data = {
@@ -102,13 +102,13 @@ class DatabaseServerClient:
         }
         response = self._make_request('POST', '/api/admin/create', data)
         return response.get('success', False)
-    
+
     def remove_admin(self, login: str) -> bool:
         """Удаление администратора"""
         data = {"login": login}
         response = self._make_request('POST', '/api/admin/remove', data)
         return response.get('success', False)
-    
+
     def find_group_students(self, group_number: str) -> Optional[list]:
         """Поиск студентов группы"""
         data = {"group_number": group_number}
@@ -116,8 +116,8 @@ class DatabaseServerClient:
         if response.get('success'):
             return response.get('data')
         return None
-    
-    def find_subject_grades(self, subject_name: str, group_number: str, 
+
+    def find_subject_grades(self, subject_name: str, group_number: str,
                            course: str, semester: str) -> Optional[list]:
         """Поиск оценок по предмету"""
         data = {
@@ -130,8 +130,19 @@ class DatabaseServerClient:
         if response.get('success'):
             return response.get('data')
         return None
-    
-    def save_data(self, group_name: str, course: str, semester: str, 
+
+    def get_report_data(self, subject_name: str, group_number: str) -> Optional[list]:
+        """Поиск данных для отчёта"""
+        data = {
+            "subject_name": subject_name,
+            "group_number": group_number
+        }
+        response = self._make_request('POST', '/api/report/get_report_data', data)
+        if response.get('success'):
+            return response.get('data')
+        return None
+
+    def save_data(self, group_name: str, course: str, semester: str,
                   subject_name: str, students_data: list) -> bool:
         """Сохранение данных студентов и их оценок (автоматически сохраняется на сервере)"""
         data = {

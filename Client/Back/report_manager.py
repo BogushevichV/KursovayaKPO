@@ -53,3 +53,11 @@ class ReportManager:
         except Exception as e:
             print(f"Error fetching grades for subject {subject_name}: {str(e)}")
             return None
+
+    def get_report_data(self, subject_name: str, group_number: str) -> Optional[List[tuple]]:
+        """Поиск данных для отчёта через сервер"""
+        try:
+            return self.client.get_report_data(subject_name, group_number)
+        except Exception as e:
+            print(f"Error fetching data for report: {str(e)}")
+            return None

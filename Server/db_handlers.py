@@ -195,9 +195,16 @@ class ServerReportManager(DatabaseManager):
         try:
             self.connect()
             with self.connection.cursor() as cursor:
-                # Здесь должен быть реальный SQL запрос
-                # Пока возвращаем пустой список
-                students = []
+                query = sql.SQL("""
+                    SELECT full_name, gradebook_number
+                    FROM students
+                    WHERE group_id = (
+                        SELECT id FROM groups WHERE group_name = %s
+                    )
+                """)
+                cursor.execute(query, (group_number,))
+                students = cursor.fetchall()
+                print(f"[DEBUG] Найдено {len(students)} студентов в группе {group_number}")
             return students
         except Exception as e:
             print(f"Error fetching students for group {group_number}: {str(e)}")
@@ -209,9 +216,23 @@ class ServerReportManager(DatabaseManager):
         try:
             self.connect()
             with self.connection.cursor() as cursor:
-                # Здесь должен быть реальный SQL запрос
-                # Пока возвращаем пустой список
-                grades = []
+                query = sql.SQL("""
+                    SELECT s.full_name, s.gradebook_number, g.grade_value
+                    FROM students AS s
+                    JOIN grades AS g ON s.id = g.student_id
+                    JOIN exams AS e ON g.exam_id = e.id
+                    WHERE e.group_id = (
+                        SELECT id FROM groups WHERE group_name = %s
+                    )
+                    AND e.subject_id = (
+                        SELECT id FROM subjects WHERE subject_name = %s
+                    )
+                    AND e.course = %s
+                    AND e.semester = %s
+                """)
+                cursor.execute(query, (group_number, subject_name, course, semester))
+                grades = cursor.fetchall()
+                print(f"[DEBUG] Найдено {len(grades)} записей оценок для предмета {subject_name}")
             return grades
         except Exception as e:
             print(f"Error fetching grades for subject {subject_name}: {str(e)}")
@@ -219,3 +240,68 @@ class ServerReportManager(DatabaseManager):
         finally:
             self.close()
 
+    def get_report_data(self, subject_name: str, group_number: str):
+        try:
+            self.connect()
+            with self.connection.cursor() as cursor:
+                # Получаем данные о студентах и оценках
+                cursor.execute("""
+                    SELECT 
+                        st.full_name, 
+                        st.gradebook_number, 
+                        gr.grade_value
+                    FROM students st
+                    JOIN groups g ON st.group_id = g.id
+                    LEFT JOIN grades gr ON st.id = gr.student_id
+                    LEFT JOIN exams e ON gr.exam_id = e.id AND e.subject_id = (
+                        SELECT id FROM subjects WHERE subject_name = %s
+                    )
+                    WHERE g.group_name = %s
+                    ORDER BY st.full_name
+                """, (subject_name, group_number))
+
+                students = cursor.fetchall()
+
+                # Получаем статистику по оценкам
+                cursor.execute("""
+                    SELECT 
+                        gr.grade_value,
+                        COUNT(*) as count
+                    FROM grades gr
+                    JOIN students st ON gr.student_id = st.id
+                    JOIN groups g ON st.group_id = g.id
+                    JOIN exams e ON gr.exam_id = e.id
+                    JOIN subjects s ON e.subject_id = s.id
+                    WHERE g.group_name = %s AND s.subject_name = %s
+                    GROUP BY gr.grade_value
+                """, (group_number, subject_name))
+
+                grade_stats = {str(grade): count for grade, count in cursor.fetchall()}
+
+                # Получаем статистику по оценкам (адаптировано для зачетов/экзаменов)
+                cursor.execute("""
+                    SELECT 
+                        CASE 
+                            WHEN gr.grade_value IS NULL THEN 'не явился'
+                            WHEN gr.grade_value = '' THEN 'не явился'
+                            WHEN gr.grade_value::text ~ '^[0-9]+$' THEN 'экзамен'
+                            ELSE 'зачет'
+                        END as result_type,
+                        COUNT(*) as count
+                    FROM students st
+                    JOIN groups g ON st.group_id = g.id
+                    LEFT JOIN grades gr ON st.id = gr.student_id
+                    LEFT JOIN exams e ON gr.exam_id = e.id AND e.subject_id = (
+                        SELECT id FROM subjects WHERE subject_name = %s
+                    )
+                    WHERE g.group_name = %s
+                    GROUP BY result_type
+                """, (subject_name, group_number))
+
+                attendance_stats = {result: count for result, count in cursor.fetchall()}
+            return students, grade_stats, attendance_stats
+        except Exception as e:
+            print(f"Error fetching data for report: {str(e)}")
+            return None
+        finally:
+            self.close()

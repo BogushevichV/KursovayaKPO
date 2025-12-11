@@ -4,46 +4,11 @@ from docx.enum.table import WD_ALIGN_VERTICAL
 from docx.shared import Pt
 from PySide6.QtWidgets import QMessageBox
 
-
 class CreateExaminationReport:
     @staticmethod
-    def create_report(db_params, form_data, filename="exam_report.docx"):
+    def create_report(form_data, report_data, filename="exam_report.docx"):
         try:
-            # Подключаемся к БД
-
-            # Получаем данные о студентах и оценках
-            """SELECT 
-                    ...
-            FROM students
-            JOIN groups
-            JOIN grades
-            JOIN exams ...
-            """
-
-            students = []
-
-            # Получаем статистику по оценкам
-            """SELECT 
-                ...
-            FROM grades
-            JOIN students 
-            JOIN groups
-            JOIN exams 
-            JOIN subjects ...
-            """
-
-            grade_stats = {}
-
-            # Получаем статистику по оценкам (адаптировано для зачетов/экзаменов)
-            """SELECT 
-                    ...
-            FROM students st
-            JOIN groups
-            JOIN grades
-            JOIN exams
-            """
-
-            attendance_stats = {}
+            students, grade_stats, attendance_stats = report_data
 
             # Количество студентов с отметками (явившихся)
             present_count = attendance_stats.get('экзамен', 0) + attendance_stats.get('зачет', 0)

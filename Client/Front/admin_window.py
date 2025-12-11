@@ -1,4 +1,5 @@
 import smtplib
+import re
 from email.mime.text import MIMEText
 from email.utils import formatdate
 import psycopg2
@@ -358,7 +359,9 @@ class AdminWindow(QMainWindow):
             QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Все поля должны быть заполнены!"))
             return
 
-        if "@" not in email or "." not in email:
+        pattern = r'^[a-zA-Zа-яА-ЯёЁ0-9._%+-]+@[a-zA-Zа-яА-ЯёЁ0-9.-]+\.[a-zA-Zа-яА-ЯёЁ]{2,}$'
+
+        if not re.match(pattern, email):
             QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Введите корректный email!"))
             return
 
