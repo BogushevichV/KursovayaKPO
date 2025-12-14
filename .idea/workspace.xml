@@ -4,25 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3ffab474-8f08-49cf-b0b9-2cafc7f5b7be" name="Changes" comment="add: add config and styles for client and change client-server architecture">
+    <list default="true" id="3ffab474-8f08-49cf-b0b9-2cafc7f5b7be" name="Changes" comment="bugfix of translater">
+      <change afterPath="$PROJECT_DIR$/tests/test_admin_window.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/test_gradebook_app.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/test_user_window.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/test_welcome_window.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/Back/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Back/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/Back/create_Examination_report.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Back/create_examination_report.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/Front/Styles/Admin_Window_Styles.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Front/Styles/Admin_Window_Styles.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/Front/Styles/Examination_Report_App_Styles.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Front/Styles/Examination_Report_App_Styles.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/Front/Styles/User_Window_Styles.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Front/Styles/User_Window_Styles.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/Front/Styles/Welcome_Window_Styles.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Front/Styles/Welcome_Window_Styles.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/Front/Styles/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Front/Styles/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/Front/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Front/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/Front/examination_report_app.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Front/examination_report_app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/Server/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/Server/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/db_handlers.py" beforeDir="false" afterPath="$PROJECT_DIR$/Server/db_handlers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/logger.py" beforeDir="false" afterPath="$PROJECT_DIR$/Server/logger.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Server/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test_auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_auth.py" afterDir="false" />
+
+
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,7 +28,8 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="create-server-and-fix-architecture" />
+        <entry key="$PROJECT_DIR$" value="translater_bugfix" />
+
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -75,9 +65,11 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Python tests.Python tests in test_db_handlers.py.executor": "Run",
-    "Python tests.Python tests in test_server_api.py.executor": "Run",
-    "Python.Admin_Creator.executor": "Run",
+    "Python tests.Python tests in test_admin_window.py.executor": "Run",
+    "Python tests.Python tests in test_gradebook_app.py.executor": "Run",
+    "Python tests.Python tests in test_user_window.py.executor": "Run",
+    "Python tests.Python tests in test_welcome_window.py.executor": "Run",
+
     "Python.Admin_Window.executor": "Run",
     "Python.Database_Saver.executor": "Run",
     "Python.Main.executor": "Run",
@@ -93,7 +85,9 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "create-server-tests",
+
+    "git-widget-placeholder": "tests",
+
     "ignore.virus.scanning.warn.message": "true",
     "last_opened_file_path": "D:/univer/KursovayaKPO",
     "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
