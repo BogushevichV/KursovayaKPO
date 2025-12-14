@@ -2,13 +2,19 @@ import smtplib
 import re
 from email.mime.text import MIMEText
 from email.utils import formatdate
-import psycopg2
+import sys
+import os
 from PySide6.QtWidgets import (QMainWindow, QWidget, QLabel, QLineEdit,
                                QPushButton, QVBoxLayout, QHBoxLayout,
                                QMessageBox, QGridLayout, QSizePolicy,
                                QScrollArea)
 from PySide6.QtCore import Qt
 from Client.Front.Styles.Admin_Window_Styles import BUTTON_STYLE, form_style, LOGIN_FORM_STYLE
+
+# Добавляем путь для импорта конфига
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+from Client.Back.client_requests import DatabaseServerClient
+from Client.Source.config import SERVER_URL
 
 email_regex = re.compile(
     r'^[a-zA-Zа-яА-ЯёЁ0-9._%+-]+@[a-zA-Zа-яА-ЯёЁ0-9.-]+\.[a-zA-Zа-яА-ЯёЁ]{2,}$'
@@ -39,6 +45,8 @@ class AdminWindow(QMainWindow):
         self.account_manager = account_manager
         self.welcome_window = welcome_window
         self.login_attempts = 5
+        # Клиент для запросов к серверу для операций удаления
+        self.db_client = DatabaseServerClient(server_url=SERVER_URL)
 
         # Настройки SMTP (замените на свои)
         self.smtp_server = "smtp.gmail.com"
@@ -524,75 +532,34 @@ class AdminWindow(QMainWindow):
             return
 
         try:
-            conn = psycopg2.connect(
-                dbname="ExaminationReport",
-                user="postgres",
-                password="",
-                host="127.0.0.1",
-                port="5432"
-            )
-            cursor = conn.cursor()
-
-            # 1. Находим ID предмета
-            cursor.execute("SELECT id FROM subjects WHERE subject_name = %s", (subject_name,))
-            subject_id = cursor.fetchone()
-
-            if not subject_id:
-                QMessageBox.warning(self, self.tr("Ошибка"), self.tr(f"Предмет '{subject_name}' не найден"))
-
-                return
-
-            subject_id = subject_id[0]
-
-            # 2. Удаляем оценки, связанные с экзаменами по этому предмету
-            cursor.execute("""
-                DELETE FROM grades 
-                WHERE exam_id IN (
-                    SELECT id FROM exams WHERE subject_id = %s
+            success = self.db_client.delete_subject(subject_name)
+            
+            if success:
+                QMessageBox.information(
+                    self,
+                    self.tr("Успех"),
+                    self.tr(f"Предмет '{subject_name}' и все связанные данные успешно удалены!")
                 )
-            """, (subject_id,))
 
-            # 3. Удаляем экзамены по этому предмету
-            cursor.execute("DELETE FROM exams WHERE subject_id = %s", (subject_id,))
+                subjects = []
+                groups = []
+                exams = []
+                students = []
 
-            # 4. Удаляем сам предмет
-            cursor.execute("DELETE FROM subjects WHERE id = %s", (subject_id,))
+                self.create_grid_right(subjects, groups, exams, students)
+            else:
+                QMessageBox.warning(
+                    self,
+                    self.tr("Ошибка"),
+                    self.tr(f"Предмет '{subject_name}' не найден")
+                )
 
-            conn.commit()
-
-            QMessageBox.information(
-                self,
-                self.tr("Успех"),
-                self.tr(f"Предмет '{subject_name}' и все связанные данные успешно удалены!")
-            )
-
-            # Получаем эти обновлённые списки
-
-            subjects = [
-            ]
-
-            groups = [
-            ]
-
-            exams = [
-            ]
-
-            students = [
-            ]
-
-            self.create_grid_right(subjects, groups, exams, students)
-
-        except psycopg2.Error as e:
-            conn.rollback()
+        except Exception as e:
             QMessageBox.critical(
                 self,
                 self.tr("Ошибка базы данных"),
                 self.tr(f"Произошла ошибка при удалении предмета:\n{str(e)}")
             )
-
-        finally:
-            if 'conn' in locals():
-                conn.close()
 
     def delete_group(self):
         group_name = self.del_group_input.text()
@@ -612,75 +579,34 @@ class AdminWindow(QMainWindow):
             return
 
         try:
-            conn = psycopg2.connect(
-                dbname="ExaminationReport",
-                user="postgres",
-                password="",
-                host="127.0.0.1",
-                port="5432"
-            )
-            cursor = conn.cursor()
-
-            # 1. Находим ID группы
-            cursor.execute("SELECT id FROM groups WHERE group_name = %s", (group_name,))
-            group_id = cursor.fetchone()
-
-            if not group_id:
-                QMessageBox.warning(self, self.tr("Ошибка"), self.tr(f"Группа '{group_name}' не найдена"))
-                return
-
-            group_id = group_id[0]
-
-            # 2. Удаляем оценки студентов этой группы
-            cursor.execute("""
-                DELETE FROM grades 
-                WHERE student_id IN (
-                    SELECT id FROM students WHERE group_id = %s
+            success = self.db_client.delete_group(group_name)
+            
+            if success:
+                QMessageBox.information(
+                    self,
+                    self.tr("Успех"),
+                    self.tr(f"Группа '{group_name}' и все связанные данные успешно удалены!")
                 )
-            """, (group_id,))
+                # Получаем эти обновлённые списки
+                subjects = []
+                groups = []
+                exams = []
+                students = []
 
-            # 3. Удаляем студентов группы
-            cursor.execute("DELETE FROM students WHERE group_id = %s", (group_id,))
+                self.create_grid_right(subjects, groups, exams, students)
+            else:
+                QMessageBox.warning(
+                    self,
+                    self.tr("Ошибка"),
+                    self.tr(f"Группа '{group_name}' не найдена")
+                )
 
-            # 4. Удаляем экзамены группы
-            cursor.execute("DELETE FROM exams WHERE group_id = %s", (group_id,))
-
-            # 5. Удаляем саму группу
-            cursor.execute("DELETE FROM groups WHERE id = %s", (group_id,))
-
-            conn.commit()
-
-            QMessageBox.information(
-                self,
-                self.tr("Успех"),
-                self.tr(f"Группа '{group_name}' и все связанные данные успешно удалены!")
-            )
-            # Получаем эти обновлённые списки
-
-            subjects = [
-            ]
-
-            groups = [
-            ]
-
-            exams = [
-            ]
-
-            students = [
-            ]
-
-            self.create_grid_right(subjects, groups, exams, students)
-
-        except psycopg2.Error as e:
-            conn.rollback()
+        except Exception as e:
             QMessageBox.critical(
                 self,
                 self.tr("Ошибка базы данных"),
                 self.tr(f"Произошла ошибка при удалении группы:\n{str(e)}")
             )
-        finally:
-            if 'conn' in locals():
-                conn.close()
 
     def delete_exam(self):
         exam_id = self.del_exam_input.text()
@@ -700,60 +626,42 @@ class AdminWindow(QMainWindow):
             return
 
         try:
-            conn = psycopg2.connect(
-                dbname="ExaminationReport",
-                user="postgres",
-                password="",
-                host="127.0.0.1",
-                port="5432"
-            )
-            cursor = conn.cursor()
-
-            # 1. Проверяем существование экзамена
-            cursor.execute("SELECT id FROM exams WHERE id = %s", (exam_id,))
-            if not cursor.fetchone():
-                QMessageBox.warning(self, self.tr("Ошибка"), self.tr(f"Экзамен с ID {exam_id} не найден"))
+            # Преобразуем exam_id в int
+            try:
+                exam_id_int = int(exam_id)
+            except ValueError:
+                QMessageBox.warning(self, self.tr("Ошибка"), self.tr("ID экзамена должен быть числом"))
                 return
 
-            # 2. Удаляем оценки по этому экзамену
-            cursor.execute("DELETE FROM grades WHERE exam_id = %s", (exam_id,))
+            # Отправляем запрос на сервер для удаления экзамена
+            success = self.db_client.delete_exam(exam_id_int)
+            
+            if success:
+                QMessageBox.information(
+                    self,
+                    self.tr("Успех"),
+                    self.tr(f"Экзамен с ID {exam_id} и все оценки по нему успешно удалены!")
+                )
+                # Получаем эти обновлённые списки
+                subjects = []
+                groups = []
+                exams = []
+                students = []
 
-            # 3. Удаляем сам экзамен
-            cursor.execute("DELETE FROM exams WHERE id = %s", (exam_id,))
+                self.create_grid_right(subjects, groups, exams, students)
+            else:
+                QMessageBox.warning(
+                    self,
+                    self.tr("Ошибка"),
+                    self.tr(f"Экзамен с ID {exam_id} не найден")
+                )
 
-            conn.commit()
-
-            QMessageBox.information(
-                self,
-                self.tr("Успех"),
-                self.tr(f"Экзамен с ID {exam_id} и все оценки по нему успешно удалены!")
-            )
-            # Получаем эти обновлённые списки
-
-            subjects = [
-            ]
-
-            groups = [
-            ]
-
-            exams = [
-            ]
-
-            students = [
-            ]
-
-            self.create_grid_right(subjects, groups, exams, students)
-
-        except psycopg2.Error as e:
-            conn.rollback()
+        except Exception as e:
             QMessageBox.critical(
                 self,
                 self.tr("Ошибка базы данных"),
                 self.tr(f"Произошла ошибка при удалении экзамена:\n{str(e)}")
             )
-        finally:
-            if 'conn' in locals():
-                conn.close()
 
     def delete_student(self):
         student_id = self.del_student_input.text()
@@ -773,62 +681,41 @@ class AdminWindow(QMainWindow):
             return
 
         try:
-            conn = psycopg2.connect(
-                dbname="ExaminationReport",
-                user="postgres",
-                password="",
-                host="127.0.0.1",
-                port="5432"
-            )
-            cursor = conn.cursor()
-
-            # 1. Проверяем существование студента
-            cursor.execute("SELECT id FROM students WHERE id = %s", (student_id,))
-            if not cursor.fetchone():
-                QMessageBox.warning(self, self.tr("Ошибка"), self.tr(f"Студент с ID {student_id} не найден"))
-
+            try:
+                student_id_int = int(student_id)
+            except ValueError:
+                QMessageBox.warning(self, self.tr("Ошибка"), self.tr("ID студента должен быть числом"))
                 return
 
-            # 2. Удаляем оценки студента
-            cursor.execute("DELETE FROM grades WHERE student_id = %s", (student_id,))
 
-            # 3. Удаляем самого студента
-            cursor.execute("DELETE FROM students WHERE id = %s", (student_id,))
+            success = self.db_client.delete_student(student_id_int)      
+            if success:
+                QMessageBox.information(
+                    self,
+                    self.tr("Успех"),
+                    self.tr(f"Студент с ID {student_id} и все его оценки успешно удалены!")
+                )
 
-            conn.commit()
+                # Получаем эти обновлённые списки
+                subjects = []
+                groups = []
+                exams = []
+                students = []
 
-            QMessageBox.information(
-                self,
-                self.tr("Успех"),
-                self.tr(f"Студент с ID {student_id} и все его оценки успешно удалены!")
-            )
+                self.create_grid_right(subjects, groups, exams, students)
+            else:
+                QMessageBox.warning(
+                    self,
+                    self.tr("Ошибка"),
+                    self.tr(f"Студент с ID {student_id} не найден")
+                )
 
-            # Получаем эти обновлённые списки
-
-            subjects = [
-            ]
-
-            groups = [
-            ]
-
-            exams = [
-            ]
-
-            students = [
-            ]
-
-            self.create_grid_right(subjects, groups, exams, students)
-
-        except psycopg2.Error as e:
-            conn.rollback()
+        except Exception as e:
             QMessageBox.critical(
                 self,
                 self.tr("Ошибка базы данных"),
                 self.tr(f"Произошла ошибка при удалении студента:\n{str(e)}")
             )
-        finally:
-            if 'conn' in locals():
-                conn.close()
 
     def send_email(self, to_email: str, subject: str, body: str) -> bool:
         try:

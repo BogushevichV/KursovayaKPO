@@ -387,6 +387,108 @@ def save_data():
         return jsonify({"success": False, "error": str(e)}), 500
 
 
+@app.route('/api/data/delete_subject', methods=['POST'])
+def delete_subject():
+    """Удаление предмета и всех связанных данных"""
+    try:
+        data = safe_get_json()
+        if data is None:
+            return jsonify({"success": False, "error": "Ошибка парсинга JSON"}), 400
+        if 'subject_name' not in data:
+            return jsonify({"success": False, "error": "Необходимо поле subject_name"}), 400
+
+        subject_name = data['subject_name']
+        result = database_saver.delete_subject(subject_name)
+
+        if result:
+            return jsonify({"success": True, "message": f"Предмет '{subject_name}' успешно удален"})
+        else:
+            return jsonify({"success": False, "error": f"Предмет '{subject_name}' не найден"}), 404
+
+    except Exception as e:
+        logger.log_error(e, context="delete_subject")
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+@app.route('/api/data/delete_group', methods=['POST'])
+def delete_group():
+    """Удаление группы и всех связанных данных"""
+    try:
+        data = safe_get_json()
+        if data is None:
+            return jsonify({"success": False, "error": "Ошибка парсинга JSON"}), 400
+        if 'group_name' not in data:
+            return jsonify({"success": False, "error": "Необходимо поле group_name"}), 400
+
+        group_name = data['group_name']
+        result = database_saver.delete_group(group_name)
+
+        if result:
+            return jsonify({"success": True, "message": f"Группа '{group_name}' успешно удалена"})
+        else:
+            return jsonify({"success": False, "error": f"Группа '{group_name}' не найдена"}), 404
+
+    except Exception as e:
+        logger.log_error(e, context="delete_group")
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+@app.route('/api/data/delete_exam', methods=['POST'])
+def delete_exam():
+    """Удаление экзамена и всех связанных оценок"""
+    try:
+        data = safe_get_json()
+        if data is None:
+            return jsonify({"success": False, "error": "Ошибка парсинга JSON"}), 400
+        if 'exam_id' not in data:
+            return jsonify({"success": False, "error": "Необходимо поле exam_id"}), 400
+
+        exam_id = data['exam_id']
+        try:
+            exam_id = int(exam_id)
+        except (ValueError, TypeError):
+            return jsonify({"success": False, "error": "exam_id должен быть числом"}), 400
+
+        result = database_saver.delete_exam(exam_id)
+
+        if result:
+            return jsonify({"success": True, "message": f"Экзамен с ID {exam_id} успешно удален"})
+        else:
+            return jsonify({"success": False, "error": f"Экзамен с ID {exam_id} не найден"}), 404
+
+    except Exception as e:
+        logger.log_error(e, context="delete_exam")
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+@app.route('/api/data/delete_student', methods=['POST'])
+def delete_student():
+    """Удаление студента и всех его оценок"""
+    try:
+        data = safe_get_json()
+        if data is None:
+            return jsonify({"success": False, "error": "Ошибка парсинга JSON"}), 400
+        if 'student_id' not in data:
+            return jsonify({"success": False, "error": "Необходимо поле student_id"}), 400
+
+        student_id = data['student_id']
+        try:
+            student_id = int(student_id)
+        except (ValueError, TypeError):
+            return jsonify({"success": False, "error": "student_id должен быть числом"}), 400
+
+        result = database_saver.delete_student(student_id)
+
+        if result:
+            return jsonify({"success": True, "message": f"Студент с ID {student_id} успешно удален"})
+        else:
+            return jsonify({"success": False, "error": f"Студент с ID {student_id} не найден"}), 404
+
+    except Exception as e:
+        logger.log_error(e, context="delete_student")
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
 @app.errorhandler(404)
 def not_found(error):
     """Обработка 404 ошибок"""
@@ -425,6 +527,10 @@ if __name__ == '__main__':
     print("  POST /api/report/find_group_students - поиск студентов группы")
     print("  POST /api/report/find_subject_grades - поиск оценок по предмету")
     print("  POST /api/data/save - сохранение данных студентов и оценок")
+    print("  POST /api/data/delete_subject - удаление предмета")
+    print("  POST /api/data/delete_group - удаление группы")
+    print("  POST /api/data/delete_exam - удаление экзамена")
+    print("  POST /api/data/delete_student - удаление студента")
     print("\n" + "=" * 80)
 
     # Запуск сервера из конфига
