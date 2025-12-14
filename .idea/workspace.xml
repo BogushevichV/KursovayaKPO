@@ -10,6 +10,8 @@
       <change afterPath="$PROJECT_DIR$/tests/test_user_window.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/tests/test_welcome_window.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+
+
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,6 +29,7 @@
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
         <entry key="$PROJECT_DIR$" value="translater_bugfix" />
+
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -47,8 +50,8 @@
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/BogushevichV/KursovayaKPO&quot;,
-    &quot;accountId&quot;: &quot;520efa59-107e-4ea3-9c7e-2ea66f91a25a&quot;
+    &quot;url&quot;: &quot;https://github.com/BogushevichV/KursovayaKPO.git&quot;,
+    &quot;accountId&quot;: &quot;a658f2d3-543b-4b16-9fd5-8486b2ef4572&quot;
   }
 }</component>
   <component name="ProjectColorInfo">{
@@ -66,13 +69,25 @@
     "Python tests.Python tests in test_gradebook_app.py.executor": "Run",
     "Python tests.Python tests in test_user_window.py.executor": "Run",
     "Python tests.Python tests in test_welcome_window.py.executor": "Run",
+
     "Python.Admin_Window.executor": "Run",
+    "Python.Database_Saver.executor": "Run",
     "Python.Main.executor": "Run",
+    "Python.Server_Client.executor": "Run",
     "Python.User_Window.executor": "Run",
     "Python.Welcome_Window.executor": "Run",
+    "Python.db_handlers.executor": "Run",
+    "Python.db_server.executor": "Run",
+    "Python.init_database.executor": "Run",
+    "Python.main.executor": "Run",
+    "Python.test_auth.executor": "Run",
+    "Python.test_client.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
+
     "git-widget-placeholder": "tests",
+
     "ignore.virus.scanning.warn.message": "true",
     "last_opened_file_path": "D:/univer/KursovayaKPO",
     "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
@@ -82,11 +97,18 @@
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\univer\КПО\KursovayaKPO" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\medve\PycharmProjects\KursovayaKPO\Server" />
+      <recent name="C:\Users\medve\PycharmProjects\KursovayaKPO\Client\Source" />
+      <recent name="C:\Users\medve\PycharmProjects\KursovayaKPO\Client" />
+      <recent name="C:\Users\medve\PycharmProjects\KursovayaKPO\Client\Back" />
+      <recent name="C:\Users\medve\PycharmProjects\KursovayaKPO\Client\Front\Styles" />
+    </key>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-e0ed3721d81e-36ea0e71a18c-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-251.25410.159" />
+        <option value="bundled-python-sdk-0978a7220b69-9867c7d4c0a4-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-253.28294.336" />
       </set>
     </attachedChunks>
   </component>
@@ -138,7 +160,31 @@
       <option name="project" value="LOCAL" />
       <updated>1763061126172</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="fix: fix double logic for admin and user">
+      <option name="closed" value="true" />
+      <created>1765476501497</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1765476501497</updated>
+    </task>
+    <task id="LOCAL-00007" summary="add: create server and change client logic for server using">
+      <option name="closed" value="true" />
+      <created>1765476886356</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1765476886356</updated>
+    </task>
+    <task id="LOCAL-00008" summary="add: add config and styles for client and change client-server architecture">
+      <option name="closed" value="true" />
+      <created>1765477038339</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1765477038339</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -158,6 +204,9 @@
     <MESSAGE value="add translator to all windows" />
     <MESSAGE value="add Chinese to translator" />
     <MESSAGE value="bugfix of translater" />
-    <option name="LAST_COMMIT_MESSAGE" value="bugfix of translater" />
+    <MESSAGE value="fix: fix double logic for admin and user" />
+    <MESSAGE value="add: create server and change client logic for server using" />
+    <MESSAGE value="add: add config and styles for client and change client-server architecture" />
+    <option name="LAST_COMMIT_MESSAGE" value="add: add config and styles for client and change client-server architecture" />
   </component>
 </project>
