@@ -75,14 +75,15 @@
       :caption: Main.py - настройки подключения к БД
       :emphasize-lines: 3-8
 
-      def init_db_connections(self):
-          db_params = {
-              'dbname': "ExaminationReport",
-              'user': "postgres",
-              'password': "ваш_пароль",  # ← измените здесь
-              'host': "127.0.0.1",
-              'port': "5432"
-          }
+      # Параметры подключения к PostgreSQL
+      DB_CONFIG = {
+            'dbname': os.getenv('DB_NAME', 'ExaminationReport'),
+            'user': os.getenv('DB_USER', 'postgres'),
+            'password': os.getenv('DB_PASSWORD', '02032006'), # тут изменить пароль
+            'host': os.getenv('DB_HOST', '127.0.0.1'),
+            'port': os.getenv('DB_PORT', '5432')
+}
+
 
 3. **Создайте таблицы по схеме:**
 
@@ -100,7 +101,7 @@
 
 После запуска вы должны увидеть стартовое окно:
 
-.. figure:: /_static/screenshots/welcome_window.png
+.. figure:: /_static/welcome.png
    :width: 600px
    :align: center
    :alt: Стартовое окно приложения

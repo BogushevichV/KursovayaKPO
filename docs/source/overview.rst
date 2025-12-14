@@ -7,41 +7,68 @@
 .. code-block:: text
 
     Exam Report/
-    ├── Main.py                          # Точка входа
-    ├── Welcome_Window.py               # Стартовое окно
-    ├── Grade_Item_Delegate.py
-    ├── Excel_Importer.py
-    ├── DataBase/                       # Модули работы с БД
-    |   ├── Base_User_Creator.py
-    |   ├── Base_User_Remover.py
-    │   ├── Database_Manager.py
-    │   ├── Database_Saver.py
-    │   ├── DB_Validation.py
-    |   ├── Password_Hasher.py
-    │   └── Report_Manager.py
-    ├── User/                           # Пользовательская система
-    |   ├── Create_Examination_Report.py      # Создание отчетов
-    |   ├── Examination_Report_App.py  # Основное приложение
-    │   ├── User_Window.py
-    │   ├── User_Creator.py
-    │   └── User_Remover.py
-    ├── Admin/                          # Административная часть
-    │   ├── Admin_Window.py
-    │   ├── Admin_Creator.py
-    │   └── Admin_Remover.py
-    ├── translations/                   # Многоязычная поддержка
-    ├── tests/                          # Тесты
-    └── docs/                          # Документация
+    ├── Client/                           # Клиентское приложение
+    │ ├── Back/                           # Логика клиента (бизнес-уровень)
+    │ │ ├── account_manager.py            # Управление учетными записями
+    │ │ ├── account_validation.py         # Проверка корректности данных аккаунтов
+    │ │ ├── client_db_saver.py            # Сохранение данных клиента
+    │ │ ├── client_requests.py            # Формирование и отправка запросов серверу
+    │ │ ├── create_examination_report.py  # Создание экзаменационных отчетов
+    │ │ ├── excel_importer.py             # Импорт данных из Excel
+    │ │ └── report_manager.py             # Управление отчетами
+    │ │
+    │ ├── Front/ # Пользовательский интерфейс
+    │ │ ├── Styles/                             # Стили окон и элементов интерфейса
+    │ │ │ ├── Admin_Window_Styles.py            # Стили окна администратора
+    │ │ │ ├── Examination_Report_App_Styles.py
+    │ │ │ ├── User_Window_Styles.py             # Стили пользовательского окна
+    │ │ │ └── Welcome_Window_Styles.py          # Стили стартового окна
+    │ │ │
+    │ │ ├── admin_window.py             # Окно администратора
+    │ │ ├── examination_report_app.py   # Основное пользовательское приложение
+    │ │ ├── grade_item_delegate.py      # Делегат отображения оценок
+    │ │ ├── user_window.py              # Окно пользователя
+    │ │ └── welcome_window.py           # Стартовое окно
+    │ │
+    │ ├── Source/               # Ресурсы клиента
+    │ │ ├── translations/       # Многоязычная поддержка
+    │ │ ├── config.py           # Конфигурация клиента
+    │ │ └── WelcomeIcon.png     # Графические ресурсы
+    │ │
+    │ └── main.py   # Точка входа клиентского приложения
+    │
+    ├── Server/                     # Серверная часть приложения
+    │ ├── logs/                     # Логи работы сервера
+    │ ├── tests/                    # Тестирование серверной части
+    │ │ ├── logs/                   # Логи тестов
+    │ │ ├── conftest.py             # Конфигурация pytest
+    │ │ ├── test_db_handlers.py     # Тесты работы с БД
+    │ │ └── test_server_api.py      # Тесты серверного API
+    │ │
+    │ ├── config.py             # Конфигурация сервера
+    │ ├── db_handlers.py        # Обработчики запросов к БД
+    │ ├── db_manager.py         # Управление подключением к БД
+    │ ├── db_wrapper.py         # Абстракция работы с БД
+    │ ├── logger.py             # Логирование
+    │ ├── main.py               # Точка входа сервера
+    │ ├── password_hasher.py    # Хэширование паролей
+    │ └── server_db_saver.py    # Сохранение данных на сервере
+    │
+    ├── docs/                   # Документация (Sphinx)
+    ├── tests/                  # Общие тесты проекта
+    ├── db_schema.txt           # Схема базы данных
+    ├── init_database.py        # Инициализация БД
+    ├── requirements.txt        # Зависимости проекта
+    └── test_auth.py            # Тесты аутентификации
 
 Основные функции
 ----------------
 
 1. **Создание экзаменационных ведомостей**
 2. **Управление пользователями** (админы/пользователи)
-3. **Импорт данных из Excel** (Excel_Importer.py)
+3. **Импорт данных из Excel** (excel_importer.py)
 4. **Многоязычный интерфейс** (русский, английский, китайский)
-5. **Безопасное хранение паролей** (Password_Hasher.py)
-6. **Валидация данных** (DB_Validation.py)
+5. **Безопасное хранение паролей** (password_hasher.py)
 
 Технологии
 ----------
