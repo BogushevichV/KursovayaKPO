@@ -11,6 +11,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from Server.main import app
 from Server.config import SERVER_CONFIG, DB_CONFIG
 from Server.db_handlers import ServerAccountManager
+from Server.server_db_saver import ServerDatabaseSaver
 from Server.password_hasher import PasswordHasher
 
 
@@ -86,6 +87,184 @@ def test_user():
     # Удаляем тестового пользователя после теста
     try:
         account_manager.delete_account("user", test_login)
+    except Exception:
+        pass
+
+
+@pytest.fixture(scope='function')
+def test_subject():
+    """Создает тестовый предмет и удаляет его после теста"""
+    database_saver = ServerDatabaseSaver(**DB_CONFIG)
+    
+    import random
+    import string
+    test_subject_name = f"TEST_SUBJECT_{''.join(random.choices(string.ascii_uppercase + string.digits, k=8))}"
+    test_group_name = f"TEST_GROUP_{''.join(random.choices(string.ascii_uppercase + string.digits, k=8))}"
+    
+    # Создаем тестовый предмет через save_data
+    try:
+        database_saver.save_data(
+            group_name=test_group_name,
+            course="1",
+            semester="1",
+            subject_name=test_subject_name,
+            students_data=[{'name': 'Test Student', 'gradebook': '12345', 'grade': '8'}]
+        )
+    except Exception:
+        pass
+    
+    yield {'subject_name': test_subject_name, 'group_name': test_group_name}
+    
+    # Удаляем тестовые данные после теста
+    try:
+        database_saver.delete_group(test_group_name)
+    except Exception:
+        pass
+    try:
+        database_saver.delete_subject(test_subject_name)
+    except Exception:
+        pass
+
+
+@pytest.fixture(scope='function')
+def test_group():
+    """Создает тестовую группу и удаляет ее после теста"""
+    database_saver = ServerDatabaseSaver(**DB_CONFIG)
+    
+    import random
+    import string
+    test_group_name = f"TEST_GROUP_{''.join(random.choices(string.ascii_uppercase + string.digits, k=8))}"
+    test_subject_name = f"TEST_SUBJECT_{''.join(random.choices(string.ascii_uppercase + string.digits, k=8))}"
+    
+    # Создаем тестовую группу через save_data
+    try:
+        database_saver.save_data(
+            group_name=test_group_name,
+            course="1",
+            semester="1",
+            subject_name=test_subject_name,
+            students_data=[{'name': 'Test Student', 'gradebook': '12345', 'grade': '8'}]
+        )
+    except Exception:
+        pass
+    
+    yield {'group_name': test_group_name, 'subject_name': test_subject_name}
+    
+    # Удаляем тестовые данные после теста
+    try:
+        database_saver.delete_group(test_group_name)
+    except Exception:
+        pass
+    try:
+        database_saver.delete_subject(test_subject_name)
+    except Exception:
+        pass
+
+
+@pytest.fixture(scope='function')
+def test_exam():
+    """Создает тестовый экзамен и удаляет его после теста"""
+    database_saver = ServerDatabaseSaver(**DB_CONFIG)
+    
+    import random
+    import string
+    test_group_name = f"TEST_GROUP_{''.join(random.choices(string.ascii_uppercase + string.digits, k=8))}"
+    test_subject_name = f"TEST_SUBJECT_{''.join(random.choices(string.ascii_uppercase + string.digits, k=8))}"
+    
+    # Создаем тестовый экзамен через save_data
+    try:
+        database_saver.save_data(
+            group_name=test_group_name,
+            course="1",
+            semester="1",
+            subject_name=test_subject_name,
+            students_data=[{'name': 'Test Student', 'gradebook': '12345', 'grade': '8'}]
+        )
+        
+        # Получаем ID экзамена
+        database_saver.connect()
+        cursor = database_saver.connection.cursor()
+        cursor.execute("""
+            SELECT id FROM exams 
+            WHERE group_id = (SELECT id FROM groups WHERE group_name = %s)
+            AND subject_id = (SELECT id FROM subjects WHERE subject_name = %s)
+            AND course = %s AND semester = %s
+        """, (test_group_name, test_subject_name, "1", "1"))
+        exam_id = cursor.fetchone()
+        cursor.close()
+        database_saver.close()
+        
+        if exam_id:
+            yield {'exam_id': exam_id[0], 'group_name': test_group_name, 'subject_name': test_subject_name}
+        else:
+            yield {'exam_id': None, 'group_name': test_group_name, 'subject_name': test_subject_name}
+    except Exception as e:
+        yield {'exam_id': None, 'group_name': test_group_name, 'subject_name': test_subject_name}
+    
+    # Удаляем тестовые данные после теста
+    try:
+        database_saver.delete_group(test_group_name)
+        database_saver.delete_subject(test_subject_name)
+    except Exception:
+        pass
+
+
+@pytest.fixture(scope='function')
+def test_student():
+    """Создает тестового студента и удаляет его после теста"""
+    database_saver = ServerDatabaseSaver(**DB_CONFIG)
+    
+    import random
+    import string
+    test_group_name = f"TEST_GROUP_{''.join(random.choices(string.ascii_uppercase + string.digits, k=8))}"
+    test_subject_name = f"TEST_SUBJECT_{''.join(random.choices(string.ascii_uppercase + string.digits, k=8))}"
+    test_gradebook = f"{''.join(random.choices(string.digits, k=8))}"
+    
+    # Создаем тестового студента через save_data
+    try:
+        database_saver.save_data(
+            group_name=test_group_name,
+            course="1",
+            semester="1",
+            subject_name=test_subject_name,
+            students_data=[{'name': 'Test Student', 'gradebook': test_gradebook, 'grade': '8'}]
+        )
+        
+        # Получаем ID студента
+        database_saver.connect()
+        cursor = database_saver.connection.cursor()
+        cursor.execute("""
+            SELECT id FROM students 
+            WHERE gradebook_number = %s 
+            AND group_id = (SELECT id FROM groups WHERE group_name = %s)
+        """, (test_gradebook, test_group_name))
+        student_id = cursor.fetchone()
+        cursor.close()
+        database_saver.close()
+        
+        if student_id:
+            yield {
+                'student_id': student_id[0],
+                'group_name': test_group_name,
+                'subject_name': test_subject_name
+            }
+        else:
+            yield {
+                'student_id': None,
+                'group_name': test_group_name,
+                'subject_name': test_subject_name
+            }
+    except Exception as e:
+        yield {
+            'student_id': None,
+            'group_name': test_group_name,
+            'subject_name': test_subject_name
+        }
+    
+    # Удаляем тестовые данные после теста
+    try:
+        database_saver.delete_group(test_group_name)
+        database_saver.delete_subject(test_subject_name)
     except Exception:
         pass
 
@@ -450,6 +629,174 @@ class TestReportEndpoints:
         assert response.status_code == 400
         data = response.get_json()
         assert data['success'] is False
+
+
+class TestDeleteSubject:
+    """Тесты для удаления предметов"""
+    
+    def test_delete_subject_success(self, client, test_subject):
+        """Тест успешного удаления предмета"""
+        response = client.post('/api/data/delete_subject', json={
+            'subject_name': test_subject['subject_name']
+        })
+        
+        assert response.status_code == 200
+        data = response.get_json()
+        assert data['success'] is True
+        assert 'message' in data
+    
+    def test_delete_subject_nonexistent(self, client):
+        """Тест удаления несуществующего предмета"""
+        response = client.post('/api/data/delete_subject', json={
+            'subject_name': 'NONEXISTENT_SUBJECT_12345'
+        })
+        
+        assert response.status_code == 404
+        data = response.get_json()
+        assert data['success'] is False
+        assert 'error' in data
+    
+    def test_delete_subject_missing_field(self, client):
+        """Тест удаления предмета без указания названия"""
+        response = client.post('/api/data/delete_subject', json={})
+        
+        assert response.status_code == 400
+        data = response.get_json()
+        assert data['success'] is False
+        assert 'error' in data
+
+
+class TestDeleteGroup:
+    """Тесты для удаления групп"""
+    
+    def test_delete_group_success(self, client, test_group):
+        """Тест успешного удаления группы"""
+        response = client.post('/api/data/delete_group', json={
+            'group_name': test_group['group_name']
+        })
+        
+        assert response.status_code == 200
+        data = response.get_json()
+        assert data['success'] is True
+        assert 'message' in data
+    
+    def test_delete_group_nonexistent(self, client):
+        """Тест удаления несуществующей группы"""
+        response = client.post('/api/data/delete_group', json={
+            'group_name': 'NONEXISTENT_GROUP_12345'
+        })
+        
+        assert response.status_code == 404
+        data = response.get_json()
+        assert data['success'] is False
+        assert 'error' in data
+    
+    def test_delete_group_missing_field(self, client):
+        """Тест удаления группы без указания названия"""
+        response = client.post('/api/data/delete_group', json={})
+        
+        assert response.status_code == 400
+        data = response.get_json()
+        assert data['success'] is False
+        assert 'error' in data
+
+
+class TestDeleteExam:
+    """Тесты для удаления экзаменов"""
+    
+    def test_delete_exam_success(self, client, test_exam):
+        """Тест успешного удаления экзамена"""
+        if test_exam['exam_id'] is None:
+            pytest.skip("Не удалось создать тестовый экзамен")
+        
+        response = client.post('/api/data/delete_exam', json={
+            'exam_id': test_exam['exam_id']
+        })
+        
+        assert response.status_code == 200
+        data = response.get_json()
+        assert data['success'] is True
+        assert 'message' in data
+    
+    def test_delete_exam_nonexistent(self, client):
+        """Тест удаления несуществующего экзамена"""
+        response = client.post('/api/data/delete_exam', json={
+            'exam_id': 999999
+        })
+        
+        assert response.status_code == 404
+        data = response.get_json()
+        assert data['success'] is False
+        assert 'error' in data
+    
+    def test_delete_exam_missing_field(self, client):
+        """Тест удаления экзамена без указания ID"""
+        response = client.post('/api/data/delete_exam', json={})
+        
+        assert response.status_code == 400
+        data = response.get_json()
+        assert data['success'] is False
+        assert 'error' in data
+    
+    def test_delete_exam_invalid_id(self, client):
+        """Тест удаления экзамена с невалидным ID"""
+        response = client.post('/api/data/delete_exam', json={
+            'exam_id': 'not_a_number'
+        })
+        
+        assert response.status_code == 400
+        data = response.get_json()
+        assert data['success'] is False
+        assert 'error' in data
+
+
+class TestDeleteStudent:
+    """Тесты для удаления студентов"""
+    
+    def test_delete_student_success(self, client, test_student):
+        """Тест успешного удаления студента"""
+        if test_student['student_id'] is None:
+            pytest.skip("Не удалось создать тестового студента")
+        
+        response = client.post('/api/data/delete_student', json={
+            'student_id': test_student['student_id']
+        })
+        
+        assert response.status_code == 200
+        data = response.get_json()
+        assert data['success'] is True
+        assert 'message' in data
+    
+    def test_delete_student_nonexistent(self, client):
+        """Тест удаления несуществующего студента"""
+        response = client.post('/api/data/delete_student', json={
+            'student_id': 999999
+        })
+        
+        assert response.status_code == 404
+        data = response.get_json()
+        assert data['success'] is False
+        assert 'error' in data
+    
+    def test_delete_student_missing_field(self, client):
+        """Тест удаления студента без указания ID"""
+        response = client.post('/api/data/delete_student', json={})
+        
+        assert response.status_code == 400
+        data = response.get_json()
+        assert data['success'] is False
+        assert 'error' in data
+    
+    def test_delete_student_invalid_id(self, client):
+        """Тест удаления студента с невалидным ID"""
+        response = client.post('/api/data/delete_student', json={
+            'student_id': 'not_a_number'
+        })
+        
+        assert response.status_code == 400
+        data = response.get_json()
+        assert data['success'] is False
+        assert 'error' in data
 
 
 class TestErrorHandling:

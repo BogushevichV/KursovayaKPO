@@ -3,13 +3,11 @@ from typing import Optional, Dict, Any
 import sys
 import os
 
-# Добавляем путь для импорта конфига
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 try:
     from Client.Source.config import REQUEST_TIMEOUT
 except ImportError:
-    # Если конфиг не найден, используем значение по умолчанию
     REQUEST_TIMEOUT = 30
 
 
@@ -142,5 +140,29 @@ class DatabaseServerClient:
             "students_data": students_data
         }
         response = self._make_request('POST', '/api/data/save', data)
+        return response.get('success', False)
+    
+    def delete_subject(self, subject_name: str) -> bool:
+        """Удаление предмета и всех связанных данных"""
+        data = {"subject_name": subject_name}
+        response = self._make_request('POST', '/api/data/delete_subject', data)
+        return response.get('success', False)
+    
+    def delete_group(self, group_name: str) -> bool:
+        """Удаление группы и всех связанных данных"""
+        data = {"group_name": group_name}
+        response = self._make_request('POST', '/api/data/delete_group', data)
+        return response.get('success', False)
+    
+    def delete_exam(self, exam_id: int) -> bool:
+        """Удаление экзамена и всех связанных оценок"""
+        data = {"exam_id": exam_id}
+        response = self._make_request('POST', '/api/data/delete_exam', data)
+        return response.get('success', False)
+    
+    def delete_student(self, student_id: int) -> bool:
+        """Удаление студента и всех его оценок"""
+        data = {"student_id": student_id}
+        response = self._make_request('POST', '/api/data/delete_student', data)
         return response.get('success', False)
 

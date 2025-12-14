@@ -235,4 +235,135 @@ class ServerDatabaseSaver(DatabaseManager):
                 print(f"[DEBUG] Обновлена оценка для студента {student_id}, экзамен {exam_id}")
         except Exception as e:
             raise Exception(f"Ошибка при сохранении оценки: {e}")
+    
+    def delete_subject(self, subject_name: str) -> bool:
+        """Удаление предмета и всех связанных данных (экзамены, оценки)"""
+        try:
+            self.connect()
+            cursor = self.connection.cursor()
+            
+            cursor.execute("SELECT id FROM subjects WHERE subject_name = %s", (subject_name,))
+            subject_id = cursor.fetchone()
+            
+            if not subject_id:
+                cursor.close()
+                return False
+            
+            subject_id = subject_id[0]
+            
+            cursor.execute("""
+                DELETE FROM grades 
+                WHERE exam_id IN (
+                    SELECT id FROM exams WHERE subject_id = %s
+                )
+            """, (subject_id,))
+            
+            cursor.execute("DELETE FROM exams WHERE subject_id = %s", (subject_id,))
+            
+            cursor.execute("DELETE FROM subjects WHERE id = %s", (subject_id,))
+            
+            self.commit()
+            cursor.close()
+            print(f"[DEBUG] Предмет '{subject_name}' и все связанные данные успешно удалены")
+            return True
+            
+        except Exception as e:
+            error_msg = f"Ошибка при удалении предмета: {str(e)}"
+            print(f"[ERROR] {error_msg}")
+            self.rollback()
+            return False
+        finally:
+            self.close()
+    
+    def delete_group(self, group_name: str) -> bool:
+        """Удаление группы и всех связанных данных (студенты, экзамены, оценки)"""
+        try:
+            self.connect()
+            cursor = self.connection.cursor()
+            
+            cursor.execute("SELECT id FROM groups WHERE group_name = %s", (group_name,))
+            group_id = cursor.fetchone()
+            
+            if not group_id:
+                cursor.close()
+                return False
+            
+            group_id = group_id[0]
+            
+            cursor.execute("""
+                DELETE FROM grades 
+                WHERE student_id IN (
+                    SELECT id FROM students WHERE group_id = %s
+                )
+            """, (group_id,))
+            cursor.execute("DELETE FROM students WHERE group_id = %s", (group_id,))
+            cursor.execute("DELETE FROM exams WHERE group_id = %s", (group_id,))
+            cursor.execute("DELETE FROM groups WHERE id = %s", (group_id,))
+            
+            self.commit()
+            cursor.close()
+            print(f"[DEBUG] Группа '{group_name}' и все связанные данные успешно удалены")
+            return True
+            
+        except Exception as e:
+            error_msg = f"Ошибка при удалении группы: {str(e)}"
+            print(f"[ERROR] {error_msg}")
+            self.rollback()
+            return False
+        finally:
+            self.close()
+    
+    def delete_exam(self, exam_id: int) -> bool:
+        """Удаление экзамена и всех связанных оценок"""
+        try:
+            self.connect()
+            cursor = self.connection.cursor()
+            
+            cursor.execute("SELECT id FROM exams WHERE id = %s", (exam_id,))
+            if not cursor.fetchone():
+                cursor.close()
+                return False
+            
+            cursor.execute("DELETE FROM grades WHERE exam_id = %s", (exam_id,))
+            cursor.execute("DELETE FROM exams WHERE id = %s", (exam_id,))
+            
+            self.commit()
+            cursor.close()
+            print(f"[DEBUG] Экзамен с ID {exam_id} и все оценки по нему успешно удалены")
+            return True
+            
+        except Exception as e:
+            error_msg = f"Ошибка при удалении экзамена: {str(e)}"
+            print(f"[ERROR] {error_msg}")
+            self.rollback()
+            return False
+        finally:
+            self.close()
+    
+    def delete_student(self, student_id: int) -> bool:
+        """Удаление студента и всех его оценок"""
+        try:
+            self.connect()
+            cursor = self.connection.cursor()
+            
+            cursor.execute("SELECT id FROM students WHERE id = %s", (student_id,))
+            if not cursor.fetchone():
+                cursor.close()
+                return False
+            
+            cursor.execute("DELETE FROM grades WHERE student_id = %s", (student_id,))
+            cursor.execute("DELETE FROM students WHERE id = %s", (student_id,))
+            
+            self.commit()
+            cursor.close()
+            print(f"[DEBUG] Студент с ID {student_id} и все его оценки успешно удалены")
+            return True
+            
+        except Exception as e:
+            error_msg = f"Ошибка при удалении студента: {str(e)}"
+            print(f"[ERROR] {error_msg}")
+            self.rollback()
+            return False
+        finally:
+            self.close()
 
