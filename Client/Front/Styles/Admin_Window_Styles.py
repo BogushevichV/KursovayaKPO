@@ -11,16 +11,20 @@ BUTTON_STYLE = """
         background-color: #4CAF50;
         color: white;
         border: 2px solid #45a049;
+        padding: 0px 10px 0px 10px;
     }
     QPushButton:hover {
         background-color: #388038;
     }
 """
 
-FORM_STYLE = """
+def form_style(radius): return """
     QWidget {
         background-color: #f8f9fa;
-        border-radius: 10px;
+        border-top-left-radius: """+str(radius[0])+"""px;
+        border-top-right-radius: """+str(radius[1])+"""px;
+        border-bottom-right-radius: """+str(radius[2])+"""px;
+        border-bottom-left-radius: """+str(radius[3])+"""px;
         border: 1px solid #dee2e6;
     }
     QLineEdit {

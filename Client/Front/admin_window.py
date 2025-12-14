@@ -1,21 +1,38 @@
 import smtplib
+import re
 from email.mime.text import MIMEText
 from email.utils import formatdate
 import psycopg2
 from PySide6.QtWidgets import (QMainWindow, QWidget, QLabel, QLineEdit,
                                QPushButton, QVBoxLayout, QHBoxLayout,
-                               QMessageBox)
+                               QMessageBox, QGridLayout, QSizePolicy,
+                               QScrollArea)
 from PySide6.QtCore import Qt
-from Client.Front.Styles.Admin_Window_Styles import BUTTON_STYLE, FORM_STYLE, LOGIN_FORM_STYLE
+from Client.Front.Styles.Admin_Window_Styles import BUTTON_STYLE, form_style, LOGIN_FORM_STYLE
 
+email_regex = re.compile(
+    r'^[a-zA-Zа-яА-ЯёЁ0-9._%+-]+@[a-zA-Zа-яА-ЯёЁ0-9.-]+\.[a-zA-Zа-яА-ЯёЁ]{2,}$'
+)
+
+def is_valid_email(email):
+    return bool(email_regex.match(email))
 
 class AdminWindow(QMainWindow):
     def __init__(self, db_authenticator, account_manager, welcome_window, parent=None, signals=None):
         super().__init__(parent)
-        self.center_right_panel = None
-        self.right_panel = None
-        self.center_left_panel = None
-        self.left_panel = None
+        self.grid_left_widget = None
+        self.grid_right_widget = None
+
+        self.add_admin_sect = None
+        self.del_admin_sect = None
+        self.add_user_sect = None
+        self.del_user_sect = None
+
+        self.del_subject_sect = None
+        self.del_group_sect = None
+        self.del_exam_sect = None
+        self.del_student_sect = None
+
         self.back_button = None
         self.signals = signals
         self.db_auth = db_authenticator
@@ -31,7 +48,6 @@ class AdminWindow(QMainWindow):
 
         self._init_ui_elements()
         self.setWindowTitle(self.tr("Панель администратора"))
-        self.setFixedSize(1400, 650)
         self.setObjectName("window")
         self.setStyleSheet("#window{background-color: White;}")
 
@@ -61,6 +77,8 @@ class AdminWindow(QMainWindow):
 
         if self.signals:
             self.signals.language_changed.connect(self.retranslateUi)
+
+        self.showMaximized()
 
     def _init_ui_elements(self):
         # Для авторизации
@@ -117,7 +135,6 @@ class AdminWindow(QMainWindow):
 
     def setup_login_ui(self):
         self._clear_layout()
-
 
         # Создаем основной контейнер с вертикальным выравниванием
         main_container = QWidget()
@@ -188,27 +205,46 @@ class AdminWindow(QMainWindow):
             self.welcome_window.show()
         event.accept()
 
-    def setup_admin_panel(self):
+    def setup_admin_panel(self, admins, users, subjects, groups, exams, students):
         self._clear_layout()
 
-        # Универсальный метод создания секции
-        def create_section(title_text, widgets):
-            container = QWidget()
-            container.setStyleSheet(FORM_STYLE)
-            layout = QVBoxLayout(container)
-            layout.setSpacing(10)
-            layout.setContentsMargins(20, 20, 20, 20)
+        self.create_grid_left(admins, users)
+        self.create_grid_right(subjects, groups, exams, students)
 
-            title = QLabel(title_text)
-            title.setStyleSheet("font-size: 16px; font-weight: bold;")
-            title.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            layout.addWidget(title)
+        # Кнопка Назад
+        self.back_button = QPushButton(self.tr("Назад"))
+        self.back_button.setFixedSize(100, 30)
+        self.back_button.setStyleSheet(BUTTON_STYLE)
+        self.back_button.clicked.connect(self.return_to_welcome)
 
-            for widget in widgets:
-                layout.addWidget(widget)
+        button_container = QWidget()
+        button_layout = QHBoxLayout(button_container)
+        button_layout.addStretch()
+        button_layout.addWidget(self.back_button)
 
-            layout.addStretch()
-            return container
+        self.main_layout.addWidget(button_container)
+
+    def create_grid_left(self, admins, users):
+        # Блок Управление Учетными Записями
+
+        if not self.grid_left_widget is None:
+            self.grid_left_widget.deleteLater()
+
+        self.grid_left_widget = QWidget()
+        self.grid_left_widget.setObjectName("LeftGrid")
+        self.grid_left_widget.setStyleSheet("#LeftGrid{background-color: #d4d4d4; border-radius: 30px;}")
+        grid_left_layout = QGridLayout(self.grid_left_widget)
+
+        title_left = QLabel(self.tr("Управление Учетными Записями"))
+        title_left.setStyleSheet("font-size: 30px; font-weight: bold; color: black;")
+        title_left.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        grid_left_layout.addWidget(title_left, 0, 0, 1, 3)
+
+        self.main_layout.insertWidget(0, self.grid_left_widget, 3)
+
+        title = QLabel(self.tr("Администраторы"))
+        title.setStyleSheet("font-size: 20px; margin: 5px; font-weight: bold; color: black;")
+        grid_left_layout.addWidget(title, 1, 0, 1, 3)
 
         # Настройка виджетов для добавления администратора
         self.admin_login_label.setText(self.tr("Логин администратора:"))
@@ -231,12 +267,39 @@ class AdminWindow(QMainWindow):
         self.send_admin_button.setStyleSheet(BUTTON_STYLE)
         self.send_admin_button.clicked.connect(self.send_admin_data)
 
-        self.left_panel = create_section(self.tr("Добавить Админа"), [
+        self.add_admin_sect = create_section(self.tr("Добавить Админа"), (30, 0, 0, 30), [
             self.admin_login_label, self.admin_login_input,
             self.admin_password_label, self.admin_password_input,
             self.admin_email_label, self.admin_email_input,
             self.add_admin_button, self.send_admin_button
         ])
+
+        grid_left_layout.addWidget(self.add_admin_sect, 2, 0, 1, 1)
+
+        # Настройка виджетов для удаления администратора
+        self.del_admin_login_label.setText(self.tr("Логин администратора:"))
+        self.del_admin_login_input.setPlaceholderText(self.tr("Введите логин"))
+        self.del_admin_login_input.setFixedHeight(35)
+
+        self.del_admin_button.setText(self.tr("Удалить администратора"))
+        self.del_admin_button.setStyleSheet(BUTTON_STYLE)
+        self.del_admin_button.clicked.connect(self.delete_admin)
+
+        self.del_admin_sect = create_section(self.tr("Удалить Админа"), (0, 0, 0, 0), [
+            self.del_admin_login_label, self.del_admin_login_input,
+            self.del_admin_button
+        ])
+
+        grid_left_layout.addWidget(self.del_admin_sect, 2, 1, 1, 1)
+
+        admin_list, admin_list_layout = create_section(self.tr("Список Админов"), (0, 30, 30, 0), is_list=True)
+        grid_left_layout.addWidget(admin_list, 2, 2, 1, 1)
+
+        create_list(admin_list, admin_list_layout, admins, self.del_admin_login_input)
+
+        title = QLabel(self.tr("Пользователи"))
+        title.setStyleSheet("font-size: 20px; margin: 5px; font-weight: bold; color: black;")
+        grid_left_layout.addWidget(title, 3, 0, 1, 3)
 
         # Настройка виджетов для добавления пользователя
         self.user_login_label.setText(self.tr("Логин пользователя:"))
@@ -259,14 +322,16 @@ class AdminWindow(QMainWindow):
         self.send_button.setStyleSheet(BUTTON_STYLE)
         self.send_button.clicked.connect(self.send_user_data)
 
-        self.center_left_panel = create_section(self.tr("Добавить Пользователя"), [
+        self.add_user_sect = create_section(self.tr("Добавить Пользователя"), (30, 0, 0, 30), [
             self.user_login_label, self.user_login_input,
             self.user_password_label, self.user_password_input,
             self.user_email_label, self.user_email_input,
             self.add_user_button, self.send_button
         ])
 
-        # Настройка виджетов для удаления
+        grid_left_layout.addWidget(self.add_user_sect, 4, 0, 1, 1)
+
+        # Настройка виджетов для удаления пользователя
         self.del_user_login_label.setText(self.tr("Логин пользователя:"))
         self.del_user_login_input.setPlaceholderText(self.tr("Введите логин"))
         self.del_user_login_input.setFixedHeight(35)
@@ -275,22 +340,40 @@ class AdminWindow(QMainWindow):
         self.del_user_button.setStyleSheet(BUTTON_STYLE)
         self.del_user_button.clicked.connect(self.delete_user)
 
-        self.del_admin_login_label.setText(self.tr("Логин администратора:"))
-        self.del_admin_login_input.setPlaceholderText(self.tr("Введите логин"))
-        self.del_admin_login_input.setFixedHeight(35)
-
-        self.del_admin_button.setText(self.tr("Удалить администратора"))
-        self.del_admin_button.setStyleSheet(BUTTON_STYLE)
-        self.del_admin_button.clicked.connect(self.delete_admin)
-
-        self.center_right_panel = create_section(self.tr("Управление Учетными Записями"), [
+        self.del_user_sect = create_section(self.tr("Удалить Пользователя"), (0, 0, 0, 0), [
             self.del_user_login_label, self.del_user_login_input,
-            self.del_user_button,
-            self.del_admin_login_label, self.del_admin_login_input,
-            self.del_admin_button
+            self.del_user_button
         ])
 
-        # Настройка виджетов для управления БД
+        grid_left_layout.addWidget(self.del_user_sect, 4, 1, 1, 1)
+
+        user_list, user_list_layout = create_section(self.tr("Список Пользователей"), (0, 30, 30, 0), is_list=True)
+        grid_left_layout.addWidget(user_list, 4, 2, 1, 1)
+
+        create_list(user_list, user_list_layout, users, self.del_user_login_input)
+
+    def create_grid_right(self, subjects, groups, exams, students):
+        # Блок Управления записями БД
+
+        if not self.grid_right_widget is None:
+            self.grid_right_widget.deleteLater()
+
+        self.grid_right_widget = QWidget()
+        self.grid_right_widget.setObjectName("RightGrid")
+        self.grid_right_widget.setStyleSheet("#RightGrid{background-color: #d4d4d4; border-radius: 30px;}")
+        grid_right_layout = QGridLayout(self.grid_right_widget)
+
+        self.main_layout.insertWidget(1, self.grid_right_widget, 2)
+
+        title_right = QLabel(self.tr("Управление записями БД"))
+        title_right.setStyleSheet("font-size: 30px; font-weight: bold; color: black;")
+        title_right.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        grid_right_layout.addWidget(title_right, 0, 0, 1, 2)
+
+        title = QLabel(self.tr("Предметы"))
+        title.setStyleSheet("font-size: 20px; margin: 5px; font-weight: bold; color: black;")
+        grid_right_layout.addWidget(title, 1, 0, 1, 2)
+
         self.del_subject_label.setText(self.tr("Название предмета:"))
         self.del_subject_input.setPlaceholderText(self.tr("Введите название предмета"))
         self.del_subject_input.setFixedHeight(35)
@@ -298,6 +381,21 @@ class AdminWindow(QMainWindow):
         self.del_subject_button.setText(self.tr("Удалить предмет"))
         self.del_subject_button.setStyleSheet(BUTTON_STYLE)
         self.del_subject_button.clicked.connect(self.delete_subject)
+
+        self.del_subject_sect = create_section(self.tr("Удалить Предмет"), (30, 0, 0, 30), [
+            self.del_subject_label, self.del_subject_input, self.del_subject_button
+        ])
+
+        grid_right_layout.addWidget(self.del_subject_sect, 2, 0, 1, 1)
+
+        subject_list, subject_list_layout = create_section(self.tr("Список Предметов"), (0, 30, 30, 0), is_list=True)
+        grid_right_layout.addWidget(subject_list, 2, 1, 1, 1)
+
+        create_list(subject_list, subject_list_layout, subjects, self.del_subject_input)
+
+        title = QLabel(self.tr("Группы"))
+        title.setStyleSheet("font-size: 20px; margin: 5px; font-weight: bold; color: black;")
+        grid_right_layout.addWidget(title, 3, 0, 1, 2)
 
         self.del_group_label.setText(self.tr("Номер группы:"))
         self.del_group_input.setPlaceholderText(self.tr("Введите номер группы"))
@@ -307,6 +405,21 @@ class AdminWindow(QMainWindow):
         self.del_group_button.setStyleSheet(BUTTON_STYLE)
         self.del_group_button.clicked.connect(self.delete_group)
 
+        self.del_group_sect = create_section(self.tr("Удалить Группу"), (30, 0, 0, 30), [
+            self.del_group_label, self.del_group_input, self.del_group_button
+        ])
+
+        grid_right_layout.addWidget(self.del_group_sect, 4, 0, 1, 1)
+
+        group_list, group_list_layout = create_section(self.tr("Список Групп"), (0, 30, 30, 0), is_list=True)
+        grid_right_layout.addWidget(group_list, 4, 1, 1, 1)
+
+        create_list(group_list, group_list_layout, groups, self.del_group_input)
+
+        title = QLabel(self.tr("Экзамены"))
+        title.setStyleSheet("font-size: 20px; margin: 5px; font-weight: bold; color: black;")
+        grid_right_layout.addWidget(title, 5, 0, 1, 2)
+
         self.del_exam_label.setText(self.tr("ID экзамена:"))
         self.del_exam_input.setPlaceholderText(self.tr("Введите ID экзамена"))
         self.del_exam_input.setFixedHeight(35)
@@ -314,6 +427,21 @@ class AdminWindow(QMainWindow):
         self.del_exam_button.setText(self.tr("Удалить экзамен"))
         self.del_exam_button.setStyleSheet(BUTTON_STYLE)
         self.del_exam_button.clicked.connect(self.delete_exam)
+
+        self.del_exam_sect = create_section(self.tr("Удалить Экзамен"), (30, 0, 0, 30), [
+            self.del_exam_label, self.del_exam_input, self.del_exam_button
+        ])
+
+        grid_right_layout.addWidget(self.del_exam_sect, 6, 0, 1, 1)
+
+        exam_list, exam_list_layout = create_section(self.tr("Список Экзаменов"), (0, 30, 30, 0), is_list=True)
+        grid_right_layout.addWidget(exam_list, 6, 1, 1, 1)
+
+        create_list(exam_list, exam_list_layout, exams, self.del_exam_input)
+
+        title = QLabel(self.tr("Студенты"))
+        title.setStyleSheet("font-size: 20px; margin: 5px; font-weight: bold; color: black;")
+        grid_right_layout.addWidget(title, 7, 0, 1, 2)
 
         self.del_student_label.setText(self.tr("ID студента:"))
         self.del_student_input.setPlaceholderText(self.tr("Введите ID студента"))
@@ -323,31 +451,16 @@ class AdminWindow(QMainWindow):
         self.del_student_button.setStyleSheet(BUTTON_STYLE)
         self.del_student_button.clicked.connect(self.delete_student)
 
-        self.right_panel = create_section(self.tr("Управление записями БД"), [
-            self.del_subject_label, self.del_subject_input, self.del_subject_button,
-            self.del_group_label, self.del_group_input, self.del_group_button,
-            self.del_exam_label, self.del_exam_input, self.del_exam_button,
+        self.del_student_sect = create_section(self.tr("Удалить Студента"), (30, 0, 0, 30), [
             self.del_student_label, self.del_student_input, self.del_student_button
         ])
 
-        # Добавляем все панели в главный layout
-        self.main_layout.addWidget(self.left_panel, 1)
-        self.main_layout.addWidget(self.center_left_panel, 1)
-        self.main_layout.addWidget(self.center_right_panel, 1)
-        self.main_layout.addWidget(self.right_panel, 1)
+        grid_right_layout.addWidget(self.del_student_sect, 8, 0, 1, 1)
 
-        # Кнопка Назад
-        self.back_button = QPushButton(self.tr("Назад"))
-        self.back_button.setFixedSize(100, 30)
-        self.back_button.setStyleSheet(BUTTON_STYLE)
-        self.back_button.clicked.connect(self.return_to_welcome)
+        student_list, student_list_layout = create_section(self.tr("Список Студентов"), (0, 30, 30, 0), is_list=True)
+        grid_right_layout.addWidget(student_list, 8, 1, 1, 1)
 
-        button_container = QWidget()
-        button_layout = QHBoxLayout(button_container)
-        button_layout.addStretch()
-        button_layout.addWidget(self.back_button)
-
-        self.main_layout.addWidget(button_container)
+        create_list(student_list, student_list_layout, students, self.del_student_input)
 
     def send_admin_data(self):
         login = self.admin_login_input.text()
@@ -358,7 +471,7 @@ class AdminWindow(QMainWindow):
             QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Все поля должны быть заполнены!"))
             return
 
-        if "@" not in email or "." not in email:
+        if not is_valid_email(email):
             QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Введите корректный email!"))
             return
 
@@ -453,7 +566,21 @@ class AdminWindow(QMainWindow):
                 self.tr(f"Предмет '{subject_name}' и все связанные данные успешно удалены!")
             )
 
-            self.del_subject_input.clear()
+            # Получаем эти обновлённые списки
+
+            subjects = [
+            ]
+
+            groups = [
+            ]
+
+            exams = [
+            ]
+
+            students = [
+            ]
+
+            self.create_grid_right(subjects, groups, exams, students)
 
         except psycopg2.Error as e:
             conn.rollback()
@@ -528,7 +655,21 @@ class AdminWindow(QMainWindow):
                 self.tr("Успех"),
                 self.tr(f"Группа '{group_name}' и все связанные данные успешно удалены!")
             )
-            self.del_group_input.clear()
+            # Получаем эти обновлённые списки
+
+            subjects = [
+            ]
+
+            groups = [
+            ]
+
+            exams = [
+            ]
+
+            students = [
+            ]
+
+            self.create_grid_right(subjects, groups, exams, students)
 
         except psycopg2.Error as e:
             conn.rollback()
@@ -587,7 +728,21 @@ class AdminWindow(QMainWindow):
                 self.tr("Успех"),
                 self.tr(f"Экзамен с ID {exam_id} и все оценки по нему успешно удалены!")
             )
-            self.del_exam_input.clear()
+            # Получаем эти обновлённые списки
+
+            subjects = [
+            ]
+
+            groups = [
+            ]
+
+            exams = [
+            ]
+
+            students = [
+            ]
+
+            self.create_grid_right(subjects, groups, exams, students)
 
         except psycopg2.Error as e:
             conn.rollback()
@@ -648,7 +803,21 @@ class AdminWindow(QMainWindow):
                 self.tr(f"Студент с ID {student_id} и все его оценки успешно удалены!")
             )
 
-            self.del_student_input.clear()
+            # Получаем эти обновлённые списки
+
+            subjects = [
+            ]
+
+            groups = [
+            ]
+
+            exams = [
+            ]
+
+            students = [
+            ]
+
+            self.create_grid_right(subjects, groups, exams, students)
 
         except psycopg2.Error as e:
             conn.rollback()
@@ -693,7 +862,7 @@ class AdminWindow(QMainWindow):
             QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Все поля должны быть заполнены!"))
             return
 
-        if "@" not in email or "." not in email:
+        if not is_valid_email(email):
             QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Введите корректный email!"))
             return
 
@@ -722,10 +891,15 @@ class AdminWindow(QMainWindow):
                         self.tr(f"Администратор {login} добавлен, но не удалось отправить данные на email!")
                     )
 
-                # Очищаем поля
-                self.admin_login_input.clear()
-                self.admin_password_input.clear()
-                self.admin_email_input.clear()
+                    # Получаем эти обновлённые списки
+
+                    admins = [
+                    ]
+
+                    users = [
+                    ]
+
+                    self.create_grid_left(admins, users)
             else:
                 QMessageBox.warning(
                     self,
@@ -748,7 +922,7 @@ class AdminWindow(QMainWindow):
             QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Все поля должны быть заполнены!"))
             return
 
-        if "@" not in email or "." not in email:
+        if not is_valid_email(email):
             QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Введите корректный email!"))
             return
 
@@ -761,9 +935,15 @@ class AdminWindow(QMainWindow):
                     self.tr(f"Пользователь {login} успешно добавлен!")
                 )
 
-                self.user_login_input.clear()
-                self.user_password_input.clear()
-                self.user_email_input.clear()
+                # Получаем эти обновлённые списки
+
+                admins = [
+                ]
+
+                users = [
+                ]
+
+                self.create_grid_left(admins, users)
             else:
                 QMessageBox.warning(
                     self,
@@ -786,7 +966,7 @@ class AdminWindow(QMainWindow):
             QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Все поля должны быть заполнены!"))
             return
 
-        if "@" not in email or "." not in email:
+        if not is_valid_email(email):
             QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Введите корректный email!"))
             return
 
@@ -830,8 +1010,52 @@ class AdminWindow(QMainWindow):
         try:
             is_authenticated = self.db_auth.authenticate_admin(login, password)
 
+            admins = [
+                ("login", "someemail@gmail.com"),
+                ("ivan", "sjkfhsdjf@gmail.com"),
+                ("slava", "skdfhsh@gmail.com"),
+                ("kirill", "psdhuf@gmail.com"),
+                ("vadim", "siduhfs@gmail.com")
+            ]
+
+            users = [
+                ("login", "someemail@gmail.com"),
+                ("ivan", "sjkfhsdjf@gmail.com"),
+                ("slava", "skdfhsh@gmail.com"),
+                ("kirill", "psdhuf@gmail.com"),
+                ("vadim", "siduhfs@gmail.com")
+            ]
+
+            subjects = [
+                ("Subj_1",),
+                ("Subj_2",),
+                ("Subj_3",),
+                ("Subj_4",)
+            ]
+
+            groups = [
+                ("123123",),
+                ("234234",),
+                ("123123",),
+                ("234234",)
+            ]
+
+            exams = [
+                ("1231",),
+                ("2234",),
+                ("1223",),
+                ("2344",)
+            ]
+
+            students = [
+                ("1231", "ФИО_1"),
+                ("2234", "ФИО_2"),
+                ("1223", "ФИО_3"),
+                ("2344", "ФИО_4")
+            ]
+
             if is_authenticated:
-                self.setup_admin_panel()
+                self.setup_admin_panel(admins, users, subjects, groups, exams, students)
             else:
                 self.handle_failed_login()
         except Exception as e:
@@ -873,7 +1097,15 @@ class AdminWindow(QMainWindow):
                     self.tr(f"Пользователь {login} успешно удален!")
                 )
 
-                self.del_user_login_input.clear()
+                # Получаем эти обновлённые списки
+
+                admins = [
+                ]
+
+                users = [
+                ]
+
+                self.create_grid_left(admins, users)
             else:
                 QMessageBox.warning(
                     self,
@@ -903,7 +1135,15 @@ class AdminWindow(QMainWindow):
                     self.tr(f"Администратор {login} успешно удален!")
                 )
 
-                self.del_admin_login_input.clear()
+                # Получаем эти обновлённые списки
+
+                admins = [
+                ]
+
+                users = [
+                ]
+
+                self.create_grid_left(admins, users)
             else:
                 QMessageBox.warning(
                     self,
@@ -963,7 +1203,7 @@ class AdminWindow(QMainWindow):
         self.left_panel.setTitle(self.tr("Добавить Админа"))
         self.center_left_panel.setTitle(self.tr("Добавить Пользователя"))
         self.right_panel.setTitle(self.tr("Управление Учетными Записями"))
-        self.center_right_panel.setTitle(self.tr("Управление Учетными Записями"))
+        self.del_admin_sect.setTitle(self.tr("Управление Учетными Записями"))
 
     def _clear_layout(self):
         while self.main_layout.count():
@@ -971,3 +1211,100 @@ class AdminWindow(QMainWindow):
             if item.widget():
                 item.widget().deleteLater()
 
+
+# Класс Пользовательская прокручивающаяся область
+class CustomScrollArea(QScrollArea):
+    def __init__(self, root, alignment, bg=None, place=None, vert_scroll=False, horiz_scroll=False):
+        super().__init__(root)
+        self.setWidgetResizable(True)
+        if not vert_scroll:
+            self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        if not horiz_scroll:
+            self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+
+        self.elements = QWidget()
+        self.setWidget(self.elements)
+
+        if bg is not None:
+            self.elements.setStyleSheet(f"background-color: {bg};")
+
+        if alignment == 'v':
+            self.layout = QVBoxLayout(self.elements)
+            self.layout.setAlignment(Qt.AlignTop)
+        elif alignment == 'h':
+            self.layout = QHBoxLayout(self.elements)
+            self.layout.setAlignment(Qt.AlignLeft)
+
+        self.layout.setContentsMargins(0, 0, 0, 0)
+        self.layout.setSpacing(1)
+        self.elements.setLayout(self.layout)
+
+        # if place is None:
+        #     root.layout.addWidget(self)
+        # elif len(place) == 1:
+        #     root.layout.insertWidget(place[0], self)
+        # elif len(place) == 4:
+        #     root.layout.addWidget(self, place[0], place[1], place[2], place[3])
+
+# Универсальный метод создания секции
+def create_section(title_text, radius, widgets=None, is_list=False):
+    container = QWidget()
+    container.setStyleSheet(form_style(radius))
+    layout = QVBoxLayout(container)
+    layout.setSpacing(10)
+    layout.setContentsMargins(20, 20, 20, 20)
+
+    title = QLabel(title_text)
+    title.setStyleSheet("font-size: 16px; font-weight: bold;")
+    title.setAlignment(Qt.AlignmentFlag.AlignCenter)
+    layout.addWidget(title)
+
+    if not is_list:
+        for widget in widgets:
+            layout.addWidget(widget)
+
+        layout.addStretch()
+        container.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
+        return container
+    else:
+        return container, layout
+
+# Универсальный метод создания списка
+def create_list(list_widget: QWidget, list_layout: QVBoxLayout, full_list: list, input_block: QLineEdit):
+    area = CustomScrollArea(list_widget, 'v', vert_scroll=True)
+    area.layout.setSpacing(5)
+
+    area.elements.setObjectName("Area")
+    area.elements.setStyleSheet("#Area{ border-radius: 0px;"
+                                        "border-bottom-right-radius: 30px; "
+                                        "border-bottom-left-radius: 30px;}")
+    list_layout.addWidget(area)
+
+    input_block.textChanged.connect(
+        lambda e: on_text_changed(full_list, input_block.text(), area))
+
+    on_text_changed(full_list, "", area)
+
+# Функция для привязки изменения текста поля
+def on_text_changed(full_list: list, text: str, area):
+    for el in area.elements.children()[1:]:
+        el.deleteLater()
+
+    for elem in full_list:
+        if re.search(text, elem[0]):
+            block = QWidget()
+            block.setStyleSheet("font-size: 15px; font-weight: bold; background-color: #daf3e6; "
+                                        "border-bottom-left-radius: 15px; border-top-left-radius: 15px;")
+            block_layout = QHBoxLayout(block)
+            area.layout.addWidget(block)
+
+            item_left = QLabel(elem[0])
+            item_left.setStyleSheet("color: green; margin: 0 0 0 5;")
+            block_layout.addWidget(item_left)
+
+            if len(elem) > 1:
+                item_right = QLabel(elem[1])
+                item_right.setStyleSheet("color: gray; margin: 0 0 0 50;")
+                block_layout.addWidget(item_right)
+
+            block_layout.addStretch()
