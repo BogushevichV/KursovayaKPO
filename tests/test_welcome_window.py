@@ -1,6 +1,6 @@
 import pytest
 from PySide6.QtCore import Qt
-from Welcome_Window import WelcomeWindow  # Импортируйте ваш файл
+from Client.Front.welcome_window import WelcomeWindow  # Обновленный импорт
 
 @pytest.fixture
 def window(qtbot):
@@ -43,4 +43,3 @@ def test_image_loaded(window):
     assert pix is not None
     assert pix.width() > 0
     assert pix.height() > 0
-
