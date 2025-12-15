@@ -488,13 +488,44 @@ def delete_student():
         logger.log_error(e, context="delete_student")
         return jsonify({"success": False, "error": str(e)}), 500
 
+@app.route('/api/data/get_all_subjects', methods=['GET'])
+def get_all_subjects():
+    """Получение всех предметов"""
+    result = report_manager.get_all_subjects()
+    return jsonify({"success": True, "data": result})
 
+@app.route('/api/data/get_all_groups', methods=['GET'])
+def get_all_groups():
+    """Получение всех групп"""
+    result = report_manager.get_all_groups()
+    return jsonify({"success": True, "data": result})
+
+@app.route('/api/data/get_all_exams', methods=['GET'])
+def get_all_exams():
+    """Получение всех экзаменов"""
 @app.errorhandler(404)
 def not_found(error):
     """Обработка 404 ошибок"""
     logger.log_error(error, context="404_not_found")
     return jsonify({"success": False, "error": "Endpoint не найден"}), 404
 
+@app.route('/api/data/get_all_students', methods=['GET'])
+def get_all_students():
+    """Получение всех студентов"""
+    result = report_manager.get_all_students()
+    return jsonify({"success": True, "data": result})
+
+@app.route('/api/data/get_all_users', methods=['GET'])
+def get_all_users():
+    """Получение всех пользователей"""
+    result = report_manager.get_all_users()
+    return jsonify({"success": True, "data": result})
+
+@app.route('/api/data/get_all_admins', methods=['GET'])
+def get_all_admins():
+    """Получение всех администраторов"""
+    result = report_manager.get_all_admins()
+    return jsonify({"success": True, "data": result})
 
 @app.errorhandler(500)
 def internal_error(error):
@@ -531,6 +562,12 @@ if __name__ == '__main__':
     print("  POST /api/data/delete_group - удаление группы")
     print("  POST /api/data/delete_exam - удаление экзамена")
     print("  POST /api/data/delete_student - удаление студента")
+    print("  GET /api/data/get_all_subjects - получение всех предметов")
+    print("  GET /api/data/get_all_groups - получение всех групп")
+    print("  GET /api/data/get_all_exams - получение всех экзаменов")
+    print("  GET /api/data/get_all_students - получение всех студентов")
+    print("  GET /api/data/get_all_users - получение всех пользователей")
+    print("  GET /api/data/get_all_admins - получение всех администраторов")
     print("\n" + "=" * 80)
 
     # Запуск сервера из конфига
