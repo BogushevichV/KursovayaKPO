@@ -37,7 +37,7 @@ except ImportError:
     }
 
 
-def test_connection():
+def check_connection():
     """Тестирует подключение к PostgreSQL"""
     print("Тестирование подключения к PostgreSQL...")
     conn_params = DB_CONFIG.copy()
@@ -200,7 +200,7 @@ def main():
 
     # Тест подключения
     print("Шаг 0: Тестирование подключения...")
-    if not test_connection():
+    if not check_connection():
         print("\n❌ Невозможно продолжить без подключения к PostgreSQL.")
         return
     print()
