@@ -167,10 +167,6 @@ class AdminWindow(QMainWindow):
         self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
 
         self.login_button.setText(self.tr("Войти"))
-        # >>>>>>>>>>> Потом убрать
-        self.login_input.setText("login")
-        self.password_input.setText("123")
-        # >>>>>>>>>>>>
 
         self.login_button.clicked.connect(self.check_credentials)
         self.login_button.setStyleSheet(BUTTON_STYLE)
@@ -224,11 +220,15 @@ class AdminWindow(QMainWindow):
         self.back_button.setFixedSize(100, 30)
         self.back_button.setStyleSheet(BUTTON_STYLE)
         self.back_button.clicked.connect(self.return_to_welcome)
+        self.back_button.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+
+        filler = QWidget()
+        filler.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         button_container = QWidget()
-        button_layout = QHBoxLayout(button_container)
-        button_layout.addStretch()
+        button_layout = QVBoxLayout(button_container)
         button_layout.addWidget(self.back_button)
+        button_layout.addWidget(filler)
 
         self.main_layout.addWidget(button_container)
 
@@ -1080,13 +1080,6 @@ class CustomScrollArea(QScrollArea):
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.layout.setSpacing(1)
         self.elements.setLayout(self.layout)
-
-        # if place is None:
-        #     root.layout.addWidget(self)
-        # elif len(place) == 1:
-        #     root.layout.insertWidget(place[0], self)
-        # elif len(place) == 4:
-        #     root.layout.addWidget(self, place[0], place[1], place[2], place[3])
 
 # Универсальный метод создания секции
 def create_section(title_text, radius, widgets=None, is_list=False):

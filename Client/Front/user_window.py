@@ -54,10 +54,6 @@ class UserWindow(QMainWindow):
         self.password_input.setFixedHeight(35)
 
         self.login_button = QPushButton(self.tr("Войти"))
-        # >>>>>>>>>>> Потом убрать
-        self.login_input.setText("login")
-        self.password_input.setText("123")
-        # >>>>>>>>>>>>
 
         self.login_button.setStyleSheet(BUTTON_STYLE)
         self.login_button.clicked.connect(self.check_credentials)

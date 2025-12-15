@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import (QMainWindow, QWidget, QMessageBox, QTableWidgetItem, QHBoxLayout, QVBoxLayout,
                                QComboBox, QLineEdit, QSpinBox, QDateEdit, QTableWidget, QHeaderView,
-                               QPushButton, QFormLayout, QScrollArea)
+                               QPushButton, QFormLayout, QScrollArea, QFileDialog)
 from PySide6.QtCore import Qt, QRegularExpression, QDate, QT_TR_NOOP
 from PySide6.QtGui import QRegularExpressionValidator
 from Client.Front.Styles.Examination_Report_App_Styles import BUTTON_STYLE, FORM_STYLE
@@ -10,6 +10,8 @@ from Client.Source.config import SERVER_URL
 from Client.Front.grade_item_delegate import GradeItemDelegate
 from Client.Back.excel_importer import ExcelImporter
 from Client.Back.create_examination_report import CreateExaminationReport
+
+import os
 
 
 class GradeBookApp(QMainWindow):
@@ -38,18 +40,9 @@ class GradeBookApp(QMainWindow):
         self.grade_mode = "grade"
         # ReportManager теперь работает через сервер (HTTP запросы)
         self.db_manager = ReportManager(server_url=SERVER_URL)
-        
+
         # SaveData работает через сервер (HTTP API запросы)
         self.db_saver = SaveData(server_url=SERVER_URL)
-        #
-        #
-        #
-        # 2 PODKLYUCHENIYA K BD
-        #
-        #
-        #
-        #
-        #
 
         self.welcome_window = None  # Добавляем ссылку на окно приветствия
 
@@ -304,10 +297,6 @@ class GradeBookApp(QMainWindow):
         except ValueError:
             return abbrev  # если вдруг пришло что-то неожиданное
 
-    # abbr = self.faculty_combo.currentData()
-    # full_name = self.get_full_faculty_name(abbr)
-    # Возможно в вызове понадобится что-то поменять на это
-
     def create_exam_report(self):
         """Создание ведомости с данными из формы и БД"""
         try:
@@ -365,17 +354,25 @@ class GradeBookApp(QMainWindow):
             # Генерируем имя файла
             filename = f"Ведомость_{form_data['group']}_{form_data['subject']}.docx"
 
+            file_path, _ = QFileDialog.getSaveFileName(
+                self,
+                "Сохранить ведомость",
+                filename,
+                "DOCX Files (*.docx)"
+            )
+
             # Создаем отчет
             result = CreateExaminationReport.create_report(
-                db_params=db_params,
                 form_data=form_data,
-                filename=filename
+                filename=file_path
             )
 
             if result:
                 QMessageBox.information(self, "Успех", f"Ведомость успешно создана:\n{result}")
             else:
                 QMessageBox.critical(self, "Ошибка", "Не удалось создать ведомость")
+
+            os.startfile(file_path)
 
         except Exception as e:
             QMessageBox.critical(
