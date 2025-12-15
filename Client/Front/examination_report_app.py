@@ -40,18 +40,9 @@ class GradeBookApp(QMainWindow):
         self.grade_mode = "grade"
         # ReportManager теперь работает через сервер (HTTP запросы)
         self.db_manager = ReportManager(server_url=SERVER_URL)
-        
+
         # SaveData работает через сервер (HTTP API запросы)
         self.db_saver = SaveData(server_url=SERVER_URL)
-        #
-        #
-        #
-        # 2 PODKLYUCHENIYA K BD
-        #
-        #
-        #
-        #
-        #
 
         self.welcome_window = None  # Добавляем ссылку на окно приветствия
 
@@ -305,10 +296,6 @@ class GradeBookApp(QMainWindow):
             return self.FULL_FACULTY_NAMES[idx]
         except ValueError:
             return abbrev  # если вдруг пришло что-то неожиданное
-
-    # abbr = self.faculty_combo.currentData()
-    # full_name = self.get_full_faculty_name(abbr)
-    # Возможно в вызове понадобится что-то поменять на это
 
     def create_exam_report(self):
         """Создание ведомости с данными из формы и БД"""

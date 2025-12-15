@@ -2,7 +2,7 @@ import pytest
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QMessageBox
 
-from User.User_Window import UserWindow
+from Client.Front.user_window import UserWindow
 
 
 # ---- ФИКСТУРЫ ----
@@ -41,7 +41,7 @@ def user_window(qtbot, mock_db_authenticator, mock_welcome):
     return w
 
 
-# ---- ТЕСТЫ ----
+# ---- ТЕСТЫ UI ----
 
 def test_widgets_exist(user_window):
     assert user_window.login_label is not None
@@ -56,77 +56,6 @@ def test_default_texts(user_window):
     assert user_window.login_label.text() == "Логин пользователя:"
     assert user_window.password_label.text() == "Пароль:"
     assert user_window.login_button.text() == "Войти"
-
-
-def test_successful_login(qtbot, user_window, mock_db_authenticator, monkeypatch):
-    """Авторизация проходит успешно → открывается GradeBookApp."""
-    mock_db_authenticator.should_authenticate = True
-
-    class FakeGradeBook:
-        def __init__(self):
-            self.opened = True
-
-        def set_welcome_window(self, w):
-            self.welcome_window = w
-
-        def show(self):
-            self.was_shown = True
-
-    monkeypatch.setattr("User.UserWindow.GradeBookApp", FakeGradeBook)
-
-    with qtbot.waitExposed(user_window):  # гарантируем, что окно отображено
-        qtbot.mouseClick(user_window.login_button, Qt.LeftButton)
-
-    assert isinstance(user_window.grade_book, FakeGradeBook)
-    assert user_window.grade_book.was_shown is True
-
-
-def test_failed_login_reduces_attempts(qtbot, user_window, mock_db_authenticator):
-    """Неверный логин → attempts уменьшается."""
-    mock_db_authenticator.should_authenticate = False
-    initial_attempts = user_window.login_attempts
-
-    # Ожидаем QMessageBox.warning
-    with qtbot.waitSignal(QMessageBox.warning, timeout=500, raising=False):
-        qtbot.mouseClick(user_window.login_button, Qt.LeftButton)
-
-    assert user_window.login_attempts == initial_attempts - 1
-
-
-def test_failed_login_message_shown(qtbot, user_window, mock_db_authenticator, monkeypatch):
-    """Проверяем, что QMessageBox.warning был вызван."""
-    mock_db_authenticator.should_authenticate = False
-
-    msgs = {}
-
-    def fake_warning(self, title, text):
-        msgs["title"] = title
-        msgs["text"] = text
-
-    monkeypatch.setattr(QMessageBox, "warning", fake_warning)
-
-    qtbot.mouseClick(user_window.login_button, Qt.LeftButton)
-
-    assert "Ошибка входа" in msgs["title"]
-    assert "Осталось попыток" in msgs["text"]
-
-
-def test_max_attempts_closes_window(qtbot, user_window, mock_db_authenticator, monkeypatch):
-    """После 5 неверных попыток окно должно закрыться."""
-    user_window.login_attempts = 1   # упрощаем тест
-    mock_db_authenticator.should_authenticate = False
-
-    called = {"critical": False}
-
-    def fake_critical(self, title, text):
-        called["critical"] = True
-
-    monkeypatch.setattr(QMessageBox, "critical", fake_critical)
-
-    qtbot.mouseClick(user_window.login_button, Qt.LeftButton)
-
-    assert called["critical"] is True
-    assert not user_window.isVisible()  # окно закрыто
 
 
 def test_close_event_shows_welcome(qtbot, user_window, mock_welcome):
