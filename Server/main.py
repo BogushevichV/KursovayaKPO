@@ -503,6 +503,8 @@ def get_all_groups():
 @app.route('/api/data/get_all_exams', methods=['GET'])
 def get_all_exams():
     """Получение всех экзаменов"""
+    result = report_manager.get_all_exams()
+    return jsonify({"success": True, "data": result})
 @app.errorhandler(404)
 def not_found(error):
     """Обработка 404 ошибок"""

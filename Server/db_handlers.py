@@ -302,14 +302,27 @@ class ServerReportManager(DatabaseManager):
             self.connect()
             with self.connection.cursor() as cursor:
                 query = """
-                    SELECT e.id
+                    SELECT 
+                        e.id,
+                        g.group_name,
+                        s.subject_name,
+                        e.course,
+                        e.semester
                     FROM exams e
+                    INNER JOIN groups g ON e.group_id = g.id
+                    INNER JOIN subjects s ON e.subject_id = s.id
                     ORDER BY e.id
                 """
                 cursor.execute(query)
                 exams = cursor.fetchall()
-                # Преобразуем в список кортежей для совместимости с UI
-                result = [(str(row[0]),) for row in exams]
+                # Формируем человекочитаемое описание экзамена
+                result = [
+                    (
+                        str(row[0]),
+                        f"{row[1]} • {row[2]} • курс {row[3]}, семестр {row[4]}"
+                    )
+                    for row in exams
+                ]
             return result
         except Exception as e:
             print(f"Error fetching all exams: {str(e)}")
@@ -339,18 +352,18 @@ class ServerReportManager(DatabaseManager):
             self.close()
 
     def get_all_users(self):
-        """Получение всех пользователей"""
+        """Получить всех пользователей (логин и email)"""
         try:
             self.connect()
             with self.connection.cursor() as cursor:
                 query = """
-                    SELECT id, login
+                    SELECT login, email
                     FROM users
                     ORDER BY login
                 """
                 cursor.execute(query)
                 users = cursor.fetchall()
-                result = [(row[0], row[1], row[2]) for row in users]
+                result = [(row[0], row[1]) for row in users]
             return result
         except Exception as e:
             print(f"Error fetching all users: {str(e)}")
@@ -359,12 +372,12 @@ class ServerReportManager(DatabaseManager):
             self.close()
 
     def get_all_admins(self):
-        """Получение всех администраторов"""
+        """Получить всех администраторов (логин и email)"""
         try:
             self.connect()
             with self.connection.cursor() as cursor:
                 query = """
-                    SELECT id, login
+                    SELECT login, email
                     FROM admins
                     ORDER BY login
                 """
@@ -377,3 +390,4 @@ class ServerReportManager(DatabaseManager):
             return []
         finally:
             self.close()
+

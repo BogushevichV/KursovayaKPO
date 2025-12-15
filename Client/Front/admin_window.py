@@ -890,49 +890,17 @@ class AdminWindow(QMainWindow):
         try:
             is_authenticated = self.db_auth.authenticate_admin(login, password)
 
-            admins = [
-                ("login", "someemail@gmail.com"),
-                ("ivan", "sjkfhsdjf@gmail.com"),
-                ("slava", "skdfhsh@gmail.com"),
-                ("kirill", "psdhuf@gmail.com"),
-                ("vadim", "siduhfs@gmail.com")
-            ]
+            admins = self.db_client.get_all_admins()
 
-            users = [
-                ("login", "someemail@gmail.com"),
-                ("ivan", "sjkfhsdjf@gmail.com"),
-                ("slava", "skdfhsh@gmail.com"),
-                ("kirill", "psdhuf@gmail.com"),
-                ("vadim", "siduhfs@gmail.com")
-            ]
+            users = self.db_client.get_all_users()
 
-            subjects = [
-                ("Subj_1",),
-                ("Subj_2",),
-                ("Subj_3",),
-                ("Subj_4",)
-            ]
+            subjects = self.db_client.get_all_subjects()
 
-            groups = [
-                ("123123",),
-                ("234234",),
-                ("123123",),
-                ("234234",)
-            ]
+            groups = self.db_client.get_all_groups()
 
-            exams = [
-                ("1231",),
-                ("2234",),
-                ("1223",),
-                ("2344",)
-            ]
+            exams = self.db_client.get_all_exams()
 
-            students = [
-                ("1231", "ФИО_1"),
-                ("2234", "ФИО_2"),
-                ("1223", "ФИО_3"),
-                ("2344", "ФИО_4")
-            ]
+            students = self.db_client.get_all_students()
 
             if is_authenticated:
                 self.setup_admin_panel(admins, users, subjects, groups, exams, students)
