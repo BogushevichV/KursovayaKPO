@@ -1,31 +1,46 @@
-import smtplib
-import re
-from email.mime.text import MIMEText
-from email.utils import formatdate
 import sys
 import os
 from PySide6.QtWidgets import (QMainWindow, QWidget, QLabel, QLineEdit,
                                QPushButton, QVBoxLayout, QHBoxLayout,
-                               QMessageBox, QGridLayout, QSizePolicy,
-                               QScrollArea)
+                               QGridLayout, QSizePolicy)
 from PySide6.QtCore import Qt
 from Client.Front.Styles.Admin_Window_Styles import BUTTON_STYLE, form_style, LOGIN_FORM_STYLE
+from Client.Front.admin_lists_widgets import create_list
+from Client.Back.admin_controller import (send_admin_data, delete_subject, delete_group,
+                                          delete_exam, delete_student, add_new_admin,
+                                          add_new_user, send_user_data, check_credentials,
+                                          delete_user, delete_admin)
 
 # Добавляем путь для импорта конфига
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from Client.Back.client_requests import DatabaseServerClient
 from Client.Source.config import SERVER_URL
 
-email_regex = re.compile(
-    r'^[a-zA-Zа-яА-ЯёЁ0-9._%+-]+@[a-zA-Zа-яА-ЯёЁ0-9.-]+\.[a-zA-Zа-яА-ЯёЁ]{2,}$'
-)
-
-def is_valid_email(email):
-    return bool(email_regex.match(email))
-
 class AdminWindow(QMainWindow):
     def __init__(self, db_authenticator, account_manager, welcome_window, parent=None, signals=None):
         super().__init__(parent)
+
+        self.admin_scroll_list = None
+        self.user_scroll_list = None
+        self.subject_scroll_list = None
+        self.group_scroll_list = None
+        self.exam_scroll_list = None
+        self.student_scroll_list = None
+
+        self.admin_list = None
+        self.user_list = None
+        self.subject_list = None
+        self.group_list = None
+        self.exam_list = None
+        self.student_list = None
+
+        self.admin_list_layout = None
+        self.user_list_layout = None
+        self.subject_list_layout = None
+        self.group_list_layout = None
+        self.exam_list_layout = None
+        self.student_list_layout = None
+
         self.grid_left_widget = None
         self.grid_right_widget = None
 
@@ -168,12 +183,12 @@ class AdminWindow(QMainWindow):
 
         self.login_button.setText(self.tr("Войти"))
 
-        self.login_button.clicked.connect(self.check_credentials)
+        self.login_button.clicked.connect(lambda e: check_credentials(self))
         self.login_button.setStyleSheet(BUTTON_STYLE)
         self.login_button.setFixedWidth(200)  # Фиксированная ширина кнопки
 
-        self.login_input.returnPressed.connect(self.check_credentials)
-        self.password_input.returnPressed.connect(self.check_credentials)
+        self.login_input.returnPressed.connect(lambda e: check_credentials(self))
+        self.password_input.returnPressed.connect(lambda e: check_credentials(self))
 
         # Добавляем элементы в форму
         form_layout.addWidget(self.login_label)
@@ -230,12 +245,15 @@ class AdminWindow(QMainWindow):
         button_layout.addWidget(self.back_button)
         button_layout.addWidget(filler)
 
-        self.main_layout.addWidget(button_container)
+        self.main_layout.insertWidget(0, button_container)
 
     def create_grid_left(self, admins, users):
+
+        print("Создали Левую часть")
         # Блок Управление Учетными Записями
 
         if not self.grid_left_widget is None:
+            print("Удалили Левую часть")
             self.grid_left_widget.deleteLater()
 
         self.grid_left_widget = QWidget()
@@ -269,11 +287,11 @@ class AdminWindow(QMainWindow):
         # Кнопки добавления администратора
         self.add_admin_button.setText(self.tr("Добавить администратора"))
         self.add_admin_button.setStyleSheet(BUTTON_STYLE)
-        self.add_admin_button.clicked.connect(self.add_new_admin)
+        self.add_admin_button.clicked.connect(lambda e: add_new_admin(self))
 
         self.send_admin_button.setText(self.tr("Отправить данные на почту"))
         self.send_admin_button.setStyleSheet(BUTTON_STYLE)
-        self.send_admin_button.clicked.connect(self.send_admin_data)
+        self.send_admin_button.clicked.connect(lambda e: send_admin_data(self))
 
         self.add_admin_sect = create_section(self.tr("Добавить Админа"), (30, 0, 0, 30), [
             self.admin_login_label, self.admin_login_input,
@@ -291,7 +309,7 @@ class AdminWindow(QMainWindow):
 
         self.del_admin_button.setText(self.tr("Удалить администратора"))
         self.del_admin_button.setStyleSheet(BUTTON_STYLE)
-        self.del_admin_button.clicked.connect(self.delete_admin)
+        self.del_admin_button.clicked.connect(lambda e: delete_admin(self))
 
         self.del_admin_sect = create_section(self.tr("Удалить Админа"), (0, 0, 0, 0), [
             self.del_admin_login_label, self.del_admin_login_input,
@@ -300,10 +318,10 @@ class AdminWindow(QMainWindow):
 
         grid_left_layout.addWidget(self.del_admin_sect, 2, 1, 1, 1)
 
-        admin_list, admin_list_layout = create_section(self.tr("Список Админов"), (0, 30, 30, 0), is_list=True)
-        grid_left_layout.addWidget(admin_list, 2, 2, 1, 1)
+        self.admin_list, self.admin_list_layout = create_section(self.tr("Список Админов"), (0, 30, 30, 0), is_list=True)
+        grid_left_layout.addWidget(self.admin_list, 2, 2, 1, 1)
 
-        create_list(admin_list, admin_list_layout, admins, self.del_admin_login_input)
+        self.admin_scroll_list = create_list(self.admin_list, self.admin_list_layout, admins, self.del_admin_login_input)
 
         title = QLabel(self.tr("Пользователи"))
         title.setStyleSheet("font-size: 20px; margin: 5px; font-weight: bold; color: black;")
@@ -324,11 +342,11 @@ class AdminWindow(QMainWindow):
         # Кнопки добавления пользователя
         self.add_user_button.setText(self.tr("Добавить пользователя"))
         self.add_user_button.setStyleSheet(BUTTON_STYLE)
-        self.add_user_button.clicked.connect(self.add_new_user)
+        self.add_user_button.clicked.connect(lambda e: add_new_user(self))
 
         self.send_button.setText(self.tr("Отправить данные на почту"))
         self.send_button.setStyleSheet(BUTTON_STYLE)
-        self.send_button.clicked.connect(self.send_user_data)
+        self.send_button.clicked.connect(lambda e: send_user_data(self))
 
         self.add_user_sect = create_section(self.tr("Добавить Пользователя"), (30, 0, 0, 30), [
             self.user_login_label, self.user_login_input,
@@ -346,7 +364,7 @@ class AdminWindow(QMainWindow):
 
         self.del_user_button.setText(self.tr("Удалить пользователя"))
         self.del_user_button.setStyleSheet(BUTTON_STYLE)
-        self.del_user_button.clicked.connect(self.delete_user)
+        self.del_user_button.clicked.connect(lambda: delete_user(self))
 
         self.del_user_sect = create_section(self.tr("Удалить Пользователя"), (0, 0, 0, 0), [
             self.del_user_login_label, self.del_user_login_input,
@@ -355,15 +373,18 @@ class AdminWindow(QMainWindow):
 
         grid_left_layout.addWidget(self.del_user_sect, 4, 1, 1, 1)
 
-        user_list, user_list_layout = create_section(self.tr("Список Пользователей"), (0, 30, 30, 0), is_list=True)
-        grid_left_layout.addWidget(user_list, 4, 2, 1, 1)
+        self.user_list, self.user_list_layout = create_section(self.tr("Список Пользователей"), (0, 30, 30, 0), is_list=True)
+        grid_left_layout.addWidget(self.user_list, 4, 2, 1, 1)
 
-        create_list(user_list, user_list_layout, users, self.del_user_login_input)
+        self.user_scroll_list = create_list(self.user_list, self.user_list_layout, users, self.del_user_login_input)
 
     def create_grid_right(self, subjects, groups, exams, students):
+        print("Создали Правую часть")
         # Блок Управления записями БД
 
         if not self.grid_right_widget is None:
+            print("Удалили Правую часть")
+
             self.grid_right_widget.deleteLater()
 
         self.grid_right_widget = QWidget()
@@ -388,7 +409,7 @@ class AdminWindow(QMainWindow):
 
         self.del_subject_button.setText(self.tr("Удалить предмет"))
         self.del_subject_button.setStyleSheet(BUTTON_STYLE)
-        self.del_subject_button.clicked.connect(self.delete_subject)
+        self.del_subject_button.clicked.connect(lambda e: delete_subject(self))
 
         self.del_subject_sect = create_section(self.tr("Удалить Предмет"), (30, 0, 0, 30), [
             self.del_subject_label, self.del_subject_input, self.del_subject_button
@@ -396,10 +417,10 @@ class AdminWindow(QMainWindow):
 
         grid_right_layout.addWidget(self.del_subject_sect, 2, 0, 1, 1)
 
-        subject_list, subject_list_layout = create_section(self.tr("Список Предметов"), (0, 30, 30, 0), is_list=True)
-        grid_right_layout.addWidget(subject_list, 2, 1, 1, 1)
+        self.subject_list, self.subject_list_layout = create_section(self.tr("Список Предметов"), (0, 30, 30, 0), is_list=True)
+        grid_right_layout.addWidget(self.subject_list, 2, 1, 1, 1)
 
-        create_list(subject_list, subject_list_layout, subjects, self.del_subject_input)
+        self.subject_scroll_list = create_list(self.subject_list, self.subject_list_layout, subjects, self.del_subject_input)
 
         title = QLabel(self.tr("Группы"))
         title.setStyleSheet("font-size: 20px; margin: 5px; font-weight: bold; color: black;")
@@ -411,7 +432,7 @@ class AdminWindow(QMainWindow):
 
         self.del_group_button.setText(self.tr("Удалить группу"))
         self.del_group_button.setStyleSheet(BUTTON_STYLE)
-        self.del_group_button.clicked.connect(self.delete_group)
+        self.del_group_button.clicked.connect(lambda e: delete_group(self))
 
         self.del_group_sect = create_section(self.tr("Удалить Группу"), (30, 0, 0, 30), [
             self.del_group_label, self.del_group_input, self.del_group_button
@@ -419,10 +440,10 @@ class AdminWindow(QMainWindow):
 
         grid_right_layout.addWidget(self.del_group_sect, 4, 0, 1, 1)
 
-        group_list, group_list_layout = create_section(self.tr("Список Групп"), (0, 30, 30, 0), is_list=True)
-        grid_right_layout.addWidget(group_list, 4, 1, 1, 1)
+        self.group_list, self.group_list_layout = create_section(self.tr("Список Групп"), (0, 30, 30, 0), is_list=True)
+        grid_right_layout.addWidget(self.group_list, 4, 1, 1, 1)
 
-        create_list(group_list, group_list_layout, groups, self.del_group_input)
+        self.group_scroll_list = create_list(self.group_list, self.group_list_layout, groups, self.del_group_input)
 
         title = QLabel(self.tr("Экзамены"))
         title.setStyleSheet("font-size: 20px; margin: 5px; font-weight: bold; color: black;")
@@ -434,7 +455,7 @@ class AdminWindow(QMainWindow):
 
         self.del_exam_button.setText(self.tr("Удалить экзамен"))
         self.del_exam_button.setStyleSheet(BUTTON_STYLE)
-        self.del_exam_button.clicked.connect(self.delete_exam)
+        self.del_exam_button.clicked.connect(lambda e: delete_exam(self))
 
         self.del_exam_sect = create_section(self.tr("Удалить Экзамен"), (30, 0, 0, 30), [
             self.del_exam_label, self.del_exam_input, self.del_exam_button
@@ -442,10 +463,10 @@ class AdminWindow(QMainWindow):
 
         grid_right_layout.addWidget(self.del_exam_sect, 6, 0, 1, 1)
 
-        exam_list, exam_list_layout = create_section(self.tr("Список Экзаменов"), (0, 30, 30, 0), is_list=True)
-        grid_right_layout.addWidget(exam_list, 6, 1, 1, 1)
+        self.exam_list, self.exam_list_layout = create_section(self.tr("Список Экзаменов"), (0, 30, 30, 0), is_list=True)
+        grid_right_layout.addWidget(self.exam_list, 6, 1, 1, 1)
 
-        create_list(exam_list, exam_list_layout, exams, self.del_exam_input)
+        self.exam_scroll_list = create_list(self.exam_list, self.exam_list_layout, exams, self.del_exam_input)
 
         title = QLabel(self.tr("Студенты"))
         title.setStyleSheet("font-size: 20px; margin: 5px; font-weight: bold; color: black;")
@@ -457,7 +478,7 @@ class AdminWindow(QMainWindow):
 
         self.del_student_button.setText(self.tr("Удалить студента"))
         self.del_student_button.setStyleSheet(BUTTON_STYLE)
-        self.del_student_button.clicked.connect(self.delete_student)
+        self.del_student_button.clicked.connect(lambda e: delete_student(self))
 
         self.del_student_sect = create_section(self.tr("Удалить Студента"), (30, 0, 0, 30), [
             self.del_student_label, self.del_student_input, self.del_student_button
@@ -465,540 +486,10 @@ class AdminWindow(QMainWindow):
 
         grid_right_layout.addWidget(self.del_student_sect, 8, 0, 1, 1)
 
-        student_list, student_list_layout = create_section(self.tr("Список Студентов"), (0, 30, 30, 0), is_list=True)
-        grid_right_layout.addWidget(student_list, 8, 1, 1, 1)
+        self.student_list, self.student_list_layout = create_section(self.tr("Список Студентов"), (0, 30, 30, 0), is_list=True)
+        grid_right_layout.addWidget(self.student_list, 8, 1, 1, 1)
 
-        create_list(student_list, student_list_layout, students, self.del_student_input)
-
-    def send_admin_data(self):
-        login = self.admin_login_input.text()
-        password = self.admin_password_input.text()
-        email = self.admin_email_input.text()
-
-        if not all([login, password, email]):
-            QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Все поля должны быть заполнены!"))
-            return
-
-        if not is_valid_email(email):
-            QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Введите корректный email!"))
-            return
-
-        try:
-            # Формируем сообщение
-            email_body = (
-                f"Ваши административные данные:\n\n"
-                f"Логин: {login}\n"
-                f"Пароль: {password}\n\n"
-                f"Сохраните эти данные в надежном месте."
-            )
-
-            if self.send_email(email, "Ваши данные администратора", email_body):
-                QMessageBox.information(
-                    self,
-                    self.tr("Успех"),
-                    self.tr(f"Данные администратора отправлены на {email}")
-                )
-
-            else:
-                QMessageBox.warning(
-                    self,
-                    self.tr("Ошибка"),
-                    self.tr("Не удалось отправить данные на указанный email")
-                )
-        except Exception as e:
-            QMessageBox.critical(
-                self,
-                self.tr("Ошибка"),
-                self.tr(f"Произошла ошибка при отправке данных:\n{str(e)}")
-            )
-
-    def delete_subject(self):
-        subject_name = self.del_subject_input.text()
-        if not subject_name:
-            QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Введите название предмета"))
-            return
-
-        # Подтверждение удаления
-        reply = QMessageBox.question(
-            self,
-            self.tr("Подтверждение удаления"),
-            self.tr(
-                f'Вы уверены, что хотите удалить предмет "{subject_name}" и все связанные данные (экзамены, оценки)?'),
-            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
-            QMessageBox.StandardButton.No
-        )
-
-        if reply != QMessageBox.StandardButton.Yes:
-            return
-
-        try:
-            success = self.db_client.delete_subject(subject_name)
-            
-            if success:
-                QMessageBox.information(
-                    self,
-                    self.tr("Успех"),
-                    self.tr(f"Предмет '{subject_name}' и все связанные данные успешно удалены!")
-                )
-
-                subjects = self.db_client.get_all_subjects()
-                groups = self.db_client.get_all_groups()
-                exams = self.db_client.get_all_exams()
-                students = self.db_client.get_all_students()
-
-                self.create_grid_right(subjects, groups, exams, students)
-            else:
-                QMessageBox.warning(
-                    self,
-                    self.tr("Ошибка"),
-                    self.tr(f"Предмет '{subject_name}' не найден")
-                )
-
-        except Exception as e:
-            QMessageBox.critical(
-                self,
-                self.tr("Ошибка базы данных"),
-                self.tr(f"Произошла ошибка при удалении предмета:\n{str(e)}")
-            )
-
-    def delete_group(self):
-        group_name = self.del_group_input.text()
-        if not group_name:
-            QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Введите номер группы"))
-            return
-
-        reply = QMessageBox.question(
-            self,
-            self.tr('Подтверждение удаления'),
-            self.tr(f'Вы уверены, что хотите удалить группу "{group_name}" и всех её студентов?'),
-            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
-            QMessageBox.StandardButton.No
-        )
-
-        if reply != QMessageBox.StandardButton.Yes:
-            return
-
-        try:
-            success = self.db_client.delete_group(group_name)
-            
-            if success:
-                QMessageBox.information(
-                    self,
-                    self.tr("Успех"),
-                    self.tr(f"Группа '{group_name}' и все связанные данные успешно удалены!")
-                )
-                # Получаем эти обновлённые списки
-                subjects = self.db_client.get_all_subjects()
-                groups = self.db_client.get_all_groups()
-                exams = self.db_client.get_all_exams()
-                students = self.db_client.get_all_students()
-
-                self.create_grid_right(subjects, groups, exams, students)
-            else:
-                QMessageBox.warning(
-                    self,
-                    self.tr("Ошибка"),
-                    self.tr(f"Группа '{group_name}' не найдена")
-                )
-
-        except Exception as e:
-            QMessageBox.critical(
-                self,
-                self.tr("Ошибка базы данных"),
-                self.tr(f"Произошла ошибка при удалении группы:\n{str(e)}")
-            )
-
-    def delete_exam(self):
-        exam_id = self.del_exam_input.text()
-        if not exam_id:
-            QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Введите ID экзамена"))
-            return
-
-        reply = QMessageBox.question(
-            self,
-            self.tr('Подтверждение удаления'),
-            self.tr(f'Вы уверены, что хотите удалить экзамен с ID {exam_id} и все оценки по нему?'),
-            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
-            QMessageBox.StandardButton.No
-        )
-
-        if reply != QMessageBox.StandardButton.Yes:
-            return
-
-        try:
-            # Преобразуем exam_id в int
-            try:
-                exam_id_int = int(exam_id)
-            except ValueError:
-                QMessageBox.warning(self, self.tr("Ошибка"), self.tr("ID экзамена должен быть числом"))
-                return
-
-            # Отправляем запрос на сервер для удаления экзамена
-            success = self.db_client.delete_exam(exam_id_int)
-            
-            if success:
-                QMessageBox.information(
-                    self,
-                    self.tr("Успех"),
-                    self.tr(f"Экзамен с ID {exam_id} и все оценки по нему успешно удалены!")
-                )
-                # Получаем эти обновлённые списки
-                subjects = self.db_client.get_all_subjects()
-                groups = self.db_client.get_all_groups()
-                exams = self.db_client.get_all_exams()
-                students = self.db_client.get_all_students()
-
-                self.create_grid_right(subjects, groups, exams, students)
-            else:
-                QMessageBox.warning(
-                    self,
-                    self.tr("Ошибка"),
-                    self.tr(f"Экзамен с ID {exam_id} не найден")
-                )
-
-        except Exception as e:
-            QMessageBox.critical(
-                self,
-                self.tr("Ошибка базы данных"),
-                self.tr(f"Произошла ошибка при удалении экзамена:\n{str(e)}")
-            )
-
-    def delete_student(self):
-        student_id = self.del_student_input.text()
-        if not student_id:
-            QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Введите ID студента"))
-            return
-
-        reply = QMessageBox.question(
-            self,
-            self.tr("Подтверждение удаления"),
-            self.tr(f"Вы уверены, что хотите удалить студента с ID {student_id} и все его оценки?"),
-            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
-            QMessageBox.StandardButton.No
-        )
-
-        if reply != QMessageBox.StandardButton.Yes:
-            return
-
-        try:
-            try:
-                student_id_int = int(student_id)
-            except ValueError:
-                QMessageBox.warning(self, self.tr("Ошибка"), self.tr("ID студента должен быть числом"))
-                return
-
-
-            success = self.db_client.delete_student(student_id_int)      
-            if success:
-                QMessageBox.information(
-                    self,
-                    self.tr("Успех"),
-                    self.tr(f"Студент с ID {student_id} и все его оценки успешно удалены!")
-                )
-
-                # Получаем эти обновлённые списки
-                subjects = self.db_client.get_all_subjects()
-                groups = self.db_client.get_all_groups()
-                exams = self.db_client.get_all_exams()
-                students = self.db_client.get_all_students()
-
-                self.create_grid_right(subjects, groups, exams, students)
-            else:
-                QMessageBox.warning(
-                    self,
-                    self.tr("Ошибка"),
-                    self.tr(f"Студент с ID {student_id} не найден")
-                )
-
-        except Exception as e:
-            QMessageBox.critical(
-                self,
-                self.tr("Ошибка базы данных"),
-                self.tr(f"Произошла ошибка при удалении студента:\n{str(e)}")
-            )
-
-    def send_email(self, to_email: str, subject: str, body: str) -> bool:
-        try:
-            msg = MIMEText(body)
-            msg['Subject'] = subject
-            msg['From'] = self.smtp_username
-            msg['To'] = to_email
-            msg['Date'] = formatdate(localtime=True)
-
-            with smtplib.SMTP(self.smtp_server, self.smtp_port) as server:
-                server.starttls()
-                server.login(self.smtp_username, self.smtp_password)
-                server.sendmail(self.smtp_username, [to_email], msg.as_string())
-            return True
-        except smtplib.SMTPAuthenticationError:
-            print("Ошибка аутентификации SMTP")
-            return False
-        except smtplib.SMTPException as e:
-            print(f"Ошибка SMTP: {e}")
-            return False
-        except Exception as e:
-            print(f"Общая ошибка при отправке email: {e}")
-            return False
-
-    def add_new_admin(self):
-        login = self.admin_login_input.text()
-        password = self.admin_password_input.text()
-        email = self.admin_email_input.text()
-
-        if not all([login, password, email]):
-            QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Все поля должны быть заполнены!"))
-            return
-
-        if not is_valid_email(email):
-            QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Введите корректный email!"))
-            return
-
-        try:
-            success = self.account_manager.create_account("admin", login, password, email)
-            if success:
-                # Формируем и отправляем письмо с данными
-                email_body = (
-                    f"Данные для входа в административную панель:\n\n"
-                    f"Логин: {login}\n"
-                    f"Пароль: {password}\n\n"
-                    f"Сохраните эти данные в надежном месте."
-                )
-
-                if self.send_email(email, "Ваши административные данные", email_body):
-                    QMessageBox.information(
-                        self,
-                        self.tr("Успех"),
-                        self.tr(f"Администратор {login} успешно добавлен!\nДанные для входа отправлены на {email}")
-                    )
-
-                else:
-                    QMessageBox.warning(
-                        self,
-                        self.tr("Ошибка отправки"),
-                        self.tr(f"Администратор {login} добавлен, но не удалось отправить данные на email!")
-                    )
-
-                    # Получаем эти обновлённые списки
-                    
-                    admins = self.db_client.get_all_admins()
-                    users = self.db_client.get_all_users()
-
-                    self.create_grid_left(admins, users)
-            else:
-                QMessageBox.warning(
-                    self,
-                    self.tr("Ошибка"),
-                    self.tr("Не удалось добавить администратора. Возможно, такой логин уже существует.")
-                )
-        except Exception as e:
-            QMessageBox.critical(
-                self,
-                self.tr("Ошибка базы данных"),
-                self.tr(f"Произошла ошибка при добавлении администратора:\n{str(e)}")
-            )
-
-    def add_new_user(self):
-        login = self.user_login_input.text()
-        password = self.user_password_input.text()
-        email = self.user_email_input.text()
-
-        if not all([login, password, email]):
-            QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Все поля должны быть заполнены!"))
-            return
-
-        if not is_valid_email(email):
-            QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Введите корректный email!"))
-            return
-
-        try:
-            success = self.account_manager.create_account("user", login, password, email)
-            if success:
-                QMessageBox.information(
-                    self,
-                    self.tr("Успех"),
-                    self.tr(f"Пользователь {login} успешно добавлен!")
-                )
-
-                # Получаем эти обновлённые списки
-                admins = self.db_client.get_all_admins()
-                users = self.db_client.get_all_users()
-
-                self.create_grid_left(admins, users)
-            else:
-                QMessageBox.warning(
-                    self,
-                    self.tr("Ошибка"),
-                    self.tr("Не удалось добавить пользователя. Возможно, такой логин уже существует.")
-                )
-        except Exception as e:
-            QMessageBox.critical(
-                self,
-                self.tr("Ошибка базы данных"),
-                self.tr(f"Произошла ошибка при добавлении пользователя:\n{str(e)}")
-            )
-
-    def send_user_data(self):
-        login = self.user_login_input.text()
-        password = self.user_password_input.text()
-        email = self.user_email_input.text()
-
-        if not all([login, password, email]):
-            QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Все поля должны быть заполнены!"))
-            return
-
-        if not is_valid_email(email):
-            QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Введите корректный email!"))
-            return
-
-        try:
-            # Формируем сообщение
-            email_body = (
-                f"Ваши данные для входа в систему:\n\n"
-                f"Логин: {login}\n"
-                f"Пароль: {password}\n\n"
-                f"Сохраните эти данные в надежном месте."
-            )
-
-            if self.send_email(email, "Ваши данные для входа", email_body):
-                QMessageBox.information(
-                    self,
-                    self.tr("Успех"),
-                    self.tr(f"Данные для входа отправлены на {email}")
-                )
-
-            else:
-                QMessageBox.warning(
-                    self,
-                    self.tr("Ошибка"),
-                    self.tr("Не удалось отправить данные на указанный email")
-                )
-        except Exception as e:
-            QMessageBox.critical(
-                self,
-                self.tr("Ошибка"),
-                self.tr(f"Произошла ошибка при отправке данных:\n{str(e)}")
-            )
-
-    def check_credentials(self):
-        login = self.login_input.text()
-        password = self.password_input.text()
-
-        if not login or not password:
-            QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Введите логин и пароль"))
-            return
-
-        try:
-            is_authenticated = self.db_auth.authenticate_admin(login, password)
-
-            admins = self.db_client.get_all_admins()
-
-            users = self.db_client.get_all_users()
-
-            subjects = self.db_client.get_all_subjects()
-
-            groups = self.db_client.get_all_groups()
-
-            exams = self.db_client.get_all_exams()
-
-            students = self.db_client.get_all_students()
-
-            if is_authenticated:
-                self.setup_admin_panel(admins, users, subjects, groups, exams, students)
-            else:
-                self.handle_failed_login()
-        except Exception as e:
-            QMessageBox.critical(
-                self,
-                self.tr("Ошибка аутентификации"),
-                self.tr(f"Произошла ошибка при проверке учетных данных:\n{str(e)}")
-            )
-
-    def handle_failed_login(self):
-        self.login_attempts -= 1
-        if self.login_attempts > 0:
-            QMessageBox.warning(
-                self,
-                self.tr("Ошибка входа"),
-                self.tr(f"Неверные данные! Осталось попыток: {self.login_attempts}")
-            )
-
-        else:
-            QMessageBox.critical(
-                self,
-                self.tr("Доступ запрещен"),
-                self.tr("Превышено количество попыток входа!")
-            )
-            self.close()
-
-    def delete_user(self):
-        login = self.del_user_login_input.text()
-        if not login:
-            QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Введите логин пользователя"))
-            return
-
-        try:
-            success = self.account_manager.delete_account("user", login)
-            if success:
-                QMessageBox.information(
-                    self,
-                    self.tr("Успех"),
-                    self.tr(f"Пользователь {login} успешно удален!")
-                )
-
-                # Получаем эти обновлённые списки
-
-                admins = self.db_client.get_all_admins()
-                users = self.db_client.get_all_users()
-
-                self.create_grid_left(admins, users)
-            else:
-                QMessageBox.warning(
-                    self,
-                    self.tr("Ошибка"),
-                    self.tr(f"Пользователь {login} не найден или не удален.")
-                )               
-
-        except Exception as e:
-            QMessageBox.critical(
-                self,
-                self.tr("Ошибка базы данных"),
-                self.tr(f"Произошла ошибка при удалении пользователя:\n{str(e)}")
-            )
-
-    def delete_admin(self):
-        login = self.del_admin_login_input.text()
-        if not login:
-            QMessageBox.warning(self, self.tr("Ошибка"), self.tr("Введите логин администратора"))
-            return
-
-        try:
-            success = self.account_manager.delete_account("admin", login)
-            if success:
-                QMessageBox.information(
-                    self,
-                    self.tr("Успех"),
-                    self.tr(f"Администратор {login} успешно удален!")
-                )
-
-                # Получаем эти обновлённые списки
-
-                admins = self.db_client.get_all_admins()
-                users = self.db_client.get_all_users()
-
-                self.create_grid_left(admins, users)
-            else:
-                QMessageBox.warning(
-                    self,
-                    self.tr("Ошибка"),
-                    self.tr(f"Администратор {login} не найден или не удален.")
-                )
-
-        except Exception as e:
-            QMessageBox.critical(
-                self,
-                self.tr("Ошибка базы данных"),
-                self.tr(f"Произошла ошибка при удалении администратора:\n{str(e)}")
-            )
+        self.student_scroll_list = create_list(self.student_list, self.student_list_layout, students, self.del_student_input)
 
     def retranslateUi(self):
         self.setWindowTitle(self.tr("Панель администратора"))
@@ -1042,9 +533,6 @@ class AdminWindow(QMainWindow):
         self.del_student_input.setPlaceholderText(self.tr("Введите ID студента"))
         self.del_student_button.setText(self.tr("Удалить студента"))
         self.back_button = QPushButton(self.tr("Назад"))
-        self.left_panel.setTitle(self.tr("Добавить Админа"))
-        self.center_left_panel.setTitle(self.tr("Добавить Пользователя"))
-        self.right_panel.setTitle(self.tr("Управление Учетными Записями"))
         self.del_admin_sect.setTitle(self.tr("Управление Учетными Записями"))
 
     def _clear_layout(self):
@@ -1052,34 +540,6 @@ class AdminWindow(QMainWindow):
             item = self.main_layout.takeAt(0)
             if item.widget():
                 item.widget().deleteLater()
-
-
-# Класс Пользовательская прокручивающаяся область
-class CustomScrollArea(QScrollArea):
-    def __init__(self, root, alignment, bg=None, place=None, vert_scroll=False, horiz_scroll=False):
-        super().__init__(root)
-        self.setWidgetResizable(True)
-        if not vert_scroll:
-            self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        if not horiz_scroll:
-            self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-
-        self.elements = QWidget()
-        self.setWidget(self.elements)
-
-        if bg is not None:
-            self.elements.setStyleSheet(f"background-color: {bg};")
-
-        if alignment == 'v':
-            self.layout = QVBoxLayout(self.elements)
-            self.layout.setAlignment(Qt.AlignTop)
-        elif alignment == 'h':
-            self.layout = QHBoxLayout(self.elements)
-            self.layout.setAlignment(Qt.AlignLeft)
-
-        self.layout.setContentsMargins(0, 0, 0, 0)
-        self.layout.setSpacing(1)
-        self.elements.setLayout(self.layout)
 
 # Универсальный метод создания секции
 def create_section(title_text, radius, widgets=None, is_list=False):
@@ -1103,43 +563,3 @@ def create_section(title_text, radius, widgets=None, is_list=False):
         return container
     else:
         return container, layout
-
-# Универсальный метод создания списка
-def create_list(list_widget: QWidget, list_layout: QVBoxLayout, full_list: list, input_block: QLineEdit):
-    area = CustomScrollArea(list_widget, 'v', vert_scroll=True)
-    area.layout.setSpacing(5)
-
-    area.elements.setObjectName("Area")
-    area.elements.setStyleSheet("#Area{ border-radius: 0px;"
-                                        "border-bottom-right-radius: 30px; "
-                                        "border-bottom-left-radius: 30px;}")
-    list_layout.addWidget(area)
-
-    input_block.textChanged.connect(
-        lambda e: on_text_changed(full_list, input_block.text(), area))
-
-    on_text_changed(full_list, "", area)
-
-# Функция для привязки изменения текста поля
-def on_text_changed(full_list: list, text: str, area):
-    for el in area.elements.children()[1:]:
-        el.deleteLater()
-
-    for elem in full_list:
-        if re.search(text, elem[0]):
-            block = QWidget()
-            block.setStyleSheet("font-size: 15px; font-weight: bold; background-color: #daf3e6; "
-                                        "border-bottom-left-radius: 15px; border-top-left-radius: 15px;")
-            block_layout = QHBoxLayout(block)
-            area.layout.addWidget(block)
-
-            item_left = QLabel(elem[0])
-            item_left.setStyleSheet("color: green; margin: 0 0 0 5;")
-            block_layout.addWidget(item_left)
-
-            if len(elem) > 1:
-                item_right = QLabel(elem[1])
-                item_right.setStyleSheet("color: gray; margin: 0 0 0 50;")
-                block_layout.addWidget(item_right)
-
-            block_layout.addStretch()

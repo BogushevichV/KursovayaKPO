@@ -48,7 +48,7 @@ class Application:
     # === 4. Метод загрузки перевода ===
     def load_language(self, lang_code):
         self.translator = QTranslator()
-        if self.translator.load(f"translations/{lang_code}.qm"):
+        if self.translator.load(f"../Client/Source/translations/{lang_code}.qm"):
             QCoreApplication.installTranslator(self.translator)
             self.current_lang = lang_code
             self.settings.setValue("language", lang_code)
