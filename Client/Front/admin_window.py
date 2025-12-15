@@ -541,10 +541,10 @@ class AdminWindow(QMainWindow):
                     self.tr(f"Предмет '{subject_name}' и все связанные данные успешно удалены!")
                 )
 
-                subjects = []
-                groups = []
-                exams = []
-                students = []
+                subjects = self.db_client.get_all_subjects()
+                groups = self.db_client.get_all_groups()
+                exams = self.db_client.get_all_exams()
+                students = self.db_client.get_all_students()
 
                 self.create_grid_right(subjects, groups, exams, students)
             else:
@@ -588,10 +588,10 @@ class AdminWindow(QMainWindow):
                     self.tr(f"Группа '{group_name}' и все связанные данные успешно удалены!")
                 )
                 # Получаем эти обновлённые списки
-                subjects = []
-                groups = []
-                exams = []
-                students = []
+                subjects = self.db_client.get_all_subjects()
+                groups = self.db_client.get_all_groups()
+                exams = self.db_client.get_all_exams()
+                students = self.db_client.get_all_students()
 
                 self.create_grid_right(subjects, groups, exams, students)
             else:
@@ -643,10 +643,10 @@ class AdminWindow(QMainWindow):
                     self.tr(f"Экзамен с ID {exam_id} и все оценки по нему успешно удалены!")
                 )
                 # Получаем эти обновлённые списки
-                subjects = []
-                groups = []
-                exams = []
-                students = []
+                subjects = self.db_client.get_all_subjects()
+                groups = self.db_client.get_all_groups()
+                exams = self.db_client.get_all_exams()
+                students = self.db_client.get_all_students()
 
                 self.create_grid_right(subjects, groups, exams, students)
             else:
@@ -697,10 +697,10 @@ class AdminWindow(QMainWindow):
                 )
 
                 # Получаем эти обновлённые списки
-                subjects = []
-                groups = []
-                exams = []
-                students = []
+                subjects = self.db_client.get_all_subjects()
+                groups = self.db_client.get_all_groups()
+                exams = self.db_client.get_all_exams()
+                students = self.db_client.get_all_students()
 
                 self.create_grid_right(subjects, groups, exams, students)
             else:
@@ -779,12 +779,9 @@ class AdminWindow(QMainWindow):
                     )
 
                     # Получаем эти обновлённые списки
-
-                    admins = [
-                    ]
-
-                    users = [
-                    ]
+                    
+                    admins = self.db_client.get_all_admins()
+                    users = self.db_client.get_all_users()
 
                     self.create_grid_left(admins, users)
             else:
@@ -823,12 +820,8 @@ class AdminWindow(QMainWindow):
                 )
 
                 # Получаем эти обновлённые списки
-
-                admins = [
-                ]
-
-                users = [
-                ]
+                admins = self.db_client.get_all_admins()
+                users = self.db_client.get_all_users()
 
                 self.create_grid_left(admins, users)
             else:
@@ -986,11 +979,8 @@ class AdminWindow(QMainWindow):
 
                 # Получаем эти обновлённые списки
 
-                admins = [
-                ]
-
-                users = [
-                ]
+                admins = self.db_client.get_all_admins()
+                users = self.db_client.get_all_users()
 
                 self.create_grid_left(admins, users)
             else:
@@ -998,7 +988,7 @@ class AdminWindow(QMainWindow):
                     self,
                     self.tr("Ошибка"),
                     self.tr(f"Пользователь {login} не найден или не удален.")
-                )
+                )               
 
         except Exception as e:
             QMessageBox.critical(
@@ -1024,11 +1014,8 @@ class AdminWindow(QMainWindow):
 
                 # Получаем эти обновлённые списки
 
-                admins = [
-                ]
-
-                users = [
-                ]
+                admins = self.db_client.get_all_admins()
+                users = self.db_client.get_all_users()
 
                 self.create_grid_left(admins, users)
             else:

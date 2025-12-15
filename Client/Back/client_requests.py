@@ -166,3 +166,32 @@ class DatabaseServerClient:
         response = self._make_request('POST', '/api/data/delete_student', data)
         return response.get('success', False)
 
+    def get_all_subjects(self) -> Optional[list]:
+        """Получение всех предметов"""
+        response = self._make_request('GET', '/api/data/get_all_subjects')
+        return response.get('data', [])
+    
+    def get_all_groups(self) -> Optional[list]:
+        """Получение всех групп"""
+        response = self._make_request('GET', '/api/data/get_all_groups')
+        return response.get('data', [])
+    
+    def get_all_exams(self) -> Optional[list]:
+        """Получение всех экзаменов"""
+        response = self._make_request('GET', '/api/data/get_all_exams')
+        return response.get('data', [])
+    
+    def get_all_students(self) -> Optional[list]:
+        """Получение всех студентов"""
+        response = self._make_request('GET', '/api/data/get_all_students')
+        return response.get('data', [])
+
+    def get_all_users(self) -> Optional[list]:
+        """Получение всех пользователей"""
+        response = self._make_request('GET', '/api/data/get_all_users')
+        return response.get('data', [])
+    
+    def get_all_admins(self) -> Optional[list]:
+        """Получение всех администраторов"""
+        response = self._make_request('GET', '/api/data/get_all_admins')
+        return response.get('data', [])

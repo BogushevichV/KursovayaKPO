@@ -195,10 +195,24 @@ class ServerReportManager(DatabaseManager):
         try:
             self.connect()
             with self.connection.cursor() as cursor:
-                # Здесь должен быть реальный SQL запрос
-                # Пока возвращаем пустой список
-                students = []
-            return students
+                query = """
+                    SELECT s.id, s.student_name, s.gradebook_number
+                    FROM students s
+                    INNER JOIN groups g ON s.group_id = g.id
+                    WHERE g.group_name = %s
+                    ORDER BY s.student_name
+                """
+                cursor.execute(query, (group_number,))
+                students = cursor.fetchall()
+                result = [
+                    {
+                        'id': row[0],
+                        'student_name': row[1],
+                        'gradebook_number': row[2]
+                    }
+                    for row in students
+                ]
+            return result
         except Exception as e:
             print(f"Error fetching students for group {group_number}: {str(e)}")
             return None
@@ -209,13 +223,157 @@ class ServerReportManager(DatabaseManager):
         try:
             self.connect()
             with self.connection.cursor() as cursor:
-                # Здесь должен быть реальный SQL запрос
-                # Пока возвращаем пустой список
-                grades = []
-            return grades
+                query = """
+                    SELECT s.student_name, s.gradebook_number, g.grade_value
+                    FROM grades g
+                    INNER JOIN students s ON g.student_id = s.id
+                    INNER JOIN exams e ON g.exam_id = e.id
+                    INNER JOIN groups gr ON e.group_id = gr.id
+                    INNER JOIN subjects sub ON e.subject_id = sub.id
+                    WHERE sub.subject_name = %s
+                      AND gr.group_name = %s
+                      AND e.course = %s
+                      AND e.semester = %s
+                    ORDER BY s.student_name
+                """
+                cursor.execute(query, (subject_name, group_number, course, semester))
+                grades = cursor.fetchall()
+                # Преобразуем в список словарей для удобства
+                result = [
+                    {
+                        'student_name': row[0],
+                        'gradebook_number': row[1],
+                        'grade_value': row[2]
+                    }
+                    for row in grades
+                ]
+            return result
         except Exception as e:
             print(f"Error fetching grades for subject {subject_name}: {str(e)}")
             return None
         finally:
             self.close()
 
+    def get_all_subjects(self):
+        """Получить все предметы"""
+        try:
+            self.connect()
+            with self.connection.cursor() as cursor:
+                query = """
+                    SELECT subject_name
+                    FROM subjects
+                    ORDER BY subject_name
+                """
+                cursor.execute(query)
+                subjects = cursor.fetchall()
+                # Преобразуем в список кортежей для совместимости с UI
+                result = [(row[0],) for row in subjects]
+            return result
+        except Exception as e:
+            print(f"Error fetching all subjects: {str(e)}")
+            return []
+        finally:
+            self.close()
+
+    def get_all_groups(self):
+        """Получить все группы"""
+        try:
+            self.connect()
+            with self.connection.cursor() as cursor:
+                query = """
+                    SELECT group_name
+                    FROM groups
+                    ORDER BY group_name
+                """
+                cursor.execute(query)
+                groups = cursor.fetchall()
+                # Преобразуем в список кортежей для совместимости с UI
+                result = [(row[0],) for row in groups]
+            return result
+        except Exception as e:
+            print(f"Error fetching all groups: {str(e)}")
+            return []
+        finally:
+            self.close()
+
+    def get_all_exams(self):
+        """Получить все экзамены"""
+        try:
+            self.connect()
+            with self.connection.cursor() as cursor:
+                query = """
+                    SELECT e.id
+                    FROM exams e
+                    ORDER BY e.id
+                """
+                cursor.execute(query)
+                exams = cursor.fetchall()
+                # Преобразуем в список кортежей для совместимости с UI
+                result = [(str(row[0]),) for row in exams]
+            return result
+        except Exception as e:
+            print(f"Error fetching all exams: {str(e)}")
+            return []
+        finally:
+            self.close()
+
+    def get_all_students(self):
+        """Получить всех студентов"""
+        try:
+            self.connect()
+            with self.connection.cursor() as cursor:
+                query = """
+                    SELECT s.gradebook_number, s.student_name
+                    FROM students s
+                    ORDER BY s.student_name
+                """
+                cursor.execute(query)
+                students = cursor.fetchall()
+                # Преобразуем в список кортежей для совместимости с UI
+                result = [(row[0], row[1]) for row in students]
+            return result
+        except Exception as e:
+            print(f"Error fetching all students: {str(e)}")
+            return []
+        finally:
+            self.close()
+
+    def get_all_users(self):
+        """Получение всех пользователей"""
+        try:
+            self.connect()
+            with self.connection.cursor() as cursor:
+                query = """
+                    SELECT id, login
+                    FROM users
+                    ORDER BY login
+                """
+                cursor.execute(query)
+                users = cursor.fetchall()
+                result = [(row[0], row[1], row[2]) for row in users]
+            return result
+        except Exception as e:
+            print(f"Error fetching all users: {str(e)}")
+            return []
+        finally:
+            self.close()
+
+    def get_all_admins(self):
+        """Получение всех администраторов"""
+        try:
+            self.connect()
+            with self.connection.cursor() as cursor:
+                query = """
+                    SELECT id, login
+                    FROM admins
+                    ORDER BY login
+                """
+                cursor.execute(query)
+                admins = cursor.fetchall()
+                result = [(row[0], row[1]) for row in admins]
+            return result
+        except Exception as e:
+            print(f"Error fetching all admins: {str(e)}")
+            return []
+        finally:
+            self.close()
