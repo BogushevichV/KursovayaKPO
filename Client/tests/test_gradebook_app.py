@@ -2,7 +2,7 @@ import pytest
 from unittest.mock import MagicMock
 from PySide6.QtWidgets import QMessageBox, QComboBox, QTableWidgetItem
 
-from User.Examination_Report_App import GradeBookApp
+from Client.Front.examination_report_app import GradeBookApp
 
 
 @pytest.fixture
@@ -98,7 +98,7 @@ def test_import_from_excel(gradebook, monkeypatch):
         {"name": "Петров П.П.", "gradebook": "222"},
     ]
 
-    monkeypatch.setattr("User.Examination_Report_App.ExcelImporter.import_from_excel", lambda *a: fake_data)
+    monkeypatch.setattr("Client.Front.examination_report_app.ExcelImporter.import_from_excel", lambda *a: fake_data)
 
     gradebook.import_from_excel()
 
@@ -168,5 +168,5 @@ def test_return_to_welcome_no_welcome_window(gradebook, monkeypatch):
 # get_full_faculty_name
 # ----------------------------------------------------------------------
 def test_get_full_faculty_name(gradebook):
-    assert gradebook.get_full_faculty_name("АТФ") == gradebook.faculty_full[0]
+    assert gradebook.get_full_faculty_name("АТФ") == "Автотракторный"
     assert gradebook.get_full_faculty_name("НЕСУЩ") == "НЕСУЩ"
