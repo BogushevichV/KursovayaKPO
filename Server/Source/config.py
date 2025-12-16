@@ -7,9 +7,9 @@ import os
 DB_CONFIG = {
     'dbname': os.getenv('DB_NAME', 'ExaminationReport'),
     'user': os.getenv('DB_USER', 'postgres'),
-    'password': os.getenv('DB_PASSWORD', '02032006'),
+    'password': os.getenv('DB_PASSWORD', 'Password1'),
     'host': os.getenv('DB_HOST', '127.0.0.1'),
-    'port': os.getenv('DB_PORT', '5432')
+    'port': os.getenv('DB_PORT', '5433')
 }
 
 # Параметры сервера Flask
@@ -21,7 +21,7 @@ SERVER_CONFIG = {
 
 # Параметры логирования
 LOG_CONFIG = {
-    'log_dir': os.getenv('LOG_DIR', 'logs'),
+    'log_dir': os.getenv('LOG_DIR', '../logs'),
     'log_file_prefix': os.getenv('LOG_PREFIX', 'db_server')
 }
 

@@ -1,4 +1,4 @@
-from Server.logger import DatabaseLogger
+from Server.SystemUtils.logger import DatabaseLogger
 from psycopg2 import sql
 
 

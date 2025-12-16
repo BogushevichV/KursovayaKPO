@@ -12,7 +12,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 # Импортируем PasswordHasher из проекта
 try:
-    from Server.password_hasher import PasswordHasher
+    from Server.DBUtils.password_hasher import PasswordHasher
     print("✓ Используется PasswordHasher из проекта")
 except ImportError as e:
     print(f"✗ ОШИБКА: Не удалось импортировать PasswordHasher: {e}")
@@ -21,7 +21,7 @@ except ImportError as e:
 
 # Конфигурация БД
 try:
-    from Server.config import DB_CONFIG
+    from Server.Source.config import DB_CONFIG
 except ImportError:
     # Запрашиваем пароль у пользователя
     import getpass

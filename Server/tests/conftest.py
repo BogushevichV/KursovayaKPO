@@ -14,7 +14,7 @@ def setup_test_environment():
     """Настройка тестового окружения"""
     # Проверяем подключение к БД перед запуском тестов
     try:
-        from Server.config import DB_CONFIG
+        from Server.Source.config import DB_CONFIG
         import psycopg2
         
         conn = psycopg2.connect(**DB_CONFIG)
