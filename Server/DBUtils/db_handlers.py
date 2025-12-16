@@ -4,8 +4,8 @@
 """
 import psycopg2
 from psycopg2 import sql
-from Server.db_manager import DatabaseManager
-from Server.password_hasher import PasswordHasher
+from Server.DBUtils.db_manager import DatabaseManager
+from Server.DBUtils.password_hasher import PasswordHasher
 
 
 class ServerDBAuthenticator(DatabaseManager):

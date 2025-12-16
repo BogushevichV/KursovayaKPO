@@ -5,9 +5,9 @@ import os
 # Добавляем корневую директорию проекта в путь
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from Server.db_handlers import ServerDBAuthenticator, ServerAccountManager
-from Server.config import DB_CONFIG
-from Server.password_hasher import PasswordHasher
+from Server.DBUtils.db_handlers import ServerDBAuthenticator, ServerAccountManager
+from Server.Source.config import DB_CONFIG
+from Server.DBUtils.password_hasher import PasswordHasher
 
 
 @pytest.fixture(scope='function')
