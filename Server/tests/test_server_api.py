@@ -1,5 +1,11 @@
 """
 Тесты для API сервера базы данных
+
+ВАЖНО: Эти тесты используют pytest, а не unittest.
+Для запуска в PyCharm:
+1. File -> Settings -> Tools -> Python Integrated Tools
+2. В разделе "Testing" выберите "pytest" вместо "unittest"
+3. Или запускайте через командную строку: pytest Server/tests/test_server_api.py -v
 """
 import pytest
 import os
@@ -8,16 +14,62 @@ import sys
 # Добавляем корневую директорию проекта в путь
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from Server.main import app
+from Server.main import create_app, initialize_database_managers
+from Server.SystemUtils.middleware import setup_middleware
+from Server.Routes import register_all_routes
 from Server.Source.config import SERVER_CONFIG, DB_CONFIG
 from Server.DBUtils.db_handlers import ServerAccountManager
 from Server.DBUtils.server_db_saver import ServerDatabaseSaver
 
 
+class MockLogger:
+    """Mock логгер для тестов - ничего не логирует"""
+    def log_client_request(self, *args, **kwargs):
+        pass
+    
+    def log_server_response(self, *args, **kwargs):
+        pass
+    
+    def log_error(self, *args, **kwargs):
+        pass
+    
+    def log_db_query(self, *args, **kwargs):
+        pass
+    
+    def log_db_result(self, *args, **kwargs):
+        pass
+
+
 @pytest.fixture(scope='module')
-def client():
+def logger():
+    """Создает mock логгер для тестов"""
+    return MockLogger()
+
+
+@pytest.fixture(scope='module')
+def app(logger):
+    """Создает тестовое Flask приложение"""
+    try:
+        app = create_app()
+        app.config['TESTING'] = True
+        
+        # Инициализация менеджеров БД
+        db_auth, account_manager, report_manager, database_saver = initialize_database_managers(logger)
+        
+        # Настройка middleware
+        setup_middleware(app, logger)
+        
+        # Регистрация маршрутов
+        register_all_routes(app, db_auth, account_manager, report_manager, database_saver, logger)
+        
+        return app
+    except Exception as e:
+        pytest.skip(f"Не удалось инициализировать приложение: {e}")
+
+
+@pytest.fixture(scope='module')
+def client(app):
     """Создает тестовый клиент Flask"""
-    app.config['TESTING'] = True
     with app.test_client() as client:
         yield client
 

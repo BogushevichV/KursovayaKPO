@@ -1,0 +1,14 @@
+# Зависимости для серверной части приложения Exam Report System
+
+# Flask - веб-фреймворк для REST API
+Flask>=2.3.0,<3.0.0
+
+# Flask-CORS - поддержка CORS для кросс-доменных запросов
+Flask-CORS>=4.0.0,<5.0.0
+
+# psycopg2-binary - адаптер PostgreSQL для Python (бинарная версия для Windows)
+psycopg2-binary>=2.9.0,<3.0.0
+
+# pytest - фреймворк для тестирования (опционально, для разработки)
+pytest>=7.4.0,<8.0.0
+

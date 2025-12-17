@@ -4,38 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3ffab474-8f08-49cf-b0b9-2cafc7f5b7be" name="Changes" comment="fix: fix sql query">
-      <change afterPath="$PROJECT_DIR$/Client/tests/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/DBUtils/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/Routes/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/Routes/admin_routes.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/Routes/auth_routes.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/Routes/data_routes.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/Routes/report_routes.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/Routes/user_routes.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/Source/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/Source/utils.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/SystemUtils/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/SystemUtils/docker_manager.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/SystemUtils/middleware.py" afterDir="false" />
+    <list default="true" id="3ffab474-8f08-49cf-b0b9-2cafc7f5b7be" name="Changes" comment="perf: change localhost to 127.0.0.1 in requests">
+      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Server/Source/backup.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/KursovayaKPO.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/KursovayaKPO.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/Server/Source/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/db_handlers.py" beforeDir="false" afterPath="$PROJECT_DIR$/Server/DBUtils/db_handlers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/db_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/Server/DBUtils/db_manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/db_wrapper.py" beforeDir="false" afterPath="$PROJECT_DIR$/Server/DBUtils/db_wrapper.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/logger.py" beforeDir="false" afterPath="$PROJECT_DIR$/Server/SystemUtils/logger.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Server/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/password_hasher.py" beforeDir="false" afterPath="$PROJECT_DIR$/Server/DBUtils/password_hasher.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/server_db_saver.py" beforeDir="false" afterPath="$PROJECT_DIR$/Server/DBUtils/server_db_saver.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/tests/conftest.py" beforeDir="false" afterPath="$PROJECT_DIR$/Server/tests/conftest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/tests/test_db_handlers.py" beforeDir="false" afterPath="$PROJECT_DIR$/Server/tests/test_db_handlers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/setup-postgres.bat" beforeDir="false" afterPath="$PROJECT_DIR$/Server/Install/setup-postgres.bat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Server/tests/test_server_api.py" beforeDir="false" afterPath="$PROJECT_DIR$/Server/tests/test_server_api.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/init_database.py" beforeDir="false" afterPath="$PROJECT_DIR$/init_database.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test_auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_auth.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_admin_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/tests/test_admin_window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_gradebook_app.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/tests/test_gradebook_app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_user_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/tests/test_user_window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_welcome_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/tests/test_welcome_window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/source/index.rst" beforeDir="false" afterPath="$PROJECT_DIR$/docs/source/index.rst" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -114,23 +91,55 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "fix-sql-query",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "master",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "D:/univer/KursovayaKPO",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+    "last_opened_file_path": "C:/Users/medve/PycharmProjects/KursovayaKPO/Server/Source",
+    "settings.editor.selected.configurable": "configurable.group.tools"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\medve\PycharmProjects\KursovayaKPO\Server\Source" />
       <recent name="D:\univer\КПО\KursovayaKPO" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\medve\PycharmProjects\KursovayaKPO\Server\Install" />
+      <recent name="C:\Users\medve\PycharmProjects\KursovayaKPO\Server" />
       <recent name="C:\Users\medve\PycharmProjects\KursovayaKPO\Client" />
       <recent name="C:\Users\medve\PycharmProjects\KursovayaKPO\Server\Source" />
       <recent name="C:\Users\medve\PycharmProjects\KursovayaKPO\Server\db_utils" />
-      <recent name="C:\Users\medve\PycharmProjects\KursovayaKPO\Server\system_utils" />
-      <recent name="C:\Users\medve\PycharmProjects\KursovayaKPO\Server" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="KursovayaKPO" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Server" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="RUN_TOOL" value="" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Server/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.main" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -235,7 +244,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765779252418</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="perf: change localhost to 127.0.0.1 in requests">
+      <option name="closed" value="true" />
+      <created>1765933819303</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1765933819303</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -261,15 +278,12 @@
     <MESSAGE value="fix: fix old bd usage in client" />
     <MESSAGE value="ench: add list get methods" />
     <MESSAGE value="fix: fix sql query" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix: fix sql query" />
+    <MESSAGE value="perf: change localhost to 127.0.0.1 in requests" />
+    <option name="LAST_COMMIT_MESSAGE" value="perf: change localhost to 127.0.0.1 in requests" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Client/Back/create_examination_report.py</url>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/init_database.py</url>
           <line>4</line>

@@ -26,6 +26,7 @@ Exam Report System
    user_guide
    admin_guide
    database
+   logging
    api/index
    development
    translations
