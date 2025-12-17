@@ -52,13 +52,14 @@ def add_new_admin(self):
                     self.tr(f"Администратор {login} добавлен, но не удалось отправить данные на email!")
                 )
 
-                # Получаем эти обновлённые списки
+            # Получаем эти обновлённые списки
 
-                admins = self.db_client.get_all_admins()
+            admins = self.db_client.get_all_admins()
 
-                self.admin_scroll_list.deleteLater()
-                self.admin_scroll_list = create_list(self.admin_list, self.admin_list_layout, admins,
+            self.admin_scroll_list.deleteLater()
+            self.admin_scroll_list = create_list(self.admin_list, self.admin_list_layout, admins,
                                                      self.del_admin_login_input)
+
         else:
             QMessageBox.warning(
                 self,
@@ -224,8 +225,8 @@ def delete_subject(self):
             self.subject_scroll_list.deleteLater()
             self.subject_scroll_list = create_list(self.subject_list, self.subject_list_layout, subjects,
                                                 self.del_subject_input)
-            self.exams_scroll_list.deleteLater()
-            self.exams_scroll_list = create_list(self.exam_list, self.exam_list_layout, exams,
+            self.exam_scroll_list.deleteLater()
+            self.exam_scroll_list = create_list(self.exam_list, self.exam_list_layout, exams,
                                                 self.del_exam_input)
 
         else:
@@ -450,7 +451,7 @@ def send_admin_data(self):
             f"Сохраните эти данные в надежном месте."
         )
 
-        if self.send_email(email, "Ваши данные администратора", email_body):
+        if send_email(self, email, "Ваши данные администратора", email_body):
             QMessageBox.information(
                 self,
                 self.tr("Успех"),
@@ -492,7 +493,7 @@ def send_user_data(self):
             f"Сохраните эти данные в надежном месте."
         )
 
-        if self.send_email(email, "Ваши данные для входа", email_body):
+        if send_email(self, email, "Ваши данные для входа", email_body):
             QMessageBox.information(
                 self,
                 self.tr("Успех"),

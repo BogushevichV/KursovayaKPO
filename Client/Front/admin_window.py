@@ -4,7 +4,7 @@ from PySide6.QtWidgets import (QMainWindow, QWidget, QLabel, QLineEdit,
                                QPushButton, QVBoxLayout, QHBoxLayout,
                                QGridLayout, QSizePolicy)
 from PySide6.QtCore import Qt
-from Client.Front.Styles.Admin_Window_Styles import BUTTON_STYLE, form_style, LOGIN_FORM_STYLE
+from Client.Front.Styles.Admin_Window_Styles import BUTTON_STYLE, BACK_BUTTON_STYLE, form_style, LOGIN_FORM_STYLE
 from Client.Front.admin_lists_widgets import create_list
 from Client.Back.admin_controller import (send_admin_data, delete_subject, delete_group,
                                           delete_exam, delete_student, add_new_admin,
@@ -100,8 +100,6 @@ class AdminWindow(QMainWindow):
 
         if self.signals:
             self.signals.language_changed.connect(self.retranslateUi)
-
-        self.showMaximized()
 
     def _init_ui_elements(self):
         # Для авторизации
@@ -233,7 +231,7 @@ class AdminWindow(QMainWindow):
         # Кнопка Назад
         self.back_button = QPushButton(self.tr("Назад"))
         self.back_button.setFixedSize(100, 30)
-        self.back_button.setStyleSheet(BUTTON_STYLE)
+        self.back_button.setStyleSheet(BACK_BUTTON_STYLE)
         self.back_button.clicked.connect(self.return_to_welcome)
         self.back_button.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
 
@@ -246,6 +244,8 @@ class AdminWindow(QMainWindow):
         button_layout.addWidget(filler)
 
         self.main_layout.insertWidget(0, button_container)
+
+        self.showMaximized()
 
     def create_grid_left(self, admins, users):
 
