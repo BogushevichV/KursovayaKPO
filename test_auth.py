@@ -8,8 +8,8 @@ import os
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from Server.config import DB_CONFIG
-from Server.password_hasher import PasswordHasher
+from Server.Source.config import DB_CONFIG
+from Server.DBUtils.password_hasher import PasswordHasher
 
 def test_connection():
     """Тестирует подключение к БД"""

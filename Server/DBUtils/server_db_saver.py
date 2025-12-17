@@ -1,4 +1,4 @@
-from Server.db_manager import DatabaseManager
+from Server.DBUtils.db_manager import DatabaseManager
 
 
 class ServerDatabaseSaver(DatabaseManager):

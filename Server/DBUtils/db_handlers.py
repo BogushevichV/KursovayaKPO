@@ -4,13 +4,13 @@
 """
 import psycopg2
 from psycopg2 import sql
-from Server.db_manager import DatabaseManager
-from Server.password_hasher import PasswordHasher
+from Server.DBUtils.db_manager import DatabaseManager
+from Server.DBUtils.password_hasher import PasswordHasher
 
 
 class ServerDBAuthenticator(DatabaseManager):
     """Серверная версия аутентификатора - работает напрямую с БД"""
-    
+
     def __init__(self, dbname: str, user: str, password: str, host: str, port: str = "5432"):
         super().__init__(dbname, user, password, host, port)
 
@@ -19,7 +19,7 @@ class ServerDBAuthenticator(DatabaseManager):
             print(f"[DEBUG] Начало аутентификации для '{login}' в таблице '{table}'")
             self.connect()
             print(f"[DEBUG] Подключение к БД установлено")
-            
+
             cursor = self.connection.cursor()
             try:
                 query = sql.SQL("""
@@ -40,9 +40,9 @@ class ServerDBAuthenticator(DatabaseManager):
                 print(f"[DEBUG] Пользователь найден. Проверяю пароль...")
                 print(f"[DEBUG] Salt (первые 10 символов): {stored_salt[:10]}...")
                 print(f"[DEBUG] Hash (первые 10 символов): {stored_hash[:10]}...")
-                
+
                 is_valid = PasswordHasher.verify_password(password, stored_hash, stored_salt)
-                
+
                 if not is_valid:
                     print(f"[DEBUG] Неверный пароль для пользователя '{login}'")
                     # Для отладки - показываем что сравнивается
@@ -52,7 +52,7 @@ class ServerDBAuthenticator(DatabaseManager):
                     print(f"[DEBUG] Хеши совпадают: {test_hash == stored_hash}")
                 else:
                     print(f"[DEBUG] Пароль верный! Аутентификация успешна.")
-                
+
                 return is_valid
             finally:
                 cursor.close()
@@ -74,29 +74,29 @@ class ServerDBAuthenticator(DatabaseManager):
 
 class ServerAccountManager(DatabaseManager):
     """Серверная версия менеджера аккаунтов - работает напрямую с БД"""
-    
+
     def __init__(self, dbname: str, user: str, password: str, host: str, port: str = "5432"):
         super().__init__(dbname, user, password, host, port)
 
     def create_account(self, account_type: str, login: str, password: str, email: str, **extra_fields) -> bool:
         """
         Создание аккаунта (пользователя или администратора)
-        
+
         Args:
             account_type: Тип аккаунта - 'user' или 'admin'
             login: Логин пользователя
             password: Пароль пользователя
             email: Email пользователя
             **extra_fields: Дополнительные поля
-        
+
         Returns:
             True если аккаунт успешно создан, False в противном случае
         """
         if account_type not in ['user', 'admin']:
             raise ValueError(f"Неизвестный тип аккаунта: {account_type}. Используйте 'user' или 'admin'")
-        
+
         table_name = f"{account_type}s"
-        
+
         print(f"[DEBUG] Начало создания аккаунта '{login}' в таблице '{table_name}'")
         salt = PasswordHasher.generate_salt()
         hashed_password = PasswordHasher.hash_password(password, salt)
@@ -106,7 +106,7 @@ class ServerAccountManager(DatabaseManager):
         try:
             self.connect()
             print(f"[DEBUG] Подключение к БД установлено")
-            
+
             cursor = self.connection.cursor()
             try:
                 columns = ["login", "password_hash", "salt", "email"] + list(extra_fields.keys())
@@ -126,7 +126,7 @@ class ServerAccountManager(DatabaseManager):
                 print(f"[DEBUG] INSERT выполнен успешно, делаю commit...")
             finally:
                 cursor.close()
-            
+
             self.commit()
             print(f"[DEBUG] Commit выполнен. Аккаунт '{login}' успешно создан в таблице '{table_name}'")
             return True
@@ -139,7 +139,7 @@ class ServerAccountManager(DatabaseManager):
                 error_msg = f"Администратор с email '{email}' уже существует"
             else:
                 error_msg = f"Запись с логином '{login}' или email '{email}' уже существует в {table_name}"
-            
+
             print(f"[ERROR] {error_msg}")
             print(f"[ERROR] Детали: {e}")
             self.rollback()
@@ -159,9 +159,9 @@ class ServerAccountManager(DatabaseManager):
         """Удаление аккаунта (пользователя или администратора)"""
         if account_type not in ['user', 'admin']:
             raise ValueError(f"Неизвестный тип аккаунта: {account_type}. Используйте 'user' или 'admin'")
-        
+
         table_name = f"{account_type}s"
-        
+
         try:
             self.connect()
             with self.connection.cursor() as cursor:
@@ -187,7 +187,7 @@ class ServerAccountManager(DatabaseManager):
 
 class ServerReportManager(DatabaseManager):
     """Серверная версия менеджера отчетов - работает напрямую с БД"""
-    
+
     def __init__(self, dbname: str, user: str, password: str, host: str, port: str = "5432"):
         super().__init__(dbname, user, password, host, port)
 
@@ -376,4 +376,3 @@ class ServerReportManager(DatabaseManager):
             return []
         finally:
             self.close()
-

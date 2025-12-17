@@ -9,10 +9,9 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from Server.main import app
-from Server.config import SERVER_CONFIG, DB_CONFIG
-from Server.db_handlers import ServerAccountManager
-from Server.server_db_saver import ServerDatabaseSaver
-from Server.password_hasher import PasswordHasher
+from Server.Source.config import SERVER_CONFIG, DB_CONFIG
+from Server.DBUtils.db_handlers import ServerAccountManager
+from Server.DBUtils.server_db_saver import ServerDatabaseSaver
 
 
 @pytest.fixture(scope='module')
