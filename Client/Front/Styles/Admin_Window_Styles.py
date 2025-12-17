@@ -18,6 +18,22 @@ BUTTON_STYLE = """
     }
 """
 
+BACK_BUTTON_STYLE = """
+    QPushButton {
+        min-width: 100px;
+        min-height: 40px;
+        font-size: 16px;
+        border-radius: 5px;
+        background-color: #4CAF50;
+        color: white;
+        border: 2px solid #45a049;
+        padding: 0px 10px 0px 10px;
+    }
+    QPushButton:hover {
+        background-color: #388038;
+    }
+"""
+
 def form_style(radius): return """
     QWidget {
         background-color: #f8f9fa;
@@ -48,6 +64,7 @@ LOGIN_FORM_STYLE = """
         color: black;
         border-radius: 10px;
         border: 1px solid #dee2e6;
+        padding: 10px;
     }
     QLabel#login_label, QLabel#password_label {
         color: black;
