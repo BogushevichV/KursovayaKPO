@@ -18,7 +18,19 @@ echo [2/4] Ожидание запуска PostgreSQL (10 секунд)...
 timeout /t 10 /nobreak >nul
 
 echo [3/4] Копирование backup.sql в контейнер...
-docker cp C:\Users\medve\backup.sql exam_pg:/backup.sql
+REM Получаем путь к директории скрипта и формируем путь к backup.sql
+set SCRIPT_DIR=%~dp0
+set BACKUP_FILE=%SCRIPT_DIR%..\Source\backup.sql
+
+REM Проверка существования файла
+if not exist "%BACKUP_FILE%" (
+    echo [ОШИБКА] Файл backup.sql не найден в папке Source!
+    echo Ожидаемый путь: %BACKUP_FILE%
+    pause
+    exit /b 1
+)
+
+docker cp "%BACKUP_FILE%" exam_pg:/backup.sql
 
 if %errorlevel% neq 0 (
     echo [ОШИБКА] Не удалось скопировать файл!
