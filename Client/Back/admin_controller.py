@@ -38,7 +38,7 @@ def add_new_admin(self):
                 f"Сохраните эти данные в надежном месте."
             )
 
-            if self.send_email(email, "Ваши административные данные", email_body):
+            if send_email(self, email, "Ваши административные данные", email_body):
                 QMessageBox.information(
                     self,
                     self.tr("Успех"),
