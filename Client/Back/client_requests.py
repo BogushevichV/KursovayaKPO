@@ -14,11 +14,12 @@ except ImportError:
 class DatabaseServerClient:
     """Клиент для отправки HTTP запросов к серверу БД"""
     
-    def __init__(self, server_url: str = "http://localhost:5000", timeout: int = None):
+    def __init__(self, server_url: str = "http://127.0.0.1:5000", timeout: int = None):
         """Инициализация клиента"""
         self.server_url = server_url.rstrip('/')
         self.timeout = timeout or REQUEST_TIMEOUT
         self.session = requests.Session()
+        self.session.trust_env = False
         self.session.headers.update({'Content-Type': 'application/json'})
     
     def _make_request(self, method: str, endpoint: str, data: Optional[Dict] = None) -> Dict[str, Any]:

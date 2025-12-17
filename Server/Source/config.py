@@ -19,9 +19,12 @@ SERVER_CONFIG = {
     'debug': os.getenv('DEBUG', 'False').lower() == 'true'
 }
 
+_SERVER_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # .../Server
+_DEFAULT_LOG_DIR = os.path.join(_SERVER_DIR, 'logs')
+
 # Параметры логирования
 LOG_CONFIG = {
-    'log_dir': os.getenv('LOG_DIR', '../logs'),
+    'log_dir': os.getenv('LOG_DIR', _DEFAULT_LOG_DIR),
     'log_file_prefix': os.getenv('LOG_PREFIX', 'db_server')
 }
 
