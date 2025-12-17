@@ -3,6 +3,38 @@ from PySide6.QtWidgets import (QMainWindow, QWidget, QLabel,
 from PySide6.QtGui import QPixmap, QPainter
 from PySide6.QtCore import Qt, Signal, QTranslator
 from Client.Front.Styles.Welcome_Window_Styles import BUTTON_STYLE, ADMIN_BUTTON_STYLE, COMBO_STYLE
+import sys
+import os
+
+
+def get_image_path():
+    """Получение абсолютного пути к изображению"""
+    try:
+        # Пытаемся получить путь из PyInstaller
+        base_path = sys._MEIPASS
+    except Exception:
+        # Если не PyInstaller, используем путь к текущему файлу
+        base_path = os.path.dirname(os.path.abspath(__file__))
+
+    # Пробуем разные пути к изображению
+    possible_paths = [
+        os.path.join(base_path, "../Source/WelcomeIcon.png"),
+        os.path.join(base_path, "../../Source/WelcomeIcon.png"),
+        os.path.join(os.path.dirname(base_path), "Source/WelcomeIcon.png"),
+        os.path.join(os.path.dirname(os.path.dirname(base_path)), "Source/WelcomeIcon.png"),
+        "WelcomeIcon.png",
+        os.path.join(os.getcwd(), "WelcomeIcon.png"),
+    ]
+
+    for path in possible_paths:
+        if os.path.exists(path):
+            print(f"Изображение найдено по пути: {path}")
+            return path
+
+    print(f"Изображение не найдено. Искали в:")
+    for path in possible_paths:
+        print(f"  {path}")
+    return None
 
 
 class WelcomeWindow(QMainWindow):
@@ -58,9 +90,13 @@ class WelcomeWindow(QMainWindow):
 
         # === Картинка ===
         self.image_label = QLabel()
-        pixmap = QPixmap("../Client/Source/WelcomeIcon.png")
+        image_path = get_image_path()
 
-        if pixmap.isNull():
+        if image_path and os.path.exists(image_path):
+            pixmap = QPixmap(image_path)
+            print(f"Успешно загружено изображение: {image_path}")
+        else:
+            print(f"Создаю заглушку для изображения")
             pixmap = QPixmap(400, 200)
             pixmap.fill(Qt.GlobalColor.lightGray)
             painter = QPainter(pixmap)
@@ -111,9 +147,7 @@ class WelcomeWindow(QMainWindow):
         lang_code = self.language_box.currentData()
         self.language_changed.emit(lang_code)
 
-
     def retranslateUi(self):
         self.welcome_label.setText(self.tr("Добро пожаловать!"))
         self.user_button.setText(self.tr("Войти как пользователь"))
         self.admin_button.setText(self.tr("Войти как администратор"))
-

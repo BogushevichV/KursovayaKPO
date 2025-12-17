@@ -9,6 +9,18 @@ from PySide6.QtWidgets import QApplication, QMessageBox
 from PySide6.QtCore import QSettings, QTranslator, QCoreApplication, QObject, Signal
 from Client.Source.config import SERVER_URL
 import sys
+import os
+
+
+def resource_path(relative_path):
+    """Получить абсолютный путь к ресурсу, работает для разработки и для PyInstaller/Inno Setup"""
+    try:
+        # PyInstaller создает временную папку в _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.dirname(os.path.abspath(__file__))
+
+    return os.path.join(base_path, relative_path)
 
 
 class AppSignals(QObject):
@@ -37,7 +49,7 @@ class Application:
             self.load_language(self.current_lang)
 
         # === 3. Окно приветствия ===
-        self.welcome_window = WelcomeWindow(self.current_lang)
+        self.welcome_window = WelcomeWindow(self.current_lang, self.signals)
         self.welcome_window.language_changed.connect(self.on_language_changed)
 
         # Подключаем сигналы
@@ -48,18 +60,41 @@ class Application:
     # === 4. Метод загрузки перевода ===
     def load_language(self, lang_code):
         self.translator = QTranslator()
-        if self.translator.load(f"../Client/Source/translations/{lang_code}.qm"):
-            QCoreApplication.installTranslator(self.translator)
-            self.current_lang = lang_code
-            self.settings.setValue("language", lang_code)
-            self.signals.language_changed.emit(lang_code)  # 🔹 сообщаем всем окнам
-        else:
-            print(f"⚠ Не удалось загрузить translations/{lang_code}.qm")
+
+        # Пробуем разные пути к файлам переводов
+        translation_paths = [
+            resource_path(f"../Client/Source/translations/{lang_code}.qm"),
+            resource_path(f"translations/{lang_code}.qm"),
+            f"translations/{lang_code}.qm",
+            f"{lang_code}.qm",
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), f"../Client/Source/translations/{lang_code}.qm"),
+        ]
+
+        loaded = False
+        for path in translation_paths:
+            if os.path.exists(path):
+                print(f"Пытаемся загрузить перевод из: {path}")
+                if self.translator.load(path):
+                    QCoreApplication.installTranslator(self.translator)
+                    self.current_lang = lang_code
+                    self.settings.setValue("language", lang_code)
+                    self.signals.language_changed.emit(lang_code)
+                    loaded = True
+                    print(f"✅ Перевод успешно загружен из: {path}")
+                    break
+                else:
+                    print(f"❌ Не удалось загрузить перевод из: {path}")
+
+        if not loaded:
+            print(f"⚠ Не удалось загрузить перевод для языка {lang_code}")
+            for path in translation_paths:
+                print(f"  Проверял: {path}")
 
     def on_language_changed(self, new_lang):
         """При смене языка из WelcomeWindow"""
         self.load_language(new_lang)
-        self.welcome_window.retranslateUi()
+        if hasattr(self.welcome_window, 'retranslateUi'):
+            self.welcome_window.retranslateUi()
 
     def init_db_connections(self):
         """Инициализация подключений к серверу БД через HTTP API"""
@@ -68,11 +103,11 @@ class Application:
             # Все классы используют HTTP запросы к серверу (не прямые подключения к БД)
             self.db_auth = Authenticator(server_url=SERVER_URL)
             self.account_manager = AccountManager(server_url=SERVER_URL)
-            
+
             # Проверяем доступность сервера
             if not self.db_auth.client.health_check():
                 raise ConnectionError("Сервер БД недоступен")
-            
+
             return True
         except Exception as e:
             QMessageBox.critical(
@@ -122,4 +157,3 @@ class Application:
 if __name__ == "__main__":
     application = Application()
     application.run()
-
